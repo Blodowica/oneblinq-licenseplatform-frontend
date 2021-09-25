@@ -1,27 +1,20 @@
 import React from 'react';
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-  useSetRecoilState,
-} from 'recoil';
 
 import { textState } from '../state'
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 
+export { useUserActions }
 
-function textActions() {
-    
-    return {
-        setGlobalTextState,
-    }
-    
-    
-    function setGlobalTextState() {
+function useUserActions() {
+  const setText = useSetRecoilState(textState);
 
-    }
+  return {
+    setGlobalTextState,
+  }
+
+
+  function setGlobalTextState(newGlobalText) {
+    setText(newGlobalText)
+  }
 }
-
-export { textActions }

@@ -5,7 +5,7 @@ import {
 
 const textState = atom({
     key: 'myTextState',
-    default: "MyFuckingState"
+    default: "My default state"
 })
 
 export {textState}

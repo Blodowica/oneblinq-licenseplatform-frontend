@@ -4,11 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import {textState} from '../../state'
 
-import {textActions} from '../../actions'
+import {useUserActions} from '../../actions'
 
 export function ExampleComponent() {
-  const [text, setText] = useState("Default textsss")
-  const [globalTextState, setGlobalTextState] = useRecoilState(textState)
+  const [globalTextState] = useRecoilState(textState)
+
+  const textActions = useUserActions()
 
 
 
@@ -38,7 +39,7 @@ export function ExampleComponent() {
         </a>
         <p>{globalTextState}</p>
         <button onClick={() => {
-          setGlobalTextState("New global state")
+          textActions.setGlobalTextState("My NEW TEXT")
         }}>CLick me to change global state for all components :)</button>
         {/* <input onChange={(theInputField) => setText(theInputField.target.value)}></input> */}
       </header>

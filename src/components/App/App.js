@@ -11,7 +11,7 @@ function RenderDefault() {
   return (
     <div>
       Default bitch
-      <button onClick={() => history.push('/different')}>Button</button>
+      <button onClick={() => history.push('/example')}>Button</button>
     </div>
   )
 }
