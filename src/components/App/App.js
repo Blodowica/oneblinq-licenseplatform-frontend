@@ -3,6 +3,8 @@ import { ExampleComponent, DifferentComponent } from '../';
 import { withRouter } from 'react-router-dom'
 import Routes from '../router'
 import { useHistory } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { Button } from 'react-bootstrap';
 
 
 function RenderDefault() {
@@ -11,7 +13,7 @@ function RenderDefault() {
   return (
     <div>
       Default bitch
-      <button onClick={() => history.push('/example')}>Button</button>
+      <Button onClick={() => history.push('/example')}>Button</Button>
     </div>
   )
 }
