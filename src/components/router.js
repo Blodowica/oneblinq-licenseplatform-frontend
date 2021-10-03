@@ -6,6 +6,7 @@ import { useUserActions } from '../actions'
 import { useRecoilState } from 'recoil';
 import { textState } from '../state'
 
+
 function FirstExampleComponent() {
     const [globalTextState] = useRecoilState(textState)
     const textActions = useUserActions()
@@ -37,7 +38,9 @@ const Routes = () => {
         <main>
             <Switch>
                 <Route exact path='/example' component={() => Components.ExampleComponent()} />
-                <Route path='/' component={() =>
+                <Route exact path='/full-bd' component={() => Components.LrBaseComponent()} />
+                
+                <Route path='/' component={() => 
                     <div>
                         <FirstExampleComponent />
                         <SecondExampleComponent />

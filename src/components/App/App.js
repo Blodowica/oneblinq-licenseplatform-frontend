@@ -23,7 +23,7 @@ function App({ location }) {
 
   return (
     <div>
-      <RenderDefault />
+     
       <Routes />
 
 
