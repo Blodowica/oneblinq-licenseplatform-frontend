@@ -5,7 +5,7 @@ import Routes from '../router'
 import { useHistory } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Button } from 'react-bootstrap';
-
+import RegisrationComponent from '../RegistrationComponent/RegisrationComponent.js'
 
 function RenderDefault() {
   const history = useHistory()
@@ -25,8 +25,8 @@ function App({ location }) {
     <div>
      
       <Routes />
-
-
+   
+ 
     </div>
   );
 }

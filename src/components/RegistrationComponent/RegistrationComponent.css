@@ -1,0 +1,355 @@
+.RegForm {
+  position: absolute;
+  left: 58vw;
+  right: 5.7vw;
+  top: 18.2vh;
+  bottom: 13vh;
+  
+  height: 80.3vh;
+  width: 36.3vw;
+  border-radius: 8.6vh;
+
+  background: #edeffc;
+}
+.RegText {
+  position: absolute;
+
+  font-family: Roboto;
+  font-size: 5vw;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 11.5vh;
+  letter-spacing: 0em;
+  text-align: left;
+
+  left: 8.4;
+  top: 8.8vh;
+  right: 8.4vw;
+  bottom: 55.97vh;
+}
+
+.RegEmailInput {
+  position: absolute;
+  height: 6.8vh;
+  width: 27.6vw;
+
+  border-radius: 65px;
+
+  /* Rectangle 7 */
+
+  top: 28.9vh;
+  bottom: 43.7vh;
+  left: 3.2vw;
+  right: 5.5vw;
+
+  background: rgba(110, 68, 255, 0.84);
+  border-radius: 3.4vw;
+  color: white;
+  background: rgba(110, 68, 255, 0.84);
+  text-align-last: center;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.3vw;
+}
+
+::placeholder {
+  position: absolute;
+  width: 9.2vw;
+  height: 4.3vh;
+  left: 5vw;
+  top: 1.3vh;
+  bottom: 1.3vh;
+  right: 13.3vw;
+  color: white;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.3vw;
+  line-height: 4.96vh;
+}
+
+.RegPassInput {
+  position: absolute;
+  background: rgba(110, 68, 255, 0.84);
+  border-radius: 65px;
+  height: 6.8vh;
+  width: 27.6vw;
+  color: white;
+  top:39.94vh;
+  right: 5.5vw;
+  left: 3.3vw;
+  bottom: 32.7vh;
+  border-radius: 65px;
+  text-align-last: center;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.3vw;
+}
+
+
+.RegPassConfirmationInput {
+  position: absolute;
+  background: rgba(110, 68, 255, 0.84);
+  border-radius: 65px;
+  color: white;
+  height: 6.8vh;
+  width: 27.6vw;
+
+  left: 3.3w;
+  right: 5.5vw;
+  top: 49.8vh;
+  bottom: 22.8vh;
+  text-align-last: center;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.3vw;
+}
+
+
+.RegBtn {
+  position: absolute;
+  background: #efa9ae;
+  border-radius: 14px;
+  height: 6.3vh;
+  width: 19.8vw;
+
+  bottom: 9.3vh;
+  left: 7.2vw;
+  top: 63.8vh;
+  right: 9.2vw;
+
+  border-radius: 14px;
+  color: white;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 3.7vh;
+  line-height: 4.3vh;
+}
+
+.EmailIcon
+{
+  position: absolute;
+  content: url('./EmailIcon.svg');
+  width: 2.5vw;
+  height: 4.9vh;
+  left: 62.8vw;
+  top: 47.9vh;
+  
+}
+.PasswordIcon
+{
+  position: absolute;
+  content: url('./PasswordIcon.svg');
+  width: 2.5vw;
+  height: 4.9vh;
+  left: 62.8vw;
+  top: 58.9vh;
+}
+.PasswordIconConfirmation
+{
+  position: absolute;
+  content: url('./PasswordIcon.svg');
+  width: 2.5vw;
+  height: 4.9vh;
+  left: 62.8vw;
+  top: 68.8vh;
+}
+.Link
+{
+  position: absolute;
+width: 16vw;
+height: 1.8vw;
+left: 7.8vw;
+top: 58.5vh;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 1vw;
+line-height: 2.9vh;
+text-decoration-line: underline;
+color: #0000FF;
+}
+
+@media (max-width: 800px), screen and (orientation: portrait) {
+  .RegForm {
+    position: absolute;
+    left: 20%;
+    right: 80%;
+    top: 24%;
+    bottom: 80%;
+    
+    height: 60.3vh;
+    width: 66.3vw;
+    border-radius: 8.6vh;
+  
+    background: #edeffc;
+  }
+    .RegEmailInput {
+      position: absolute;
+      height: 6.8vh;
+      width: 60vw;
+    
+      border-radius: 65px;
+    
+      /* Rectangle 7 */
+    
+      top: 17.160367722165475vh;
+     
+      left:1.35vw;
+     
+    
+      
+
+      background: rgba(110, 68, 255, 0.84);
+      border-radius: 65px;
+      color: white;
+      background: rgba(110, 68, 255, 0.84);
+      text-align-last: center;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 1.3vw;
+    }
+    .RegPassInput {
+      position: absolute;
+      background: rgba(110, 68, 255, 0.84);
+      border-radius: 65px;
+
+      height:  6.8vh;
+      width: 60vw;
+      
+      color: white;
+      top: 24.8vh;
+
+      left:1.35vw;     
+      border-radius: 65px;
+      text-align-last: center;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 1.3vw;
+    }
+    .RegPassConfirmationInput {
+      position: absolute;
+      background: rgba(110, 68, 255, 0.84);
+      border-radius: 65px;
+      color: white;
+      height:  6.8vh;
+      width: 60vw;
+    
+    
+      left:1.4vw;
+      top: 32.5vh;
+   
+      text-align-last: center;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 1.3vw;
+    }
+    .RegBtn {
+      position: absolute;
+      background: #efa9ae;
+      border-radius: 14px;
+      height: 6.3vh;
+      width: 19.84375vw;
+    
+      bottom: 9.3vh;
+      left: 20vw;
+      top: 45vh;
+     
+      width: 71.7px;
+      Height :43.3px;
+    
+      border-radius: 14px;
+      color: white;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 4.3vh;
+    }
+    .RegText {
+      position: absolute;
+    
+      font-family: Roboto;
+      font-size: 36px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 11.5vh;
+      letter-spacing: 0em;
+      text-align: center;
+    
+      left: 2.6vw;
+      top: 6vh;
+    
+    }
+    
+.EmailIcon
+{
+  position: absolute;
+  content: url('./EmailIcon.svg');
+  width: 20px;
+  height: 20px;
+  top: 43.5vh;
+  left: 25vw;
+  right: 247px;
+}
+.PasswordIcon
+{
+  position: absolute;
+  content: url('./PasswordIcon.svg');
+  width: 20px;
+  height: 20px;
+  left:25vw;;
+  top: 51vh;
+}
+.PasswordIconConfirmation
+{
+  position: absolute;
+  content: url('./PasswordIcon.svg');
+  width: 20px;
+  height: 20px;
+  left: 25vw;
+  top: 59vh;
+}
+
+.Link
+{
+  position: absolute;
+  height: 17px;
+  width: 175px;
+
+  
+left: 37px;
+top: 40vh;
+
+font-family: Roboto;
+font-style: normal;
+font-size: 12px;
+
+
+text-decoration-line: underline;
+color: #0000FF;
+}
+::placeholder {
+  position: absolute;
+  width: 15vw;
+  height: 6vh;
+  left: 9vw;
+  
+  bottom: 1.5vw;
+  
+  color: white;
+  font-family: Roboto;
+  
+  font-size: 2vh;
+  line-height: 5vh;
+}
+  }
+
