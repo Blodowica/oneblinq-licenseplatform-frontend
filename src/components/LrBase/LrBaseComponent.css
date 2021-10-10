@@ -22,6 +22,10 @@
   bottom: 78.63%;
 }
 
+.FormLabel{
+  color: white;
+}
+
 @media (max-heigth: 600px), screen and (orientation: portrait) {
   .BackgroundLogo {
     height: 33.395252837977297vh;

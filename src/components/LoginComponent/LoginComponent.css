@@ -1,0 +1,29 @@
+/* Rectangle 6 */
+
+.FormBackground{
+position: absolute;
+left: 53.75%;
+right: 5.73%;
+top: 13.89%;
+bottom: 14.07%;
+
+background: #EDEFFC;
+border-radius: 28px;
+}
+.FormTitle{
+    font-size: 8vh;
+    text-align: center;
+}
+#formBasicPassword{
+    
+    background-color: #825fff ;
+}
+#formBasicEmail{
+    background-color: #825fff ;
+}
+
+@media (max-heigth: 600px), screen and (orientation: portrait) {
+    .FormBackground{
+        position: center;
+    }
+  }
