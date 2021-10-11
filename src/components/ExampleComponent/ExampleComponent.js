@@ -2,9 +2,10 @@ import logo from '../../logo.svg';
 import './ExampleComponent.css'
 import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import {textState} from '../../state'
+import { textState } from '../../state'
 
-import {useUserActions} from '../../actions'
+import { useUserActions } from '../../actions'
+import { Form, Button, container, Row } from 'react-bootstrap';
 
 export function ExampleComponent() {
   const [globalTextState] = useRecoilState(textState)
@@ -13,7 +14,7 @@ export function ExampleComponent() {
 
 
 
-  
+
   // On component load, OR component destroy
   useEffect(() => {
 
@@ -43,6 +44,7 @@ export function ExampleComponent() {
         }}>CLick me to change global state for all components :)</button>
         {/* <input onChange={(theInputField) => setText(theInputField.target.value)}></input> */}
       </header>
+      <Button variant="custom-caller">Button</Button>
     </div>
   )
 }

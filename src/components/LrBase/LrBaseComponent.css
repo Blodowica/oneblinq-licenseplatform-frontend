@@ -36,3 +36,22 @@
     bottom: 99.63%;
   }
 }
+
+.LogRegComponent
+{
+  position: relative;
+ 
+}
+.RegLogFormContainer
+{
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+.RegLogFormCol
+{
+}
+
+.Container
+{
+  display: grid ;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+}
