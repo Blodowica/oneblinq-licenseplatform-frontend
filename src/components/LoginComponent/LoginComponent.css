@@ -14,12 +14,17 @@ border-radius: 28px;
     font-size: 8vh;
     text-align: center;
 }
+.Form{
+    font-size: 8vh;
+    text-align: center;
+}
 #formBasicPassword{
     
     background-color: #825fff ;
 }
 #formBasicEmail{
     background-color: #825fff ;
+    text-align: center;
 }
 
 @media (max-heigth: 600px), screen and (orientation: portrait) {
