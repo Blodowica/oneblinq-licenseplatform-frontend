@@ -8,6 +8,7 @@ import { Button } from 'react-bootstrap';
 import RegisrationComponent from '../RegistrationComponent/RegisrationComponent.js'
 import '../../main.scss'
 
+
 function RenderDefault() {
   const history = useHistory()
 
@@ -26,7 +27,7 @@ function App({ location }) {
     <div>
 
       <Routes />
-
+     {/* { <RenderDefault/>} */}
 
     </div>
   );

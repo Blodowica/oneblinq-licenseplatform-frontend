@@ -1,47 +1,50 @@
 import React, { Component } from "react";
 import "./LoginComponent.css";
 import { Form, Button, Container, Row } from 'react-bootstrap';
-import EmailIcon from './Email.svg'
-import ReactDOM from 'react-dom'
+import RegistrationComponent from '../RegistrationComponent/RegisrationComponent';
 
-class LoginComponent extends React.Component {
-  render() {
+
+export function LoginComponent({onSignUpClick}){
     return (
       <Container>
+      <div className="RegistrationForm  align-items-center justify-content-center  text-center">
+        <h1 className="mt-3">Sign In</h1>
 
-        <div className="FormBackground align-items-center">
-          <Row >
+        <Form.Group className="mb-4  mt-5 " controlId="formBasicEmail">
 
-            <h3 className="FormTitle">Sign in</h3>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label classname="FromLabel"> Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
+          <Form.Control size="lg" type="email" placeholder="Enter email" className="rounded-pill" />
 
-              <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Form.Group>
-          </Row>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label classname="FromLabel" >Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
-          </Form.Group>
 
-          <Row className=" justify-content-center d-flex ">
+        </Form.Group>
 
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
+        <Form.Group className="mb-4 rounded-pill" controlId="formBasicPassword">
 
-          </Row>
+          <Form.Control type="password" placeholder="Password" size="lg" className="rounded-pill" />
+        </Form.Group>
 
 
 
+        <div>
+      
+          <a  onClick={()=>onSignUpClick()}> Don't have an account? Sign Up!</a>
+          <br></br>
+          <a href='#'> Forgot password!</a>
 
         </div>
-      </Container>
+        <div>
+
+          <Button className="RegButton button-center mt-3" type="submit">
+            Login
+          </Button>
+
+        </div>
+
+
+
+      </div >
+    </Container>
     );
   }
-}
+
 
 export default LoginComponent;

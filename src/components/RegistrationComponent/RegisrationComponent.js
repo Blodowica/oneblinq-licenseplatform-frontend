@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./RegistrationComponent.css";
 import { Form, Button, Container, Row, InputGroup } from 'react-bootstrap';
 
-export function RegistrationComponent() {
+export function RegistrationComponent({onSignInClick}) {
 
   //<InputGroup.Text id="basic-addon1" className="RegInputGroupEmail">@</InputGroup.Text>
   return (
@@ -28,7 +28,7 @@ export function RegistrationComponent() {
         </Form.Group>
 
         <div>
-          <a href='#'> Already have a account? Sign In!</a>
+          <a onClick={()=>onSignInClick()}> Already have a account? Sign In!</a>
 
         </div>
         <div>
