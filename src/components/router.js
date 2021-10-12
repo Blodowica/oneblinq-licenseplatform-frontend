@@ -39,7 +39,6 @@ const Routes = () => {
             <Switch>
                 <Route exact path='/example' component={() => Components.ExampleComponent()} />
                 <Route exact path='/Login' component={() => Components.LrBaseComponent()} />
-                <Route exact path='/Register' component={() => Components.RegistrationComponent()} />
 
                 <Route path='/' component={() =>
                     <div>
