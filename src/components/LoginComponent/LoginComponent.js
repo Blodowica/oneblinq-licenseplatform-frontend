@@ -4,9 +4,9 @@ import { Form, Button, Container, Row } from 'react-bootstrap';
 import RegistrationComponent from '../RegistrationComponent/RegisrationComponent';
 
 
-export function LoginComponent({onSignUpClick}){
-    return (
-      <Container>
+export function LoginComponent({ onSignUpClick }) {
+  return (
+    <Container>
       <div className="RegistrationForm  align-items-center justify-content-center  text-center">
         <h1 className="mt-3">Sign In</h1>
 
@@ -25,8 +25,8 @@ export function LoginComponent({onSignUpClick}){
 
 
         <div>
-      
-          <a  onClick={()=>onSignUpClick()}> Don't have an account? Sign Up!</a>
+
+          <a onClick={() => onSignUpClick()}> Don't have an account? Sign Up!</a>
           <br></br>
           <a href='#'> Forgot password!</a>
 
@@ -43,8 +43,8 @@ export function LoginComponent({onSignUpClick}){
 
       </div >
     </Container>
-    );
-  }
+  );
+}
 
 
 export default LoginComponent;

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import "./RegistrationComponent.css";
 import { Form, Button, Container, Row, InputGroup } from 'react-bootstrap';
+import { LoginComponent } from "../LoginComponent/LoginComponent";
 
-export function RegistrationComponent({onSignInClick}) {
+export function RegistrationComponent({ onSignInClick }) {
 
   //<InputGroup.Text id="basic-addon1" className="RegInputGroupEmail">@</InputGroup.Text>
   return (
@@ -28,9 +29,10 @@ export function RegistrationComponent({onSignInClick}) {
         </Form.Group>
 
         <div>
-          <a onClick={()=>onSignInClick()}> Already have a account? Sign In!</a>
 
+          <a onClick={() => onSignInClick()}> Already have a account? Sign In!</a>
         </div>
+
         <div>
 
           <Button className="RegButton button-center mt-3" type="submit">
@@ -39,22 +41,6 @@ export function RegistrationComponent({onSignInClick}) {
 
         </div>
 
-
-        {
-        /* <Form className="RegForm">
-        
-        <h3 className="RegText">Register</h3>
-        
-        <input className="RegEmailInput" placeholder="Email"></input>
-        <input className="RegPassInput" placeholder="******" type="password"></input>
-        <input className="RegPassConfirmationInput" placeholder="******" type="password"></input>
-        <button className="RegBtn" onClick="">Login</button>
-        <a className="Link" href="">Already have an account? Sign in</a>
-        </Form>
-        <div className="EmailIcon"></div>
-        
-        <div className="PasswordIcon"></div>
-      <div className="PasswordIconConfirmation"></div> */}
       </div >
     </Container>
   )
