@@ -1,44 +1,38 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Switch, useHistory } from 'react-router-dom';
+
 import * as Components from './index';
-import { ExampleComponent } from './index';
-import { useUserActions } from '../actions'
-import { useRecoilState } from 'recoil';
-import { textState } from '../state'
+import ProtectedRoute from './ProtectedRoute';
+import { useRecoilValue } from 'recoil'
+import { authAtom } from '../state';
+import { useAuth } from '../actions';
 
-
-function FirstExampleComponent() {
-    const [globalTextState] = useRecoilState(textState)
-    const textActions = useUserActions()
-
-
-    return (
-        <div>
-            <p>Component 1</p>
-            <p>{globalTextState}</p>
-            <input onChange={(e) => textActions.setGlobalTextState(e.target.value)} />
-        </div>
-    )
-}
-
-function SecondExampleComponent() {
-    const [globalTextState] = useRecoilState(textState)
-
-
-    return (
-        <div>
-            <p>Component 2</p>
-            <p>{globalTextState}</p>
-        </div>
-    )
-}
 
 const Routes = () => {
+    const authActions = useAuth()
+    const authState = useRecoilValue(authAtom)
+    const history = useHistory()
+    useEffect(() => {
+        authActions.refreshToken()
+    }, [])
+
+    useEffect(() => {
+        if(authState) {
+            history.push('/example')
+        }
+        else {
+            history.replace('/')
+        }
+    }, [authState])
+
     return (
         <main>
             <Switch>
-                <Route exact path='/example' component={() => Components.ExampleComponent()} />
-                <Route exact  path='/' component={() => Components.LrBaseComponent()} />
+                {authState ?
+                    <ProtectedRoute exact path='/example' Component={Components.ExampleComponent} />
+                    :
+                    <Route exact path={["/login", "/"]} component={Components.LrBaseComponent} />
+                }
             </Switch>
         </main>
     )

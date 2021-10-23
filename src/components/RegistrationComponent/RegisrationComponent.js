@@ -1,13 +1,14 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import "./RegistrationComponent.css";
 import { Form, Card, Button, InputGroup, FormControl, Row, Col, Container } from 'react-bootstrap'
 import { MdEmail, MdLock } from "react-icons/md";
+import { useAuth } from "../../actions";
 
 function RegistrationComponent({ toLogin }) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
-
+  const authActions = useAuth()
 
   function arePasswordsSame() {
     if (password && repeatPassword && password == repeatPassword) {
@@ -17,7 +18,15 @@ function RegistrationComponent({ toLogin }) {
   }
 
   function register() {
-    if(!arePasswordsSame()) return alert("Passwords aren't same")
+    function validateEmail(email) {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+    }
+    if(!validateEmail) return alert("Wrong email format")
+    if(!password || password.length < 5) return alert("Password needs to be 5+ characters long")
+    if (!arePasswordsSame()) return alert("Passwords aren't same")
+
+    authActions.register(email, password, "Gosho", "Ot pochivka")
   }
 
   return (

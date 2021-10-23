@@ -1,16 +1,23 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import "./LoginComponent.css";
 import { Form, Card, Button, InputGroup, FormControl, Row, Col, Container } from 'react-bootstrap'
 import { MdEmail, MdLock } from "react-icons/md";
-import RegistrationComponent from '../RegistrationComponent/RegisrationComponent';
+import { useAuth } from "../../actions";
 
 
 export function LoginComponent({ toRegister, toForgottenPassword }) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const authActions = useAuth()
 
   function login() {
-    
+    function validateEmail(email) {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+    }
+    if(!validateEmail) return alert("Wrong email format")
+    if(!password || password.length < 5) return alert("Password needs to be 5+ characters long")
+    authActions.login(email, password)
   }
   return (
     <>
@@ -33,7 +40,7 @@ export function LoginComponent({ toRegister, toForgottenPassword }) {
                 <MdLock size="2em" />
 
               </InputGroup.Text>
-              <Form.Control value={password} placeholder="******" onChange={(e) => setPassword(e.target.value)} />
+              <Form.Control value={password} type="password" placeholder="******" onChange={(e) => setPassword(e.target.value)} />
 
             </InputGroup>
             <Row className="justify-content-end me-1 mb-3">

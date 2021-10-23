@@ -17,7 +17,7 @@ export function LrBaseComponent() {
             {isRegister ?
               <RegistrationComponent toLogin={() => setIsRegister(false)} />
               :
-              <LoginComponent toRegister={() => setIsRegister(true)}/>
+              <LoginComponent toForgottenPassword={() => console.log("Redirect to forgotten password")} toRegister={() => setIsRegister(true)}/>
             }
           </Col>
 

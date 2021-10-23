@@ -2,23 +2,10 @@ import './App.css';
 import { ExampleComponent, DifferentComponent } from '../';
 import { withRouter } from 'react-router-dom'
 import Routes from '../router'
-import { useHistory } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Button } from 'react-bootstrap';
-import RegisrationComponent from '../RegistrationComponent/RegisrationComponent.js'
 
 
-function RenderDefault() {
-  const history = useHistory()
-  return (
-    <div>
-      Default bitch
-      <Button onClick={() => history.push('/example')}>Button</Button>
-    </div>
-  )
-}
-
-function App({ location }) {
+function App() {
 
   return (
     <div>
