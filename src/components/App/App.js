@@ -6,12 +6,10 @@ import { useHistory } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Button } from 'react-bootstrap';
 import RegisrationComponent from '../RegistrationComponent/RegisrationComponent.js'
-import '../../main.scss'
 
 
 function RenderDefault() {
   const history = useHistory()
-
   return (
     <div>
       Default bitch
@@ -21,14 +19,10 @@ function RenderDefault() {
 }
 
 function App({ location }) {
-  console.log(location)
 
   return (
     <div>
-
       <Routes />
-     {/* { <RenderDefault/>} */}
-
     </div>
   );
 }

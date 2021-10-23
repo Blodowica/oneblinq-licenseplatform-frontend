@@ -1,48 +1,69 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import "./LoginComponent.css";
-import { Form, Button, Container, Row } from 'react-bootstrap';
+import { Form, Card, Button, InputGroup, FormControl, Row, Col, Container } from 'react-bootstrap'
+import { MdEmail, MdLock } from "react-icons/md";
 import RegistrationComponent from '../RegistrationComponent/RegisrationComponent';
 
 
-export function LoginComponent({ onSignUpClick }) {
+export function LoginComponent({ toRegister, toForgottenPassword }) {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  function login() {
+    
+  }
   return (
-    <Container>
-      <div className="RegistrationForm  align-items-center justify-content-center  text-center">
-        <h1 className="mt-3">Sign In</h1>
+    <>
+      <Card className="m-0 m-lg-5 p-0 p-sm-3 p-lg-4 pb-lg-0 pb-md-0 pb-sm-0" style={{ borderRadius: 20, backgroundColor: "#EDEFFC" }}>
+        <Card.Body>
+          <Card.Text className="text-center display-3 mb-3">Login</Card.Text>
+          <Form>
 
-        <Form.Group className="mb-4  mt-5 " controlId="formBasicEmail">
+            <InputGroup className="my-3">
+              <InputGroup.Text>
+                <MdEmail size="2em" />
 
-          <Form.Control size="lg" type="email" placeholder="Enter email" className="rounded-pill" />
+              </InputGroup.Text>
+              <Form.Control value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
 
+            </InputGroup>
 
-        </Form.Group>
+            <InputGroup className="my-3">
+              <InputGroup.Text>
+                <MdLock size="2em" />
 
-        <Form.Group className="mb-4 rounded-pill" controlId="formBasicPassword">
+              </InputGroup.Text>
+              <Form.Control value={password} placeholder="******" onChange={(e) => setPassword(e.target.value)} />
 
-          <Form.Control type="password" placeholder="Password" size="lg" className="rounded-pill" />
-        </Form.Group>
+            </InputGroup>
+            <Row className="justify-content-end me-1 mb-3">
 
-
-
-        <div>
-
-          <a onClick={() => onSignUpClick()}> Don't have an account? Sign Up!</a>
-          <br></br>
-          <a href='#'> Forgot password!</a>
-
-        </div>
-        <div>
-
-          <Button className="RegButton button-center mt-3" type="submit">
-            Login
-          </Button>
-
-        </div>
+              <span onClick={() => toForgottenPassword()} className="text-end ">
+                Forgot password?
+              </span>
+            </Row>
 
 
+            <Row>
+              <Col className="text-center">
 
-      </div >
-    </Container>
+                <Button onClick={() => login()} className="rounded-pill" style={{ paddingLeft: "30px", paddingRight: "30px", backgroundColor: "#6933C8", color: "white" }} size="lg">
+                  Login
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="text-center">
+
+                <Button onClick={() => toRegister()} className="mt-2" variant="none" size="lg">
+                  Register
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </Card.Body>
+      </Card>
+    </>
   );
 }
 

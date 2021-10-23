@@ -8,29 +8,17 @@ export function LrBaseComponent() {
   const [isRegister, setIsRegister] = useState(false)
 
   return (
-
-
     <div className="Full d-flex align-items-center ">
-      <div className="BackgroundLogo">
+      <div className="BackgroundLogo" />
+      <Container fluid>
+        <Row style={{ justifyContent: "end" }}>
 
-      </div>
-      <Container fluid >
-        <Row>
-
-          <Col md={{ span: 5, offset: 7 }} className="RegLogFormCol" xs={12} sm={12}>
-
-            {
-              isRegister ? <RegistrationComponent onSignInClick={() => setIsRegister(false)} /> : <LoginComponent onSignUpClick={() => setIsRegister(true)} />
-
+          <Col sm={12} md={8} lg={6} xl={5} xxl={4} >
+            {isRegister ?
+              <RegistrationComponent toLogin={() => setIsRegister(false)} />
+              :
+              <LoginComponent toRegister={() => setIsRegister(true)}/>
             }
-
-
-
-
-
-
-
-
           </Col>
 
         </Row>

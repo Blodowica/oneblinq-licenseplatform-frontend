@@ -6,11 +6,6 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
-
-.example-text {
-  color: wheat;
-}
-
 .BackgroundLogo {
   content: url("./Logo.svg");
   position: absolute;
@@ -22,9 +17,6 @@
   bottom: 78.63%;
 }
 
-.FormLabel{
-  color: white;
-}
 
 @media (max-heigth: 600px), screen and (orientation: portrait) {
   .BackgroundLogo {
@@ -35,21 +27,4 @@
     top: 0.1%;
     bottom: 99.63%;
   }
-}
-
-.LogRegComponent
-{
-  position: relative;
- 
-}
-.RegLogFormContainer
-{
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-}
-
-
-.Container
-{
-  display: grid ;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
 }
