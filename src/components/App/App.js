@@ -2,29 +2,14 @@ import './App.css';
 import { ExampleComponent, DifferentComponent } from '../';
 import { withRouter } from 'react-router-dom'
 import Routes from '../router'
-import { useHistory } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 
-function RenderDefault() {
-  const history = useHistory()
-
-  return (
-    <div>
-      Default bitch
-      <button onClick={() => history.push('/example')}>Button</button>
-    </div>
-  )
-}
-
-function App({ location }) {
-  console.log(location)
+function App() {
 
   return (
     <div>
-      <RenderDefault />
       <Routes />
-
-
     </div>
   );
 }

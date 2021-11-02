@@ -1,0 +1,30 @@
+.Full {
+  background-image: url("./Background.svg");
+  height: 100vh;
+  width: 100vw;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.BackgroundLogo {
+  content: url("./Logo.svg");
+  position: absolute;
+  height: 13.395252837977297vh;
+  width: 37.37135416666667vw;
+  left: 6.61%;
+  right: 56.01%;
+  top: 9.35%;
+  bottom: 78.63%;
+}
+
+
+@media (max-heigth: 600px), screen and (orientation: portrait) {
+  .BackgroundLogo {
+    height: 33.395252837977297vh;
+    width: 47.37135416666667vw;
+    left: 26.61%;
+    right: 76.01%;
+    top: 0.1%;
+    bottom: 99.63%;
+  }
+}
