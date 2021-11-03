@@ -29,9 +29,9 @@ const Routes = () => {
         <main>
             <Switch>
                 {authState ?
-                    <ProtectedRoute exact path='/example' Component={Components.ExampleComponent} />
+                    <ProtectedRoute exact path='/dashboard' Component={Components.DashboardBaseComponent} />
                     :
-                    <Route exact path={["/login", "/"]} component={Components.LrBaseComponent} />
+                    <Route exact path={["/login", "/"]} component={Components.DashboardBaseComponent} />
                 }
             </Switch>
         </main>
