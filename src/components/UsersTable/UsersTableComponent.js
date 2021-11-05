@@ -1,7 +1,10 @@
 import './UsersTableComponent.css'
 import { Table, Row, Col, Container, Tab, Card } from 'react-bootstrap';
 
+import LicenseTableComponent from '../LicenseTable/LicenseTableComponent';
+
 export function UsersTableComponent() {
+    
 
     return (
         <Table striped responsive bordered hover size="sm">
