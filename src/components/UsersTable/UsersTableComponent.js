@@ -4,7 +4,7 @@ import { Table, Row, Col, Container, Tab, Card } from 'react-bootstrap';
 export function UsersTableComponent() {
 
     return (
-        <Table striped bordered hover size="sm">
+        <Table striped responsive bordered hover size="sm">
         <thead>
             <tr>
                 <th>ID</th>
