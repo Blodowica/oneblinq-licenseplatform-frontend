@@ -1,32 +1,73 @@
 import './LicenseTableComponent.css'
-import { Table, Button, Badge, Modal, } from 'react-bootstrap';
+import { Table, Button, Badge, Modal, Row, Col, Card } from 'react-bootstrap';
 import { licenseAtom } from '../../state';
 import { useRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
 import { useRequestWrapper } from '../../middleware';
 
 
-function LicenseModal({ onClose, license, isShown }) {
+function LicenseModal(props) {
   return (
     <Modal
-      show={isShown}
+      {...props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
+         License: {props.license.licenseKey}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <h4>Centered Modal</h4>
-        <p>
-          {license.licenseId}
-        </p>
+
+      <Modal.Body fluid>
+        <Row>
+          <Col xs lg="7">
+            <p>Product</p>
+            <Card body>Forms</Card>
+          </Col>
+          <Col xs lg="5">
+            <p>Reccurance</p>
+            <Card body>Monthly</Card>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xs lg="7">
+            <p>Email</p>
+            <Card body>{props.license.email}</Card>
+          </Col>
+          <Col xs lg="5">
+            <p>Purchase Location</p>
+            <Card body>Netherlands</Card>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xs lg="3">
+            <p>Activations</p>
+            <Card body>1/4</Card>
+          </Col>
+          <Col xs lg="4">
+            <p>Expiration Date</p>
+            <Card body>22-11-2021</Card>
+          </Col>
+          <Col xs lg="5">
+            <p>Deactivation Reason</p>
+            <Card body>Chargeback</Card>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xs lg="12">
+            <p>Activation Log</p>
+            <Card body>.......</Card>
+          </Col>
+        </Row>
+        
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => onClose()}>Close</Button>
+        <Button variant="danger" onClick={() => props.onHide()}>Deactivate</Button>
       </Modal.Footer>
     </Modal>
   );
@@ -35,6 +76,7 @@ function LicenseModal({ onClose, license, isShown }) {
 export function LicenseTableComponent() {
   const [licenses, setLicenses] = useRecoilState(licenseAtom);
   const [modalShow, setModalShow] = useState(false);
+  const [detailedLicense, setDetailedLicense] = useState();
   const requestWrapper = useRequestWrapper()
   const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/License`;
 
@@ -79,18 +121,17 @@ export function LicenseTableComponent() {
                 )}
               </td>
               <td>
-                <Button variant="primary" onClick={() => setModalShow(true)}>Details</Button>{' '}
+                <Button variant="primary" onClick={() => {setModalShow(true);setDetailedLicense(license)}}>Details</Button>{' '}
               </td>
-              <LicenseModal
-                key={license.licenseId}
-                onClose={() => setModalShow(false)}
-                license={license}
-                isShown={modalShow}
-
-              />
             </tr>
           )
         })}
+            {detailedLicense && <LicenseModal
+                onHide={() => setModalShow(false)}
+                license={detailedLicense}
+                show={modalShow}
+              />}
+              
       </tbody>
 
     </Table>
