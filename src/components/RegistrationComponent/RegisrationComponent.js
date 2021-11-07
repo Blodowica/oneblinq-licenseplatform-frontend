@@ -38,7 +38,7 @@ function RegistrationComponent({ toLogin }) {
           <Form>
 
             <Row className="mb-3   mt-5">
-              <Form.Group as={Col} controlId="formGridEmail" >
+              <Form.Group as={Col} controlId="formGridFirstName" >
                 <InputGroup>
                   <InputGroup.Text>
                     <MdPerson size="2em" />
@@ -48,7 +48,7 @@ function RegistrationComponent({ toLogin }) {
                 </InputGroup>
               </Form.Group>
 
-              <Form.Group as={Col} controlId="formGridPassword">
+              <Form.Group as={Col} controlId="formGridLastName">
                 <InputGroup>
                   <InputGroup.Text>
                     <MdPeople size="2em" />
