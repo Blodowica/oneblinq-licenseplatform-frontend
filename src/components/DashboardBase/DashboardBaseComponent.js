@@ -4,9 +4,8 @@ import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown, Glyphic
 import LoginComponent from '../LoginComponent/LoginComponent';
 import LicenseTableComponent from '../LicenseTable/LicenseTableComponent';
 import UsersTableComponent from '../UsersTable/UsersTableComponent';
-import SvgBitch from '../../assets/Logo.svg';
-import profileBitch from '../../assets/profileLogo.svg'
-import langBitch from '../../assets/langIcon.svg'
+import logo from '../../assets/Logo.svg';
+import profileIcon from '../../assets/profileIcon.svg'
 import { MdLanguage } from "react-icons/md";
 
 
@@ -23,7 +22,7 @@ export function DashboardBaseComponent() {
         <Container>
           <Navbar.Brand href="#home">
             <img
-              src={SvgBitch}
+              src={logo}
               width="50%"
               height="50%"
               className="d-inline-block align-top"
@@ -32,7 +31,7 @@ export function DashboardBaseComponent() {
           </Navbar.Brand>
           <Nav.Link href="#profile">
             <img
-              src={profileBitch}
+              src={profileIcon}
               width="50%"
               height="50%"
               className="d-inline-block align-top"
