@@ -6,7 +6,9 @@ import { useAuth } from "../../actions";
 
 
 function RegistrationComponent({ toLogin }) {
-  const [email, setEmail] = useState("")
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const authActions = useAuth()
@@ -23,11 +25,16 @@ function RegistrationComponent({ toLogin }) {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     }
+
+
     if (!validateEmail) return alert("Wrong email format")
     if (!password || password.length < 5) return alert("Password needs to be 5+ characters long")
     if (!arePasswordsSame()) return alert("Passwords aren't same")
+    if (!firstName.length || lastName.length < 0) return alert("First name and last name fields are mandatory")
 
-    authActions.register(email, password, "Gosho", "Ot pochivka")
+
+
+    authActions.register(email, password, firstName, lastName)
   }
 
   return (
@@ -44,7 +51,7 @@ function RegistrationComponent({ toLogin }) {
                     <MdPerson size="2em" />
                   </InputGroup.Text>
 
-                  <Form.Control type="firstName" placeholder="Enter First name" />
+                  <Form.Control value={firstName} placeholder=" First name" onChange={(e) => setFirstName(e.target.value)} />
                 </InputGroup>
               </Form.Group>
 
@@ -53,7 +60,8 @@ function RegistrationComponent({ toLogin }) {
                   <InputGroup.Text>
                     <MdPeople size="2em" />
                   </InputGroup.Text>
-                  <Form.Control type="LastName" placeholder="Enter Last name" />
+                  <Form.Control value={lastName} placeholder="Last name" onChange={(e) => setLastName(e.target.value)} />
+
                 </InputGroup>
               </Form.Group>
             </Row>
