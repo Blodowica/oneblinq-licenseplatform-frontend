@@ -49,8 +49,10 @@ export function LicenseTableComponent() {
     useEffect(() => {
       requestWrapper.get(`${baseUrl}/${license.licenseId}`)
         .then(response => {
-          var displayDate = new Date(response.expiresAt)
-          response.expiresAt = `${displayDate.getDate()}-${displayDate.getMonth()}-${displayDate.getFullYear()}`
+          if(response.expiresAt) {
+            var displayDate = new Date(Date.parse(response.expiresAt))
+            response.expiresAt =  `${displayDate.getDate() + 1}-${displayDate.getMonth() + 1}-${displayDate.getFullYear() + 1}`
+          }
 
 
           setDetailedData(response);
@@ -131,7 +133,7 @@ export function LicenseTableComponent() {
           <Row>
             <Col xs lg="12">
               <Form.Label>Activation Log</Form.Label>
-              <Form.Control as="textarea" value={detailedData.activationlogs && detailedData.activationlogs.map(x => x.message).join('\n')} readOnly rows={3} />
+              <Form.Control as="textarea" value={detailedData.activationLogs && detailedData.activationLogs.map(x => x.message).join('\n\n')} readOnly rows={5} />
             </Col>
           </Row>
 
