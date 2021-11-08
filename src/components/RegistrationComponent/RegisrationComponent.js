@@ -28,7 +28,7 @@ function RegistrationComponent({ toLogin }) {
     if (!validateEmail) return alert("Wrong email format")
     if (!password || password.length < 5) return alert("Password needs to be 5+ characters long")
     if (!arePasswordsSame()) return alert("Passwords aren't same")
-    if (!firstName.length || lastName.length < 0) return alert("First name and last name fields are mandatory")
+    if (!firstName || !lastName) return alert("First name and last name fields are mandatory")
 
     authActions.register(email, password, firstName, lastName)
   }
