@@ -8,9 +8,6 @@ import logo from '../../assets/Logo.svg';
 import profileIcon from '../../assets/profileIcon.svg'
 import { MdLanguage, MdPerson } from "react-icons/md";
 
-
-
-
 export function DashboardBaseComponent() {
 
 
@@ -19,20 +16,19 @@ export function DashboardBaseComponent() {
 
     return (
       <Navbar bg="dark">
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/dashboard" className="OneBlinqLogo p-0">
           <img
             src={logo}
-            width="50%"
-            height="50%"
+            width="290px"
             className="d-inline-block ms-5"
-            alt="React Bootstrap logo"
+            alt="OneBlinq logo"
           />
         </Navbar.Brand>
-        <Container className="d-flex justify-content-end">
+        <Container fluid className="d-flex justify-content-end me-2">
           <Nav.Link href="#profile" >
             <MdPerson color="white" size="2em" />
           </Nav.Link>
-          <NavDropdown title={navDropdownTitle} color="white" id="basic-nav-dropdown" >
+          <NavDropdown align="end" title={navDropdownTitle} variant="dark" className="LanguageDropdownIcon">
             <NavDropdown.Item href="#action/3.1">Dutch</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item href="#action/3.4">English</NavDropdown.Item>
@@ -59,10 +55,10 @@ export function DashboardBaseComponent() {
         <Tab eventKey="users" title="Users">
           <UsersTableComponent />
         </Tab>
-        <Tab eventKey="accessTokens" title="Access tokens" disabled>
+        <Tab eventKey="accessTokens" title="Access tokens">
 
         </Tab>
-        <Tab eventKey="products" title="Products" disabled>
+        <Tab eventKey="products" title="Products">
 
         </Tab>
       </Tabs>
@@ -73,14 +69,14 @@ export function DashboardBaseComponent() {
     <>
       <div className="Full">
         <NavigationBar />
-        <Container fluid className="pt-3">
-          <Row>
+        <Container fluid className="mt-3">
+          <Row className="justify-content-center">
             <Col>
-              <Card style={{ borderRadius: 20, backgroundColor: "#EDEFFC" }}>
-                <Card.Header>
-                  <Card.Title>Data Management</Card.Title>
+              <Card style={{ backgroundColor: "#ff000000", borderWidth: "0px" }}>
+                <Card.Header style={{ backgroundColor: "#445564" }} className="DataManagementCardHeader text-white">
+                  <Card.Title style={{ fontSize: "30px" }} className="mb-1 ms-3">Data Management</Card.Title>
                 </Card.Header>
-                <Card.Body >
+                <Card.Body style={{ backgroundColor: "white" }}>
                   <ControlledTabs />
                 </Card.Body>
               </Card>
@@ -88,7 +84,6 @@ export function DashboardBaseComponent() {
           </Row>
         </Container>
       </div>
-
     </>
   )
 }

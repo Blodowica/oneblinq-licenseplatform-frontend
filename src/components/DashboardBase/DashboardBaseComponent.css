@@ -1,8 +1,24 @@
 .Full {
-    background-image: url("../../assets/Background.svg");
-    height: 100vh;
-    width: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  background-image: url("../../assets/Background.svg");
+  height: 100vh;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media (max-width: 520px) {
+  .OneBlinqLogo {
+    content: url('../../assets/LogoNoText.svg');
+    width: 45px;
+    margin-left: 20px;
   }
+}
+
+.LanguageDropdownIcon, .dropdown-toggle.nav-link:after {
+  color: white;
+}
+
+.DataManagementCardHeader {
+  border-radius: 12px 12px 0 0 !important; 
+}
