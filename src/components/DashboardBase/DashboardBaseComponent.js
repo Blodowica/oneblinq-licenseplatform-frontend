@@ -73,7 +73,7 @@ export function DashboardBaseComponent() {
           <Row className="justify-content-center">
             <Col>
               <Card style={{ backgroundColor: "#ff000000", borderWidth: "0px" }}>
-                <Card.Header style={{ backgroundColor: "#445564" }} className="DataManagementCardHeader text-white">
+                <Card.Header style={{ backgroundColor: "#6240d7" }} className="DataManagementCardHeader text-white">
                   <Card.Title style={{ fontSize: "30px" }} className="mb-1 ms-3">Data Management</Card.Title>
                 </Card.Header>
                 <Card.Body style={{ backgroundColor: "white" }}>
