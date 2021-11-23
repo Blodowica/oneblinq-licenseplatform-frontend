@@ -6,6 +6,7 @@ import ProtectedRoute from './ProtectedRoute';
 import { useRecoilValue } from 'recoil'
 import { authAtom } from '../state';
 import { useAuth } from '../actions';
+import jwt_decode from 'jwt-decode';
 
 
 const Routes = () => {
@@ -18,7 +19,13 @@ const Routes = () => {
 
     useEffect(() => {
         if (authState) {
-            history.push('/dashboard')
+            var decoded = jwt_decode(authState.token);
+            if (decoded.role == "Admin") {
+                history.push('/dashboard')
+            }
+            else {
+                history.push('/userdashboard')
+            }
         }
         else {
             history.replace('/')
@@ -32,7 +39,7 @@ const Routes = () => {
                 {authState ?
                     <>
                         <ProtectedRoute exact path='/userdashboard' Component={Components.UserDashboard} />
-                        <ProtectedRoute exact path='/dashboard' Component={Components.UserDashboard} />
+                        <ProtectedRoute exact path='/dashboard' Component={Components.DashboardBaseComponent} />
                     </>
                     :
                     <Route exact path={["/login", "/"]} component={Components.LrBaseComponent} />

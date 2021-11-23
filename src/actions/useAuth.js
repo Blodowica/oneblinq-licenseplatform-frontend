@@ -33,8 +33,6 @@ export function useAuth() {
                 setAuth(user);
                 startRefreshTokenTimer(user.token)
                 console.log("Successful authentication")
-                history.push('/example')
-
                 // get return url from location state or default to home page
                 //const { from } = history.location.state || { from: { pathname: '/' } };
                 //history.push(from);
@@ -46,7 +44,7 @@ export function useAuth() {
     }
 
     function register(email, password, firstName, lastName) {
-        return requestWrapper.post(`${baseUrl}/register`, { email, password, firstName, lastName})
+        return requestWrapper.post(`${baseUrl}/register`, { email, password, firstName, lastName })
             .then(user => {
                 setAuth(user);
                 startRefreshTokenTimer(user.token)
