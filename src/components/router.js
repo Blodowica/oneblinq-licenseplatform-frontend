@@ -17,7 +17,7 @@ const Routes = () => {
     }, [])
 
     useEffect(() => {
-        if(authState) {
+        if (authState) {
             history.push('/dashboard')
         }
         else {
@@ -28,8 +28,12 @@ const Routes = () => {
     return (
         <main>
             <Switch>
+                =
                 {authState ?
-                    <ProtectedRoute exact path='/dashboard' Component={Components.DashboardBaseComponent} />
+                    <>
+                        <ProtectedRoute exact path='/userdashboard' Component={Components.UserDashboard} />
+                        <ProtectedRoute exact path='/dashboard' Component={Components.UserDashboard} />
+                    </>
                     :
                     <Route exact path={["/login", "/"]} component={Components.LrBaseComponent} />
                 }
