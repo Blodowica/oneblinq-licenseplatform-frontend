@@ -1,5 +1,6 @@
 import './DashboardBaseComponent.css'
 import React, { useState } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown, Glyphicon, Button } from 'react-bootstrap';
 import LoginComponent from '../LoginComponent/LoginComponent';
 import LicenseTableComponent from '../LicenseTable/LicenseTableComponent';
@@ -7,6 +8,7 @@ import UsersTableComponent from '../UsersTable/UsersTableComponent';
 import logo from '../../assets/Logo.svg';
 import profileIcon from '../../assets/profileIcon.svg'
 import { MdLanguage, MdPerson } from "react-icons/md";
+import { AccessTokensTableComponent } from '..';
 
 export function DashboardBaseComponent() {
 
@@ -34,20 +36,32 @@ export function DashboardBaseComponent() {
             <NavDropdown.Item href="#action/3.4">English</NavDropdown.Item>
           </NavDropdown>
         </Container>
-
       </Navbar>
     )
   }
 
   function ControlledTabs() {
-    const [key, setKey] = useState('licenses');
+    let history = useHistory();
+    let URI = useLocation();
+
+    const [key, setKey] = useState(null);
+    if (key == null) {
+      const Qtable = URI.search.replace("?table=", "");
+      if (Qtable == "") {
+        setKey("licenses");
+      }
+      else {
+        setKey(Qtable);
+      }
+    }
 
     return (
       <Tabs
         id="controlled-tab-example"
         activeKey={key}
-        onSelect={(k) => setKey(k)}
+        onSelect={(k) => { setKey(k); history.push("?table=" + k) }}
         className="mb-3"
+        unmountOnExit={true}
       >
         <Tab eventKey="licenses" title="Licenses">
           <LicenseTableComponent />
@@ -55,8 +69,11 @@ export function DashboardBaseComponent() {
         <Tab eventKey="users" title="Users">
           <UsersTableComponent />
         </Tab>
+        <Tab disabled eventKey="freeTrials" title="Free trials">
+          
+        </Tab>
         <Tab eventKey="accessTokens" title="Access tokens">
-
+          <AccessTokensTableComponent />
         </Tab>
         <Tab eventKey="products" title="Products">
 

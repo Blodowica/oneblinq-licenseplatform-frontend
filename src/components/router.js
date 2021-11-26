@@ -17,12 +17,12 @@ const Routes = () => {
     }, [])
 
     useEffect(() => {
-        if(authState) {
-            history.push('/dashboard')
-        }
-        else {
-            history.replace('/')
-        }
+        // if(authState) {
+        //     history.push('/dashboard')
+        // }
+        // else {
+        //     history.replace('/')
+        // }
     }, [authState])
 
     return (

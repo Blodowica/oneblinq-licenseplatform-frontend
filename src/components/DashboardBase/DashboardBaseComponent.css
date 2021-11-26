@@ -6,7 +6,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  padding-bottom: 30px;
+  padding-bottom: 20px;
 }
 
 @media (max-width: 520px) {
@@ -23,4 +23,22 @@
 
 .DataManagementCardHeader {
   border-radius: 12px 12px 0 0 !important;
+}
+
+/* global table CSS */
+.DetailedSearchIcon{
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  border-color: #ced4da;
+  height: 100%;
+  color: #8b8e91;
+}
+
+.DetailedSearchIconOn{
+  color: #212529;
+}
+
+.DetailedSearchIcon:hover{
+  cursor: pointer;
 }

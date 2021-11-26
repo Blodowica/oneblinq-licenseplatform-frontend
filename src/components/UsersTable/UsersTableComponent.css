@@ -1,0 +1,15 @@
+.DetailedUserEmailCopy{
+    position: relative;
+    bottom: 25px;
+    right: 5px;
+}
+
+.DetailedUserLicensesContainer{
+    max-height: 300px;
+}
+
+.DetailedUserDanger{
+    position: relative;
+    bottom: 31px;
+    right: 5px;
+}
