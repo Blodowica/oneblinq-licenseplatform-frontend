@@ -27,3 +27,7 @@
     color: #558BF5;
      
   }
+  
+  .UserDashboardCardHeader {
+    border-radius: 12px 12px 0 0 !important;
+  }

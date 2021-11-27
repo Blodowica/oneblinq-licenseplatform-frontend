@@ -1,14 +1,50 @@
 import './userDashboardComponent.css'
 import React from 'react';
-import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown, Glyphicon, Button } from 'react-bootstrap';
+import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown, Glyphicon, Button, Badge } from 'react-bootstrap';
+
+import { atom, useRecoilState, useRecoilValue } from 'recoil';
+import { useEffect, useState } from 'react';
+import { useRequestWrapper } from '../../middleware';
 import logo from '../../assets/Logo.svg';
 import { MdLanguage, MdPerson } from "react-icons/md";
-import Badge from 'react-bootstrap/Badge';
+
+import { authAtom } from '../../state';
 
 export function UserDashboard() {
+
+    const userState = useRecoilValue(authAtom);
+
     const navDropdownTitle = (<MdLanguage color="white" size="2em" />);
+    const [licenses, setLicenses] = useState(null);
+    const requestWrapper = useRequestWrapper()
+    const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/`;
+    const myCurrentTime = new Date();
+
+    useEffect(() => {
+        if (licenses == null) {
+
+            requestWrapper.get(`${baseUrl}license/user-license/${userState.id}`)
+                .then(response => {
+
+                    setLicenses(response)
+
+                })
+                .catch((er) => {
+                    setLicenses([])
+                    console.log(er)
+                });
+
+        }
+
+    })
+
+
+
+
+
     return (
         <div className="Full" >
+
             <Navbar bg="dark">
                 <Navbar.Brand href="#home">
                     <img
@@ -32,20 +68,19 @@ export function UserDashboard() {
 
             </Navbar>
 
-
             <Container fluid className="pt-3">
                 <Row>
                     <Col>
-                        <Card style={{ borderRadius: 20, backgroundColor: "#EDEFFC" }}>
-                            <Card.Header style={{ backgroundColor: '#4e41ba', borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
+                        <Card style={{ backgroundColor: "#ff000000", borderWidth: "0px" }}>
+                            <Card.Header style={{ backgroundColor: "#6240d7" }} className="UserDashboardCardHeader text-white">
                                 <div>
-                                    <Card.Title style={{ color: 'white', float: 'left', marginTop: '0.2%' }}><h2>Welcome Sam</h2></Card.Title>
+                                    <Card.Title style={{ color: 'white', float: 'left', marginTop: '0.2%' }}><h2>Welcome {userState.firstName}</h2></Card.Title>
                                     <input type="text" placeholder="Search.." style={{ float: 'right', marginTop: '0.6%' }}></input>
                                 </div>
                             </Card.Header>
-                            <Card.Body >
+                            <Card.Body style={{ backgroundColor: "white" }}>
 
-                                <table class="table ">
+                                <table className="table hover responsive">
                                     <thead>
                                         <tr>
                                             <th scope="col">Licenses</th>
@@ -58,51 +93,32 @@ export function UserDashboard() {
                                     </thead>
                                     <tbody>
 
-                                        <tr>
+                                        {licenses ? licenses.map(license => {
+                                            return (
 
-                                            <td>
-                                                <div>
-                                                    <img className="LicenseIcon" src="https://public-files.gumroad.com/variants/jp3qnebo1mc51i3kdxr1kc034w1u/f5e45d48b5beedfba90b886151ecf5d16b1eaccf659430a07111ee92f0d5a6e2"></img>
-                                                    <h3 className="LicenseText">Forms</h3>
-                                                    {/* <a className="LicenseLink"> oneblinq.gumroad.com/I/wdAwEP</a> */}
-                                                </div>
-                                            </td>
-                                            <td>1/2</td>
-                                            <td>small team</td>
-                                            <td>Monthly</td>
-                                            <td>-</td>
-                                            <td><Badge bg="success">Active</Badge></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <img className="LicenseIcon" src="https://public-files.gumroad.com/variants/jp3qnebo1mc51i3kdxr1kc034w1u/f5e45d48b5beedfba90b886151ecf5d16b1eaccf659430a07111ee92f0d5a6e2"></img>
-                                                    <h2 className="LicenseText">Lines</h2>
-                                                    {/* <a className="LicenseLink"> text</a> */}
-                                                </div>
-                                            </td>
-                                            <td>3/1</td>
-                                            <td>FreeLancer</td>
-                                            <td>Yearly</td>
-                                            <td>2021-11-15</td>
-                                            <td><Badge bg="danger">Deactivated</Badge></td>
+                                                <tr key={license.id}>
+                                                    <td className="align-middle" style={{ width: "100px" }}>{license.productName}</td>
+                                                    <td className="align-middle"> 1 / {license.maxUses}</td>
+                                                    <td className="align-middle">{license.tier}</td>
+                                                    <td className="align-middle">{license.reaccurence}</td>
+                                                    <td className="align-middle">{license.expirationDate}</td>
+                                                    <td className="align-middle">{myCurrentTime >= license.expirationDate ? <Badge bg="success">Active</Badge> : <Badge bg="danger">Unactive</Badge>}</td>
 
-                                        </tr>
-                                        <tr>
-                                            <th scope="row"></th>
-                                            <td></td>
-                                            <td> </td>
-                                            <td></td>
-                                        </tr>
 
+
+                                                </tr>
+                                            )
+                                        }
+                                        ) : null}
                                     </tbody>
                                 </table>
+
                             </Card.Body>
                         </Card>
                     </Col>
                 </Row>
             </Container>
-        </div>
+        </div >
     );
 }
 

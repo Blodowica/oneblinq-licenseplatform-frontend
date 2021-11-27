@@ -20,7 +20,7 @@ const Routes = () => {
     useEffect(() => {
         if (authState) {
             var decoded = jwt_decode(authState.token);
-            if (decoded.role == "Admin") {
+            if (decoded.role == "User") {
                 history.push('/dashboard')
             }
             else {
