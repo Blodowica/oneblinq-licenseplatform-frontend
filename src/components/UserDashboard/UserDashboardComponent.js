@@ -25,7 +25,12 @@ export function UserDashboard() {
 
             requestWrapper.get(`${baseUrl}license/user-license/${userState.id}`)
                 .then(response => {
-
+                    // var d = new Date(response.expirationDate);
+                    // var dd = d.getDate();
+                    // var mm = d.getMonth() + 1;
+                    // var yy = d.getFullYear();
+                    // response.expirationDate = dd + "/" + mm + "/" + yy;
+                    console.log(response)
                     setLicenses(response)
 
                 })
@@ -37,8 +42,6 @@ export function UserDashboard() {
         }
 
     })
-
-
 
 
 
@@ -94,6 +97,7 @@ export function UserDashboard() {
                                     <tbody>
 
                                         {licenses ? licenses.map(license => {
+
                                             return (
 
                                                 <tr key={license.id}>
@@ -101,7 +105,7 @@ export function UserDashboard() {
                                                     <td className="align-middle"> 1 / {license.maxUses}</td>
                                                     <td className="align-middle">{license.tier}</td>
                                                     <td className="align-middle">{license.reaccurence}</td>
-                                                    <td className="align-middle">{license.expirationDate}</td>
+                                                    <td className="align-middle">{license.expirationDate != null ? license.expirationDate.split('T')[0] : <p className="align-middle">-</p>}</td>
                                                     <td className="align-middle">{myCurrentTime >= license.expirationDate ? <Badge bg="success">Active</Badge> : <Badge bg="danger">Unactive</Badge>}</td>
 
 
