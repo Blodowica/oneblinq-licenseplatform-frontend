@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "./RegistrationComponent.css";
 import { Form, Card, Button, InputGroup, FormControl, Row, Col, Container } from 'react-bootstrap'
-import { MdEmail, MdLock } from "react-icons/md";
+import { MdEmail, MdLock, MdPerson, MdPeople } from "react-icons/md";
 import { useAuth } from "../../actions";
 
 function RegistrationComponent({ toLogin }) {
-  const [email, setEmail] = useState("")
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const authActions = useAuth()
@@ -22,11 +24,13 @@ function RegistrationComponent({ toLogin }) {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     }
-    if(!validateEmail) return alert("Wrong email format")
-    if(!password || password.length < 5) return alert("Password needs to be 5+ characters long")
-    if (!arePasswordsSame()) return alert("Passwords aren't same")
 
-    authActions.register(email, password, "Gosho", "Ot pochivka")
+    if (!validateEmail) return alert("Wrong email format")
+    if (!password || password.length < 5) return alert("Password needs to be 5+ characters long")
+    if (!arePasswordsSame()) return alert("Passwords aren't same")
+    if (!firstName || !lastName) return alert("First name and last name fields are mandatory")
+
+    authActions.register(email, password, firstName, lastName)
   }
 
   return (
@@ -35,6 +39,28 @@ function RegistrationComponent({ toLogin }) {
         <Card.Body>
           <Card.Text className="text-center display-3 mb-3">Register</Card.Text>
           <Form>
+
+            <Row className="mb-3   mt-5">
+              <Form.Group as={Col} controlId="formGridFirstName" >
+                <InputGroup>
+                  <InputGroup.Text>
+                    <MdPerson size="2em" />
+                  </InputGroup.Text>
+
+                  <Form.Control value={firstName} placeholder=" First name" onChange={(e) => setFirstName(e.target.value)} />
+                </InputGroup>
+              </Form.Group>
+
+              <Form.Group as={Col} controlId="formGridLastName">
+                <InputGroup>
+                  <InputGroup.Text>
+                    <MdPeople size="2em" />
+                  </InputGroup.Text>
+                  <Form.Control value={lastName} placeholder="Last name" onChange={(e) => setLastName(e.target.value)} />
+
+                </InputGroup>
+              </Form.Group>
+            </Row>
 
             <InputGroup className="my-3">
               <InputGroup.Text>
