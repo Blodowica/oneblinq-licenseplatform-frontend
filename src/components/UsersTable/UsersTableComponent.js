@@ -212,6 +212,7 @@ export function UsersTableComponent() {
                                 })
                                 .then(() => {
                                     setEditUser(false);
+                                    setUpdateTable(!updateTable);
                                 }).catch((er) => {
                                     setEditUser(false);
                                     console.log(er)
