@@ -77,7 +77,7 @@ export function UserDashboard() {
                             <Card.Header style={{ backgroundColor: "#6240d7" }} className="UserDashboardCardHeader text-white">
                                 <div>
                                     <Card.Title style={{ color: 'white', float: 'left', marginTop: '0.2%' }}><h2>Welcome {userState.firstName}</h2></Card.Title>
-                                    <input type="text" placeholder="Search.." style={{ float: 'right', marginTop: '0.6%' }}></input>
+
                                 </div>
                             </Card.Header>
                             <Card.Body style={{ backgroundColor: "white" }}>
