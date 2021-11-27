@@ -1,14 +1,10 @@
 import './DashboardBaseComponent.css'
 import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown, Glyphicon, Button } from 'react-bootstrap';
-import LoginComponent from '../LoginComponent/LoginComponent';
-import LicenseTableComponent from '../LicenseTable/LicenseTableComponent';
-import UsersTableComponent from '../UsersTable/UsersTableComponent';
+import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import logo from '../../assets/Logo.svg';
-import profileIcon from '../../assets/profileIcon.svg'
 import { MdLanguage, MdPerson } from "react-icons/md";
-import { AccessTokensTableComponent } from '..';
+import { AccessTokensTableComponent, UsersTableComponent, LicenseTableComponent, ProductsTableComponent } from '../index';
 
 export function DashboardBaseComponent() {
 
@@ -76,7 +72,7 @@ export function DashboardBaseComponent() {
           <AccessTokensTableComponent />
         </Tab>
         <Tab eventKey="products" title="Products">
-
+          <ProductsTableComponent />
         </Tab>
       </Tabs>
     );

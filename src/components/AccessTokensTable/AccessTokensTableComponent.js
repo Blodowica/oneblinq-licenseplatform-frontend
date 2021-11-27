@@ -43,8 +43,6 @@ export function AccessTokensTableComponent() {
     const [paginationPages, setPaginationPages] = useState(1);
     const [paginationPage, setPaginationPage] = useRecoilState(paginationPageState);
 
-    //get all records and set a fullDesc value for searching
-    //TODO: Remove the fullDesc logic, this will happen on server side in the future 
     useEffect(() => {
         var expiresAtDate = new Date(Date.parse(searchCreatedAt));
         requestWrapper.post(`${baseUrl}pagination/get-AccessTokens`,
@@ -171,7 +169,16 @@ export function AccessTokensTableComponent() {
                                         )}
                                     </td>
                                     <td className="align-middle" style={{ width: "110px" }}>
-                                        <Button variant="danger" className="p-1" onClick={() => { }}>Disable</Button>
+                                        <Button className={"p-1 btn-" + (token.active ? 'danger' : 'primary')} onClick={() => {
+                                            requestWrapper.post(`${baseUrl}AccessToken/toggle-access-token/${token.id}`)
+                                                .then(() => {
+                                                    setUpdateTable(!updateTable);
+                                                }).catch((er) => {
+                                                    console.log(er)
+                                                });
+                                        }}>
+                                            {token.active ? <>Disable</> : <>Enable</>}
+                                        </Button>
                                     </td>
                                 </tr>
                             )
@@ -188,8 +195,10 @@ export function AccessTokensTableComponent() {
         setSearchId("");
         setSearchAccessToken("");
         setSearchEmail("");
-        setSearchCreatedAt("");
+        setSearchCreatedAt(null);
         setSearchStatus("");
+
+        document.getElementById("TableActivationDropdown").value = "";
     }
 }
 

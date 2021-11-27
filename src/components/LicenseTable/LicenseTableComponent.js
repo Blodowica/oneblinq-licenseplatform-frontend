@@ -9,10 +9,10 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 export function LicenseTableComponent() {
   //Recoil setup
-  const paginationPageState = atom({key: 'licensePaginationPageState',default: 1,});
-  const recordsCountState = atom({key: 'licenseRecordsCountState',default: 10,});
-  const filterSearchStringState = atom({key: 'licenseFilterSearchStringState',default: "",});
-  const filterDetailedSearchState = atom({key: 'licenseFilterDetailedSearchState',default: false,});
+  const paginationPageState = atom({ key: 'licensePaginationPageState', default: 1, });
+  const recordsCountState = atom({ key: 'licenseRecordsCountState', default: 10, });
+  const filterSearchStringState = atom({ key: 'licenseFilterSearchStringState', default: "", });
+  const filterDetailedSearchState = atom({ key: 'licenseFilterDetailedSearchState', default: false, });
 
   //general setup
   const [licenses, setLicenses] = useState();
@@ -21,25 +21,24 @@ export function LicenseTableComponent() {
   const requestWrapper = useRequestWrapper()
   const [copiedText, setCopiedText] = useState("");
   const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/`;
+  const [updateModal, setUpdateModal] = useState(false);
 
   //Filtering
   const detailedSearch = useRecoilValue(filterDetailedSearchState);
   const recordsCount = useRecoilValue(recordsCountState);
   const searchString = useRecoilValue(filterSearchStringState);
 
-  const [searchId, setSearchId] = useRecoilState(atom({key: 'licenseFilterId',default: "",}));
-  const [searchLicense, setSearchLicense] = useRecoilState(atom({key: 'licenseFilterLicensekey',default: "",}));
-  const [searchEmail, setSearchEmail] = useRecoilState(atom({key: 'licenseFilterEmail',default: "",}));
-  const [searchActivations, setSearchActivations] = useRecoilState(atom({key: 'licenseFilterActivations',default: "",}));
-  const [searchStatus, setSearchStatus] = useRecoilState(atom({key: 'licenseFilterStatus',default: "",}));
-  const [searchProduct, setSearchProduct] = useRecoilState(atom({key: 'licenseFilterProduct',default: "",}));
+  const [searchId, setSearchId] = useRecoilState(atom({ key: 'licenseFilterId', default: "", }));
+  const [searchLicense, setSearchLicense] = useRecoilState(atom({ key: 'licenseFilterLicensekey', default: "", }));
+  const [searchEmail, setSearchEmail] = useRecoilState(atom({ key: 'licenseFilterEmail', default: "", }));
+  const [searchActivations, setSearchActivations] = useRecoilState(atom({ key: 'licenseFilterActivations', default: "", }));
+  const [searchStatus, setSearchStatus] = useRecoilState(atom({ key: 'licenseFilterStatus', default: "", }));
+  const [searchProduct, setSearchProduct] = useRecoilState(atom({ key: 'licenseFilterProduct', default: "", }));
 
   //pagination
   const [paginationPages, setPaginationPages] = useState(1);
   const [paginationPage, setPaginationPage] = useRecoilState(paginationPageState);
 
-  //get all records and set a fullDesc value for searching
-  //TODO: Remove the fullDesc logic, this will happen on server side in the future 
   useEffect(() => {
     requestWrapper.post(`${baseUrl}pagination/get-licenses`,
       {
@@ -63,8 +62,7 @@ export function LicenseTableComponent() {
         setLicenses(null)
         console.log(er)
       });
-  }, [searchString, searchId, searchLicense, searchEmail, searchActivations, searchStatus, searchProduct, recordsCount, paginationPage])
-
+  }, [searchString, searchId, searchLicense, searchEmail, searchActivations, searchStatus, searchProduct, recordsCount, paginationPage, recordsCount, updateModal])
 
   //detailed license display
   function LicenseModal({ onHide, license, show }) {
@@ -83,7 +81,7 @@ export function LicenseTableComponent() {
           setLicenses(null)
           console.log(er)
         });
-    }, [license])
+    }, [license, updateModal])
 
     if (!detailedData) return null;
 
@@ -146,6 +144,9 @@ export function LicenseTableComponent() {
             <Col xs lg="3">
               <Form.Label>Activations</Form.Label>
               <Form.Control readOnly value={`${detailedData.activations}/${detailedData.maxUses}`} />
+              {detailedData.activations > detailedData.maxUses &&
+                <MdOutlineError color="red" size="1.5em" className="d-flex ms-auto DetailedUserDanger" />
+              }
             </Col>
             <Col xs lg="4">
               <Form.Label>Expiration Date</Form.Label>
@@ -166,12 +167,21 @@ export function LicenseTableComponent() {
 
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={() => onHide()}>Deactivate</Button>
+          <Button className={"btn-" + (detailedData.active ? 'danger' : 'primary')} onClick={() => {
+            requestWrapper.post(`${baseUrl}license/toggle-license/${license.id}`)
+              .then(() => {
+                setUpdateModal(!updateModal);
+              }
+              ).catch((er) => {
+                console.log(er)
+              });
+          }}>
+            {detailedData.active ? <>Disable</> : <>Enable</>}
+          </Button>
         </Modal.Footer>
       </Modal>
     );
   }
-
 
   //table render
   return (

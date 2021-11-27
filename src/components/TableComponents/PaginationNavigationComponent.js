@@ -32,7 +32,9 @@ export function PaginationNavigationComponent({ paginationPages, paginationPageS
                     <>
                         {paginationPage == paginationPages ?
                             <>
+                            {paginationPages != 2 &&
                                 <li className="page-item PointOnHover"><a className="page-link" onClick={() => setPaginationPage(paginationPage - 2)}>{paginationPage - 2}</a></li>
+                            }
                                 <li className="page-item PointOnHover"><a className="page-link" onClick={() => setPaginationPage(paginationPage - 1)}>{paginationPage - 1}</a></li>
                                 <li className="page-item disabled"><a className="page-link">{paginationPage}</a></li>
                             </>
