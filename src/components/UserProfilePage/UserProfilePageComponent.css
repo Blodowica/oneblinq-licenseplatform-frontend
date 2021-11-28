@@ -15,12 +15,56 @@
     float: left;
     margin-left: 2%;
     text-align: center;
-    width: 30%;
+    width: 25%;
     background-color: #EDEFFC;
     opacity: 85%;
     border-radius: 39px;
+    height: 85vh;
 }
 
 .passwordInputBox {
-    width: 60%;
+    padding-top: 10px;
+}
+
+.changePasswordInputField {
+    padding-top: 30px;
+}
+
+.changePasswordHeader {
+    margin: 50px 0 50px 0;
+}
+
+#editPersonalInfoField {
+    background-color: #DEEFF4;
+    opacity: 70%;
+    width: 70%;
+    height: 85vh;
+    float: right;
+    border-radius: 39px;
+    margin-right: 2%;
+}
+
+.halfOfPersonalInfoField {
+    position: relative;
+    padding: 50px 0;
+}
+
+.leftQuarterOfPersonalInfoField {
+    width: 50%;
+    float: left;
+}
+
+.rightQuarterOfPersonalInfoField {
+    width: 50%;
+    float: right;
+}
+
+#divideLine {
+    width: 100%;
+    height: 1px;
+    background-color: #02021E;
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*-ms-transform: translateY(-50%);*/
+    /*transform: translateY(-50%);*/
 }
