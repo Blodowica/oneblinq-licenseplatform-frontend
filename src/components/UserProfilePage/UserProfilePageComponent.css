@@ -1,13 +1,14 @@
 .Full {
     background-image: url("../../assets/Background.svg");
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh;
     width: 100%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#mainProfileField {
+/* #mainProfileField {
     margin-top: 2%;
 }
 
@@ -57,13 +58,13 @@
 .rightQuarterOfPersonalInfoField {
     width: 50%;
     float: right;
-}
+} */
 
 #divideLine {
     width: 100%;
     height: 1px;
     background-color: #02021E;
-    /*position: absolute;*/
+    /* position: absolute; */
     /*top: 50%;*/
     /*-ms-transform: translateY(-50%);*/
     /*transform: translateY(-50%);*/

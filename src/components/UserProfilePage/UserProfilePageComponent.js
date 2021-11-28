@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './UserProfilePageComponent.css';
-import {MdLanguage, MdPerson} from "react-icons/md";
-import {Container, Nav, Navbar, NavDropdown, Button, InputGroup, Form, Card, Col, Row} from "react-bootstrap";
+import { MdLanguage, MdPerson } from "react-icons/md";
+import { Container, Nav, Navbar, NavDropdown, Button, InputGroup, Form, Card, Col, Row } from "react-bootstrap";
 import logo from "../../assets/Logo.svg";
 //import {DashboardBaseComponent} from "../DashboardBase/DashboardBaseComponent";
 
@@ -54,146 +54,114 @@ export function UserProfilePageComponent() {
         // const currentPassword = "currentPassword";
 
         return (
-            <div id="changePasswordField">
-                <Form>
-                    <h1 className="changePasswordHeader">Change password</h1>
-
-                    <div className="changePasswordInputField">
-                        <h3>Current password</h3>
-                        <InputGroup className="passwordInputBox" style={{width: "50%", margin: "auto"}}>
-                            {/*<InputGroup.Text>Current password</InputGroup.Text>*/}
-                            <Form.Control
-                                          value={currentPassword}
-                                          onChange={(e) => setCurrentPassword(e.target.value)}
-                                          type="password"
-                                          placeholder="******"
-                                          style={{borderRadius: "30px"}}
-                            />
-                        </InputGroup>
-                    </div>
-
-                    <div className="changePasswordInputField">
-                    <h3>New password</h3>
-                        <InputGroup className="passwordInputBox" style={{width: "50%", margin: "auto"}}>
-                            {/*<InputGroup.Text>Current password</InputGroup.Text>*/}
-                            <Form.Control
-                                          value={newPassword}
-                                          onChange={(e) => setNewPassword(e.target.value)}
-                                          type="password"
-                                          placeholder="******"
-                                          style={{borderRadius: "30px"}}/>
-                        </InputGroup>
-                    </div>
-
-                    <div className="changePasswordInputField">
-                        <h3>Repeat new password</h3>
-                        <InputGroup className="passwordInputBox" style={{width: "50%", margin: "auto"}}>
-                            {/*<InputGroup.Text>Current password</InputGroup.Text>*/}
-                            <Form.Control
-                                          value={repeatNewPassword}
-                                          onChange={(e) => setRepeatNewPassword(e.target.value)}
-                                          type="password"
-                                          placeholder="******"
-                                          style={{borderRadius: "30px"}}/>
-                        </InputGroup>
-                    </div>
-                    <Button onClick={() => ChangePassword()}
-                            style={{borderRadius: "30px", backgroundColor: "#EFA9AE", color: "#02021E", margin: "80px 0px 0px 0px", fontSize: "22px", border: "transparent"}}>Change password</Button>
-                </Form>
-            </div>
+            <Card style={{ backgroundColor: "#DEEFF4", minHeight: "85vh" }} className="mb-3">
+                <Container>
+                    <h1 className="text-center">Change password</h1>
+                    <Card.Body>
+                        <Row>
+                            <Form.Label>Current password</Form.Label>
+                            <Form.Control type="password" readOnly value="password" />
+                        </Row>
+                        <Row>
+                            <Form.Label>New password</Form.Label>
+                            <Form.Control type="password" readOnly value="password" />
+                        </Row>
+                        <Row>
+                            <Form.Label>Repeat new password</Form.Label>
+                            <Form.Control type="password" readOnly value="password" />
+                        </Row>
+                        <Row className="text-center justify-content-center">
+                            <Col xs="7">
+                                <Button onClick={() => ChangePassword()}
+                                    style={{
+                                        borderRadius: "30px",
+                                        backgroundColor: "#EFA9AE",
+                                        color: "#02021E",
+                                        margin: "20px 0px 0px 0px",
+                                        fontSize: "22px",
+                                        border: "transparent"
+                                    }}>Change password</Button>
+                            </Col>
+                        </Row>
+                    </Card.Body>
+                </Container>
+            </Card>
         )
     }
 
     function EditPersonalInfo() {
 
         return (
-            <Card id="editPersonalInfoField" style={{ backgroundColor: "#ff000000"}}>
-                <Form>
-                    <div className="halfOfPersonalInfoField">
-                        <h1>Personal details</h1>
-                        <Row>
-                            <Col xs lg="7">
-                                <Form.Label>First name</Form.Label>
-                                <Form.Control readOnly value="First name hkjlk;l" />
-                            </Col>
-                            <Col xs lg="5">
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control readOnly value="Email @uygknlk" />
-                            </Col>
-                        </Row>
-                        {/*<div className="leftQuarterOfPersonalInfoField">*/}
-                        {/*    <div className="editPersonalInfoInputSingleField">*/}
-                        {/*        <h4 className="personalInfoInputFieldHeader">First name</h4>*/}
-                        {/*        <InputGroup style={{width: "60%"}}>*/}
-                        {/*            <Form.Control value={firstName}*/}
-                        {/*                          onChange={(e) => setFirstName(e.target.value)}*/}
-                        {/*                          type="text"*/}
-                        {/*                          placeholder="First name"*/}
-                        {/*                          aria-required="true"*/}
-                        {/*                          style={{borderRadius: "30px"}}/>*/}
-                        {/*        </InputGroup>*/}
-                        {/*    </div>*/}
-                        {/*    <div className="editPersonalInfoInputSingleField">*/}
-                        {/*        <h4 className="personalInfoInputFieldHeader">Last name</h4>*/}
-                        {/*        <InputGroup>*/}
-                        {/*            <Form.Control value={lastName}*/}
-                        {/*                          onChange={(e) => setLastName(e.target.value)}*/}
-                        {/*                          type="text"*/}
-                        {/*                          placeholder="Last name"*/}
-                        {/*                          aria-required="true"*/}
-                        {/*                          style={{borderRadius: "30px"}}/>*/}
-                        {/*        </InputGroup>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                        <div className="rightQuarterOfPersonalInfoField">
-                            <div className="editPersonalInfoInputSingleField">
-                                <h4 className="personalInfoInputFieldHeader">Email</h4>
-                                <InputGroup>
-                                    <Form.Control value={email}
-                                                  onChange={(e) => setEmail(e.target.value)}
-                                                  type="email"
-                                                  placeholder="Email"
-                                                  aria-required="true"
-                                                  style={{borderRadius: "30px"}}/>
-                                </InputGroup>
-                            </div>
-                            <div className="editPersonalInfoInputSingleField">
-                                <h4 className="personalInfoInputFieldHeader">Date of birth</h4>
-                                <InputGroup>
-                                    <Form.Control value={birthdate}
-                                                  onChange={(e) => setBirthdate(e.target.value)}
-                                                  type="date"
-                                                  placeholder="dd-mm-yyyy"
+            <Card style={{ backgroundColor: "#DEEFF4", minHeight: "85vh" }}>
+                <Container className="p-3">
+                    <h1>Personal details</h1>
 
-                                                  style={{borderRadius: "30px"}}/>
-                                </InputGroup>
-                            </div>
-                        </div>
-                    </div>
-                    {/*<div id="divideLine"/>*/}
-                    <div className="halfOfPersonalInfoField">
-                        <h1>Location details</h1>
-                        <div className="leftQuarterOfPersonalInfoField">
+                    <Row className="mb-3">
+                        <Col xs lg="7">
+                            <Form.Label className="mb-1">First name</Form.Label>
+                            <Form.Control readOnly value="First name hkjlk;l" />
+                        </Col>
+                        <Col xs lg="5">
+                            <Form.Label className="mb-1">Last Name</Form.Label>
+                            <Form.Control readOnly value="Last Nmae" />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs lg="7">
+                            <Form.Label className="mb-1">Email</Form.Label>
+                            <Form.Control readOnly value="First name hkjlk;l" />
+                        </Col>
+                        <Col xs lg="5">
+                            <Form.Label className="mb-1">Date of b</Form.Label>
+                            <Form.Control readOnly value="Email @uygknlk" />
+                        </Col>
+                    </Row>
+                </Container>
+                
+                <Container className="pb-3 p-3" >
+                <hr />
+                    <h1>Location details</h1>
+                    <Row className="mb-3">
+                        <Col xs lg="7">
+                            <Form.Label className="mb-1">Adress</Form.Label>
+                            <Form.Control readOnly value="First name hkjlk;l" />
+                        </Col>
+                        <Col xs lg="5">
+                            <Form.Label className="mb-1">Postal Code</Form.Label>
+                            <Form.Control readOnly value="Last Nmae" />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs lg="7">
+                            <Form.Label className="mb-1">City</Form.Label>
+                            <Form.Control readOnly value="First name hkjlk;l" />
+                        </Col>
+                        <Col xs lg="5">
+                            <Form.Label className="mb-1">Country</Form.Label>
+                            <Form.Control readOnly value="Email @uygknlk" />
+                        </Col>
+                    </Row>
+                    {/* <div className="leftQuarterOfPersonalInfoField">
                             <div className="editPersonalInfoInputSingleField">
                                 <h4 className="personalInfoInputFieldHeader">Address</h4>
                                 <InputGroup>
                                     <Form.Control value={address}
-                                                  onChange={(e) => setAddress(e.target.value)}
-                                                  type="text"
-                                                  placeholder="Address"
-                                                  aria-required="true"
-                                                  style={{borderRadius: "30px"}}/>
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        type="text"
+                                        placeholder="Address"
+                                        aria-required="true"
+                                        style={{ borderRadius: "30px" }} />
                                 </InputGroup>
                             </div>
                             <div className="editPersonalInfoInputSingleField">
                                 <h4 className="personalInfoInputFieldHeader">City</h4>
                                 <InputGroup>
                                     <Form.Control value={city}
-                                                  onChange={(e) => setCity(e.target.value)}
-                                                  type="text"
-                                                  placeholder="City"
-                                                  aria-required="true"
-                                                  style={{borderRadius: "30px"}}/>
+                                        onChange={(e) => setCity(e.target.value)}
+                                        type="text"
+                                        placeholder="City"
+                                        aria-required="true"
+                                        style={{ borderRadius: "30px" }} />
                                 </InputGroup>
                             </div>
                         </div>
@@ -202,27 +170,26 @@ export function UserProfilePageComponent() {
                                 <h4 className="personalInfoInputFieldHeader">Post code</h4>
                                 <InputGroup>
                                     <Form.Control value={postalCode}
-                                                  onChange={(e) => setPostalCode(e.target.value)}
-                                                  type="text"
-                                                  placeholder="1234 AB"
-                                                  aria-required="true"
-                                                  style={{borderRadius: "30px"}}/>
+                                        onChange={(e) => setPostalCode(e.target.value)}
+                                        type="text"
+                                        placeholder="1234 AB"
+                                        aria-required="true"
+                                        style={{ borderRadius: "30px" }} />
                                 </InputGroup>
                             </div>
                             <div className="editPersonalInfoInputSingleField">
                                 <h4 className="personalInfoInputFieldHeader">Country</h4>
                                 <InputGroup>
                                     <Form.Control value={country}
-                                                  onChange={(e) => setCountry(e.target.value)}
-                                                  type="text"
-                                                  placeholder="Country"
-                                                  aria-required="true"
-                                                  style={{borderRadius: "30px"}}/>
+                                        onChange={(e) => setCountry(e.target.value)}
+                                        type="text"
+                                        placeholder="Country"
+                                        aria-required="true"
+                                        style={{ borderRadius: "30px" }} />
                                 </InputGroup>
                             </div>
-                        </div>
-                    </div>
-                </Form>
+                        </div> */}
+                </Container>
             </Card>
         )
     }
@@ -230,11 +197,17 @@ export function UserProfilePageComponent() {
     return (
         <>
             <div className="Full">
-                <NavigationBar/>
-                <div id="mainProfileField">
-                    <ChangePassword/>
-                    <EditPersonalInfo/>
-                </div>
+                <NavigationBar />
+                <Container fluid className="mt-3">
+                    <Row>
+                        <Col xs lg="3">
+                            <ChangePassword />
+                        </Col>
+                        <Col xs lg="9">
+                            <EditPersonalInfo />
+                        </Col>
+                    </Row>
+                </Container>
             </div>
         </>
     )
