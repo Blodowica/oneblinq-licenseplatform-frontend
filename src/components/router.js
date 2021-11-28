@@ -1,37 +1,39 @@
 import React, { useEffect } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import * as Components from './index';
 import ProtectedRoute from './ProtectedRoute';
-import { useRecoilValue } from 'recoil'
-import { authAtom } from '../state';
 import { useAuth } from '../actions';
+import { Spinner } from 'react-bootstrap';
+import { authAtom } from '../state';
+import { useRecoilValue } from 'recoil';
 
 
 const Routes = () => {
     const authActions = useAuth()
     const authState = useRecoilValue(authAtom)
-    const history = useHistory()
+
     useEffect(() => {
         authActions.refreshToken()
     }, [])
 
-    useEffect(() => {
-        if(authState) {
-            history.push('/dashboard')
-        }
-        else {
-            history.replace('/')
-        }
-    }, [authState])
 
     return (
         <main>
             <Switch>
+                <ProtectedRoute path='/dashboard'>
+                    <Components.DashboardBaseComponent />
+                </ProtectedRoute>
+                <ProtectedRoute path='/users'>
+                    <Components.UsersTableComponent />
+                </ProtectedRoute>
+
+
+                {/* Fallback, in case pathname doesn't exist as a component */}
                 {authState ?
-                    <ProtectedRoute exact path='/dashboard' Component={Components.DashboardBaseComponent} />
+                    <Route path='*' component={Components.DashboardBaseComponent} />
                     :
-                    <Route exact path={["/login", "/"]} component={Components.LrBaseComponent} />
+                    <Route path='*' component={Components.LrBaseComponent} />
                 }
             </Switch>
         </main>

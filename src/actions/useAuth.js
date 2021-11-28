@@ -33,7 +33,7 @@ export function useAuth() {
                 setAuth(user);
                 startRefreshTokenTimer(user.token)
                 console.log("Successful authentication")
-                history.push('/example')
+                history.push('/dashboard?table=licenses')
 
                 // get return url from location state or default to home page
                 //const { from } = history.location.state || { from: { pathname: '/' } };
