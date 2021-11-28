@@ -1,0 +1,14 @@
+/* Datepicker has bold text by default overriding this here */
+.AccessTokenDatePickerTH{
+    font-weight: normal;
+    min-width: 100px;
+}
+
+/* Default Datepicker clear button is offcenter and not in the correct stule, overriding stylign here */
+.react-datepicker__close-icon::after{
+    font-size: 30px !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+    color: #808488 !important;
+    position: relative !important;
+    bottom: 3px;
+}

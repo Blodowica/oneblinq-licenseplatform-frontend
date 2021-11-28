@@ -1,8 +1,44 @@
 .Full {
-    background-image: url("../../assets/Background.svg");
-    height: 100vh;
-    width: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  background-image: url("../../assets/Background.svg");
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 20px;
+}
+
+@media (max-width: 520px) {
+  .OneBlinqLogo {
+    content: url('../../assets/LogoNoText.svg');
+    width: 45px;
+    margin-left: 20px;
   }
+}
+
+.LanguageDropdownIcon, .dropdown-toggle.nav-link:after {
+  color: white;
+}
+
+.DataManagementCardHeader {
+  border-radius: 12px 12px 0 0 !important;
+}
+
+/* global table CSS */
+.DetailedSearchIcon{
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  border-color: #ced4da;
+  height: 100%;
+  color: #8b8e91;
+}
+
+.DetailedSearchIconOn{
+  color: #212529;
+}
+
+.DetailedSearchIcon:hover{
+  cursor: pointer;
+}
