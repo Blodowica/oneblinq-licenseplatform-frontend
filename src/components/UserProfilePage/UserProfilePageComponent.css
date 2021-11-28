@@ -6,3 +6,21 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+#mainProfileField {
+    margin-top: 2%;
+}
+
+#changePasswordField {
+    float: left;
+    margin-left: 2%;
+    text-align: center;
+    width: 30%;
+    background-color: #EDEFFC;
+    opacity: 85%;
+    border-radius: 39px;
+}
+
+.passwordInputBox {
+    width: 60%;
+}

@@ -21,18 +21,22 @@ const Routes = () => {
     return (
         <main>
             <Switch>
-                <ProtectedRoute path='/profile'>
-                    <Components.UserProfilePageComponent />
-                </ProtectedRoute>
+                {/*<ProtectedRoute path='/profile'>*/}
+                {/*    <Components.UserProfilePageComponent />*/}
+                {/*</ProtectedRoute>*/}
+                {/*<ProtectedRoute path='/dashboard'>*/}
+                {/*    <Components.DashboardBaseComponent />*/}
+                {/*</ProtectedRoute>*/}
                 <ProtectedRoute path='/dashboard'>
-                    <Components.DashboardBaseComponent />
+                    <Components.UserProfilePageComponent />
                 </ProtectedRoute>
                 <ProtectedRoute path='/users'>
                     <Components.UsersTableComponent />
                 </ProtectedRoute>
 
                 {authState ?
-                    <Route path='*' component={Components.DashboardBaseComponent} />
+                    // <Route path='*' component={Components.DashboardBaseComponent} />
+                    <Route path='*' component={Components.UserProfilePageComponent} />
                     :
                     <Route path='*' component={Components.LrBaseComponent} />
                 }
