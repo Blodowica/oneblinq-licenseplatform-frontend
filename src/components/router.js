@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import * as Components from './index';
@@ -11,11 +11,19 @@ import { useRecoilValue } from 'recoil';
 
 const Routes = () => {
     const authActions = useAuth()
-    const authState = useRecoilValue(authAtom)
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        authActions.refreshToken()
+        authActions.refreshToken().then(x => setIsLoading(false))
     }, [])
+
+    if (isLoading) {
+        return (
+            <div style={{justifyContent: "center", textAlign: "center"}}>
+                <Spinner animation="border" style={{ fontSize: 500 }} />
+            </div>
+        )
+    }
 
 
     return (
@@ -27,14 +35,7 @@ const Routes = () => {
                 <ProtectedRoute path='/users'>
                     <Components.UsersTableComponent />
                 </ProtectedRoute>
-
-
-                {/* Fallback, in case pathname doesn't exist as a component */}
-                {authState ?
-                    <Route path='*' component={Components.DashboardBaseComponent} />
-                    :
-                    <Route path='*' component={Components.LrBaseComponent} />
-                }
+                <Route path={['/login', '/']} component={Components.LrBaseComponent} />
             </Switch>
         </main>
     )
