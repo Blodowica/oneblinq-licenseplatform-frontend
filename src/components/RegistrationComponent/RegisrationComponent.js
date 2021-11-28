@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./RegistrationComponent.css";
 import { Form, Card, Button, InputGroup, FormControl, Row, Col, Container } from 'react-bootstrap'
 import { MdEmail, MdLock, MdPerson, MdPeople } from "react-icons/md";
 import { useAuth } from "../../actions";
 
-function RegistrationComponent({ toLogin }) {
+function RegistrationComponent({ toLogin, emailParam }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const authActions = useAuth()
+
+  useEffect(() => {
+    setEmail(emailParam)
+  }, [])
 
   function arePasswordsSame() {
     if (password && repeatPassword && password == repeatPassword) {
