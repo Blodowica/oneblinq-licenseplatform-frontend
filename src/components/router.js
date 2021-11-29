@@ -1,49 +1,45 @@
-import React, { useEffect } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Route, Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import * as Components from './index';
 import ProtectedRoute from './ProtectedRoute';
-import { useRecoilValue } from 'recoil'
-import { authAtom } from '../state';
 import { useAuth } from '../actions';
-import jwt_decode from 'jwt-decode';
+import { Spinner } from 'react-bootstrap';
+import { authAtom } from '../state';
+import { useRecoilValue } from 'recoil';
 
 
 const Routes = () => {
     const authActions = useAuth()
-    const authState = useRecoilValue(authAtom)
-    const history = useHistory()
-    useEffect(() => {
-        authActions.refreshToken()
-    }, [])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        if (authState) {
-            var decoded = jwt_decode(authState.token);
-            if (decoded.role == "User") {
-                history.push('/dashboard')
-            }
-            else {
-                history.push('/userdashboard')
-            }
-        }
-        else {
-            history.replace('/')
-        }
-    }, [authState])
+        authActions.refreshToken().then(x => setIsLoading(false))
+    }, [])
+
+    if (isLoading) {
+        return (
+            <div style={{ justifyContent: "center", textAlign: "center" }}>
+                <Spinner animation="border" style={{ fontSize: 500 }} />
+            </div>
+        )
+    }
+
 
     return (
         <main>
             <Switch>
-                =
-                {authState ?
-                    <>
-                        <ProtectedRoute exact path='/userdashboard' Component={Components.UserDashboard} />
-                        <ProtectedRoute exact path='/dashboard' Component={Components.DashboardBaseComponent} />
-                    </>
-                    :
-                    <Route exact path={["/login", "/"]} component={Components.LrBaseComponent} />
-                }
+                <ProtectedRoute path='/dashboard'>
+                    <Components.DashboardBaseComponent />
+                </ProtectedRoute>
+                <ProtectedRoute path='/users'>
+                    <Components.UsersTableComponent />
+                </ProtectedRoute>
+                <ProtectedRoute path='/userdashboard'>
+                    <Components.UsersTableComponent />
+                </ProtectedRoute>
+
+                <Route path={['/login', '/']} component={Components.LrBaseComponent} />
             </Switch>
         </main>
     )

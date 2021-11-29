@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+/* global usefull css classes */
+.PointOnHover:hover{
+  cursor: pointer;
+}
+
+.Link{
+  color: #0d85fd;
+}
+
+.NotClickable{
+  pointer-events: none;
+}
