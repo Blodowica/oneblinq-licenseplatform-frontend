@@ -7,8 +7,11 @@ import { useRequestWrapper } from '../../middleware';
 import { FaEdit } from "react-icons/fa";
 import { IoMdCheckboxOutline } from "react-icons/io";
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation, initReactI18next } from "react-i18next";
 
 export function ProductsTableComponent() {
+    //setup i18next
+    const { t } = useTranslation();
     //Recoil setup
     const paginationPageState = atom({ key: 'ProductPaginationPageState', default: 1, });
     const recordsCountState = atom({ key: 'ProductPaginationPageStateRecordsCountState', default: 10, });
@@ -81,7 +84,7 @@ export function ProductsTableComponent() {
                                 console.log(er)
                             });
                     }}>
-                        Check for updates
+                        {t('dashboard_checkforupdates')}
                     </Button>
                 </Col>
             </Row>
@@ -90,10 +93,10 @@ export function ProductsTableComponent() {
                     {detailedSearch ?
                         <tr>
                             <th><Form.Control type="number" style={{ width: "80px" }} onChange={(e) => setSearchId(e.target.value)} value={searchId} placeholder="ID" /></th>
-                            <th><Form.Control onChange={(e) => setSearchProductName(e.target.value)} value={searchProductName} placeholder="Product" /></th>
-                            <th><Form.Control onChange={(e) => setSearchVariantName(e.target.value)} value={searchVariantname} placeholder="Product" /></th>
-                            <th><Form.Control type="number" onChange={(e) => setSearchMaxUses(e.target.value)} value={searchMaxUses} placeholder="Max Uses" /></th>
-                            <th><Form.Control type="number" onChange={(e) => setSearchLicenses(e.target.value)} value={searchLicenses} placeholder="Licenses" /></th>
+                            <th><Form.Control onChange={(e) => setSearchProductName(e.target.value)} value={searchProductName} placeholder={t('dashboard_product')} /></th>
+                            <th><Form.Control onChange={(e) => setSearchVariantName(e.target.value)} value={searchVariantname} placeholder={t('dashboard_product')} /></th>
+                            <th><Form.Control type="number" onChange={(e) => setSearchMaxUses(e.target.value)} value={searchMaxUses} placeholder={t('dashboard_maxuses')} /></th>
+                            <th><Form.Control type="number" onChange={(e) => setSearchLicenses(e.target.value)} value={searchLicenses} placeholder={t('dashboard_licenses')} /></th>
                             <th>
                                 <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown">
                                     <option value="">Status</option>
@@ -101,17 +104,17 @@ export function ProductsTableComponent() {
                                     <option value="false">Inactive</option>
                                 </Form.Select>
                             </th>
-                            <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>Clear Filters</Button></th>
+                            <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>{t('dashboard_clear_filters')}</Button></th>
                         </tr>
                         :
                         <tr>
                             <th>ID</th>
-                            <th>Product</th>
-                            <th>Variant</th>
-                            <th>Max Uses</th>
-                            <th>Licenses</th>
+                            <th>{t('dashboard_product')}</th>
+                            <th>{t('dashboard_variant')}</th>
+                            <th>{t('dashboard_maxuses')}</th>
+                            <th>{t('dashboard_license')}</th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th>{t('dashboard_actions')}</th>
                         </tr>
                     }
 
@@ -129,7 +132,7 @@ export function ProductsTableComponent() {
                                             {editingRow == product.id ?
                                                 <Form.Control type="number" style={{ width: "70px" }} onChange={(e) => setNewMaxUses(e.target.value)} value={newMaxUses} placeholder="Max Uses" />
                                                 :
-                                                <>{ product.maxUses }</>
+                                                <>{product.maxUses}</>
                                             }
                                         </div>
                                         {editingRow == product.id ?
@@ -143,9 +146,9 @@ export function ProductsTableComponent() {
                                     <td className="align-middle">{product.licenseCount}</td>
                                     <td className="align-middle">
                                         {product.active ? (
-                                            <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="success">Active</Button>
+                                            <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="success">{t('dashboard_active')}</Button>
                                         ) : (
-                                            <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="danger">Inactive</Button>
+                                            <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="danger">{t('dashboard_inactive')}</Button>
                                         )}
                                     </td>
                                     <td className="align-middle" style={{ width: "110px" }}>
@@ -157,7 +160,7 @@ export function ProductsTableComponent() {
                                                     console.log(er)
                                                 });
                                         }}>
-                                            {product.active ? <>Disable</> : <>Enable</>}
+                                            {product.active ? <>{t('dashboard_disable')}</> : <>{t('dashboard_enable')}</>}
                                         </Button>
                                     </td>
                                 </tr>

@@ -1,14 +1,49 @@
 import './userDashboardComponent.css'
 import React from 'react';
-import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown, Glyphicon, Button, Badge } from 'react-bootstrap';
-
+import { Row, Col, Container, Card, Navbar, Nav, NavDropdown, Badge } from 'react-bootstrap';
+import { NavigationBarComponent } from '../NavigationBar/NavigationBarComponent'
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
 import { useRequestWrapper } from '../../middleware';
 import logo from '../../assets/Logo.svg';
 import { MdLanguage, MdPerson } from "react-icons/md";
 
+import i18n from "i18next";
+import { useTranslation, initReactI18next } from "react-i18next";
+import languageDetector from 'i18next-browser-languagedetector';
+import HttpApi from 'i18next-http-backend';
+import i18next from 'i18next';
+
 import { authAtom } from '../../state';
+
+import { Localization } from '../Localization/LocalizationComponent'
+<Localization />
+i18n
+    .use(initReactI18next)
+    .use(languageDetector)
+    .use(HttpApi)
+
+    .init({
+        //if you're using a language detector don't define the lng option
+        fallbackLng: "en",
+
+        //language detection
+        detection: {
+            order: ['cookie', 'htmlTag', 'localStorage', 'path', 'subdomain'],
+            caches: ['cookie'],
+        },
+
+        //i18next http backend
+        backend: {
+            loadPath: '../../assets/locales/{{lng}}/translation.json'
+
+        },
+
+        react: { useSuspense: false }
+    })
+
+
+
 
 export function UserDashboard() {
 
@@ -19,6 +54,8 @@ export function UserDashboard() {
     const requestWrapper = useRequestWrapper()
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/`;
     const myCurrentTime = new Date();
+    const { t } = useTranslation();
+
 
     useEffect(() => {
         if (licenses == null) {
@@ -46,29 +83,7 @@ export function UserDashboard() {
 
     return (
         <div className="Full" >
-
-            <Navbar bg="dark">
-                <Navbar.Brand href="#home">
-                    <img
-                        src={logo}
-                        width="50%"
-                        height="50%"
-                        className="d-inline-block ms-5"
-                        alt="React Bootstrap logo"
-                    />
-                </Navbar.Brand>
-                <Container className="d-flex justify-content-end">
-                    <Nav.Link href="#profile" >
-                        <MdPerson color="white" size="2em" />
-                    </Nav.Link>
-                    <NavDropdown title={navDropdownTitle} color="white" id="basic-nav-dropdown" >
-                        <NavDropdown.Item href="#action/3.1">Dutch</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4">English</NavDropdown.Item>
-                    </NavDropdown>
-                </Container>
-
-            </Navbar>
+            <NavigationBarComponent />
 
             <Container fluid className="pt-3">
                 <Row>
@@ -85,12 +100,13 @@ export function UserDashboard() {
                                 <table className="table hover responsive">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Licenses</th>
-                                            <th scope="col">Uses</th>
-                                            <th scope="col">Tier</th>
-                                            <th scope="col">Payment period</th>
-                                            <th scope="col">expiration date</th>
-                                            <th scope="col">status</th>
+                                            <th scope="col">{t('dashboard_licenses')}</th>
+                                            <th scope="col">{t('dashboard_uses')}</th>
+                                            <th scope="col">{t('dashboard_tier')}</th>
+                                            <th scope="col">{t('dashboard_payment_period')}</th>
+                                            <th scope="col">{t('dashboard_expirationdate')}</th>
+                                            <th scope="col">{t('dashboard_status')}</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -105,7 +121,7 @@ export function UserDashboard() {
                                                     <td className="align-middle">{license.tier}</td>
                                                     <td className="align-middle">{license.reaccurence}</td>
                                                     <td className="align-middle">{license.expirationDate != null ? license.expirationDate.split('T')[0] : <p className="align-middle">-</p>}</td>
-                                                    <td className="align-middle">{myCurrentTime >= license.expirationDate ? <Badge bg="success">Active</Badge> : <Badge bg="danger">Unactive</Badge>}</td>
+                                                    <td className="align-middle">{myCurrentTime >= license.expirationDate ? <Badge bg="success">{t('dashboard_active')}</Badge> : <Badge bg="danger">{t('dashboard_inactive')}</Badge>}</td>
 
 
 

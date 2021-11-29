@@ -8,8 +8,11 @@ import { MdOutlineManageSearch, MdContentCopy, MdLibraryAddCheck, MdOutlineError
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation, initReactI18next } from "react-i18next";
 
 export function AccessTokensTableComponent() {
+    //setup i18next
+    const { t } = useTranslation();
     //Recoil setup
     const paginationPageState = atom({ key: 'accessTokenPaginationPageState', default: 1, });
     const recordsCountState = atom({ key: 'accessTokenPaginationPageStateRecordsCountState', default: 10, });
@@ -78,8 +81,8 @@ export function AccessTokensTableComponent() {
             {showAlert &&
                 <Alert variant="warning" className="pt-2 pb-0" onClose={() => setShowAlert(false)} dismissible>
                     <p>
-                        <b>Disabling an Access Token can cause problems to appear in different programs.</b><br />
-                        Access Tokens are used by other programs to get access to this service.
+                        <b>{t('dashboard_accesstoken_warning_bold')}</b><br />
+                        {t('dashboard_accesstoken_warning')}
                     </p>
                 </Alert>
             }
@@ -96,7 +99,7 @@ export function AccessTokensTableComponent() {
                                 console.log(er)
                             });
                     }}>
-                        Create AccessToken
+                        {t('dashboard_create_accesstoken')}
                     </Button>
                 </Col>
             </Row>
@@ -106,7 +109,7 @@ export function AccessTokensTableComponent() {
                         <tr>
                             <th><Form.Control type="number" style={{ width: "80px" }} onChange={(e) => setSearchId(e.target.value)} value={searchId} placeholder="ID" /></th>
                             <th><Form.Control onChange={(e) => setSearchAccessToken(e.target.value)} value={searchAccesstoken} placeholder="Access Token" /></th>
-                            <th><Form.Control onChange={(e) => setSearchEmail(e.target.value.toLowerCase())} value={searchEmail} placeholder="Creator" /></th>
+                            <th><Form.Control onChange={(e) => setSearchEmail(e.target.value.toLowerCase())} value={searchEmail} placeholder={t('dashboard_accesstoken_creator')} /></th>
                             <th className="AccessTokenDatePickerTH">
                                 <DatePicker
                                     selected={searchCreatedAt}
@@ -128,16 +131,16 @@ export function AccessTokensTableComponent() {
                                     <option value="false">Inactive</option>
                                 </Form.Select>
                             </th>
-                            <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>Clear Filters</Button></th>
+                            <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>{t('dashboard_clear_filters')}</Button></th>
                         </tr>
                         :
                         <tr>
                             <th>ID</th>
                             <th>Access Token</th>
-                            <th>Creator</th>
-                            <th>Created</th>
+                            <th>{t('dashboard_accesstoken_creator')}</th>
+                            <th>{t('dashboard_accesstoken_created')}</th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th>{t('dashboard_actions')}</th>
                         </tr>
                     }
 
@@ -163,9 +166,9 @@ export function AccessTokensTableComponent() {
                                     <td className="align-middle">{token.createdAt}</td>
                                     <td className="align-middle">
                                         {token.active ? (
-                                            <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="success">Active</Button>
+                                            <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="success">{t('dashboard_active')}</Button>
                                         ) : (
-                                            <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="danger">Inactive</Button>
+                                            <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="danger">{t('dashboard_inactive')}</Button>
                                         )}
                                     </td>
                                     <td className="align-middle" style={{ width: "110px" }}>
@@ -177,7 +180,7 @@ export function AccessTokensTableComponent() {
                                                     console.log(er)
                                                 });
                                         }}>
-                                            {token.active ? <>Disable</> : <>Enable</>}
+                                            {token.active ? <>{t('dashboard_disable')}</> : <>{t('dashboard_enable')}</>}
                                         </Button>
                                     </td>
                                 </tr>
