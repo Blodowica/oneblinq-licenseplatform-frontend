@@ -7,11 +7,13 @@ import { useAuth } from '../actions';
 import { Spinner } from 'react-bootstrap';
 import { authAtom } from '../state';
 import { useRecoilValue } from 'recoil';
+import jwt_decode from 'jwt-decode';
 
 
 const Routes = () => {
     const authActions = useAuth()
     const [isLoading, setIsLoading] = useState(true)
+    const authState = useRecoilValue(authAtom)
 
     useEffect(() => {
         authActions.refreshToken().then(x => setIsLoading(false))
@@ -25,21 +27,29 @@ const Routes = () => {
         )
     }
 
+    function RoleBasedPath() {
+        let role = jwt_decode(authState.token).role
+ 
+        if (role == 'User') {
+            return (
+                <Components.UserDashboard />
+            )
+        }
+        else {
+            return (
+                <Components.DashboardBaseComponent />
+            )
+        }
+    }
+
 
     return (
         <main>
             <Switch>
-                <ProtectedRoute path='/dashboard'>
-                    <Components.DashboardBaseComponent />
-                </ProtectedRoute>
-                <ProtectedRoute path='/users'>
-                    <Components.UsersTableComponent />
-                </ProtectedRoute>
-                <ProtectedRoute path='/userdashboard'>
-                    <Components.UsersTableComponent />
-                </ProtectedRoute>
-
-                <Route path={['/login', '/']} component={Components.LrBaseComponent} />
+                {!authState &&
+                    <Route path={['/login', '/']} component={Components.LrBaseComponent} />
+                }
+                    <RoleBasedPath />
             </Switch>
         </main>
     )

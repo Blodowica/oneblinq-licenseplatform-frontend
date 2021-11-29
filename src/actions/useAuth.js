@@ -2,6 +2,7 @@ import { useHistory } from 'react-router';
 import { useSetRecoilState } from 'recoil';
 import { authAtom } from '../state';
 import { useRequestWrapper } from '../middleware';
+import jwt_decode from 'jwt-decode';
 
 export function useAuth() {
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/account`;
@@ -33,14 +34,11 @@ export function useAuth() {
                 setAuth(user);
                 startRefreshTokenTimer(user.token)
                 console.log("Successful authentication")
-                history.push('/dashboard?table=licenses')
-
                 // get return url from location state or default to home page
                 //const { from } = history.location.state || { from: { pathname: '/' } };
                 //history.push(from);
             }).catch((er) => {
                 setAuth(null)
-                history.replace('/')
                 alert(er)
             });
     }
@@ -51,7 +49,6 @@ export function useAuth() {
                 setAuth(user);
                 startRefreshTokenTimer(user.token)
                 console.log("Successful register")
-                history.push('/example')
 
                 // get return url from location state or default to home page
                 //const { from } = history.location.state || { from: { pathname: '/' } };
@@ -65,6 +62,7 @@ export function useAuth() {
     function refreshToken() {
         return requestWrapper.post(`${baseUrl}/refresh-token`).then(user => {
             setAuth(user);
+
             //startRefreshTokenTimer(user.token)
         }).catch(() => {
             setAuth(null)
