@@ -13,7 +13,6 @@ export function LrBaseComponent() {
   
   useEffect(() => {
     let email = query.get("email")
-    console.log(email)
     if(email) {
       setIsRegister(true)
       setEmailParam(email)

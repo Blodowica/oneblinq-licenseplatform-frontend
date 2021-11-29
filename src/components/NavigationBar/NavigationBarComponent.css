@@ -1,0 +1,13 @@
+
+  
+  @media (max-width: 520px) {
+    .OneBlinqLogo {
+      content: url('../../assets/LogoNoText.svg');
+      width: 45px;
+      margin-left: 20px;
+    }
+  }
+  
+  .LanguageDropdownIcon, .dropdown-toggle.nav-link:after {
+    color: white;
+  }

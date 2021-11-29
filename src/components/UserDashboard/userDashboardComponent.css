@@ -1,0 +1,33 @@
+.Full {
+    background-image: url("../../assets/Background.svg");
+    height: 100vh;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .LicenseIcon
+  {
+    width: 65px;
+    height: 65px;
+    
+  }
+  
+  .LicenseText
+  {
+    float: right;
+    margin-right: 65%;
+     margin-top: 1%;
+
+  }
+  .LicenseLink
+  {
+    float: right;
+    color: #558BF5;
+     
+  }
+  
+  .UserDashboardCardHeader {
+    border-radius: 12px 12px 0 0 !important;
+  }

@@ -8,38 +8,45 @@ import { useAuth } from '../actions';
 import { Spinner } from 'react-bootstrap';
 import { authAtom } from '../state';
 import { useRecoilValue } from 'recoil';
+import jwt_decode from 'jwt-decode';
+
 
 
 const Routes = () => {
     const authActions = useAuth()
     const [isLoading, setIsLoading] = useState(true)
 
+    const authState = useRecoilValue(authAtom)
+
     useEffect(() => {
         authActions.refreshToken().then(x => setIsLoading(false))
     }, [])
 
-    if (isLoading) {
-        return (
-            <div style={{justifyContent: "center", textAlign: "center"}}>
-                <Sugar customLoading={isLoading} background="#010115" color="#b2b2b2" time={0}/>
-            </div>
-        )
+
+    function RoleBasedPath() {
+        let role = jwt_decode(authState.token).role
+
+        if (role == 'User') {
+            return (
+                <Components.UserDashboard/>
+            )
+        } else {
+            return (
+                <Components.DashboardBaseComponent/>
+            )
+        }
     }
 
 
     return (
         <main>
+            <Sugar customLoading={isLoading} background="#010115" color="#b2b2b2" time={0}/>
             <Switch>
-                <ProtectedRoute path='/profile'>
-                    <Components.UserProfilePageComponent />
-                </ProtectedRoute>
-                <ProtectedRoute path='/dashboard'>
-                    <Components.DashboardBaseComponent />
-                </ProtectedRoute>
-                <ProtectedRoute path='/users'>
-                    <Components.UsersTableComponent />
-                </ProtectedRoute>
-                <Route path={['/login', '/']} component={Components.LrBaseComponent} />
+                {!authState &&
+                <Route path={['/login', '/']} component={Components.LrBaseComponent}/>
+                }
+                <Route path={'/profile'} component={Components.UserProfilePageComponent}/>
+                <RoleBasedPath/>
             </Switch>
         </main>
     )
