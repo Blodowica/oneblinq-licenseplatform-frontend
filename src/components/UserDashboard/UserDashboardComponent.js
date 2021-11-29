@@ -1,7 +1,6 @@
 import './userDashboardComponent.css'
 import React from 'react';
-import { Row, Col, Container, Card, Navbar, Nav, NavDropdown, Badge } from 'react-bootstrap';
-import { NavigationBarComponent } from '../NavigationBar/NavigationBarComponent'
+import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown, Glyphicon, Button, Table, Badge } from 'react-bootstrap';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
 import { useRequestWrapper } from '../../middleware';
@@ -15,6 +14,7 @@ import HttpApi from 'i18next-http-backend';
 import i18next from 'i18next';
 
 import { authAtom } from '../../state';
+import {NavigationBarComponent} from '../';
 
 import { Localization } from '../Localization/LocalizationComponent'
 <Localization />
@@ -83,8 +83,7 @@ export function UserDashboard() {
 
     return (
         <div className="Full" >
-            <NavigationBarComponent />
-
+            <NavigationBarComponent/>
             <Container fluid className="pt-3">
                 <Row>
                     <Col>
@@ -97,7 +96,7 @@ export function UserDashboard() {
                             </Card.Header>
                             <Card.Body style={{ backgroundColor: "white" }}>
 
-                                <table className="table hover responsive">
+                                <Table striped hover responsive>
                                     <thead>
                                         <tr>
                                             <th scope="col">{t('dashboard_licenses')}</th>
@@ -130,7 +129,7 @@ export function UserDashboard() {
                                         }
                                         ) : null}
                                     </tbody>
-                                </table>
+                                </Table>
 
                             </Card.Body>
                         </Card>

@@ -1,43 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
+import { Sugar } from 'react-preloaders2'
 
 import * as Components from './index';
-import ProtectedRoute from './ProtectedRoute';
 import { useAuth } from '../actions';
-import { Spinner } from 'react-bootstrap';
 import { authAtom } from '../state';
 import { useRecoilValue } from 'recoil';
 import jwt_decode from 'jwt-decode';
 
 
+
 const Routes = () => {
     const authActions = useAuth()
     const [isLoading, setIsLoading] = useState(true)
+
     const authState = useRecoilValue(authAtom)
 
     useEffect(() => {
         authActions.refreshToken().then(x => setIsLoading(false))
     }, [])
 
-    if (isLoading) {
-        return (
-            <div style={{ justifyContent: "center", textAlign: "center" }}>
-                <Spinner animation="border" style={{ fontSize: 500 }} />
-            </div>
-        )
-    }
 
     function RoleBasedPath() {
         let role = jwt_decode(authState.token).role
- 
+
         if (role == 'User') {
             return (
-                <Components.UserDashboard />
+                <Components.UserDashboard/>
             )
-        }
-        else {
+        } else {
             return (
-                <Components.DashboardBaseComponent />
+                <Components.DashboardBaseComponent/>
             )
         }
     }
@@ -45,11 +38,13 @@ const Routes = () => {
 
     return (
         <main>
+            <Sugar customLoading={isLoading} background="#010115" color="#b2b2b2" time={0}/>
             <Switch>
                 {!authState &&
-                    <Route path={['/login', '/']} component={Components.LrBaseComponent} />
+                <Route path={['/login', '/']} component={Components.LrBaseComponent}/>
                 }
-                    <RoleBasedPath />
+                <Route path={'/profile'} component={Components.UserProfilePageComponent}/>
+                <RoleBasedPath/>
             </Switch>
         </main>
     )

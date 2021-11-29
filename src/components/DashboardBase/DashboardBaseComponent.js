@@ -4,8 +4,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import logo from '../../assets/Logo.svg';
 import { MdLanguage, MdPerson } from "react-icons/md";
-import { AccessTokensTableComponent, UsersTableComponent, LicenseTableComponent, ProductsTableComponent } from '../index';
-import { NavigationBarComponent } from '../NavigationBar/NavigationBarComponent';
+import { AccessTokensTableComponent, UsersTableComponent, LicenseTableComponent, ProductsTableComponent, NavigationBarComponent } from '../';
 
 export function DashboardBaseComponent() {
 
@@ -53,7 +52,7 @@ export function DashboardBaseComponent() {
 
   return (
     <>
-      <div className="Full">
+      <div className="Full-dashboardBase">
         <NavigationBarComponent />
         <Container fluid className="mt-3">
           <Row className="justify-content-center">

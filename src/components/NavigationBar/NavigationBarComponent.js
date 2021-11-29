@@ -8,6 +8,7 @@ import i18next from 'i18next';
 
 
 export function NavigationBarComponent() {
+
   const navDropdownTitle = (<MdLanguage color="white" size="2em" />);
 
   return (
@@ -21,7 +22,7 @@ export function NavigationBarComponent() {
         />
       </Navbar.Brand>
       <Container fluid className="d-flex justify-content-end me-2">
-        <Nav.Link href="#profile" >
+        <Nav.Link href="/profile" >
           <MdPerson color="white" size="2em" />
         </Nav.Link>
         <NavDropdown align="end" title={navDropdownTitle} variant="dark" className="LanguageDropdownIcon">
