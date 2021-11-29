@@ -6,8 +6,14 @@ import { useEffect, useState } from 'react';
 import { useRequestWrapper } from '../../middleware';
 import { MdOutlineError, MdOutlineManageSearch, MdContentCopy, MdLibraryAddCheck } from "react-icons/md";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import i18n from "i18next";
+import { useTranslation, initReactI18next } from "react-i18next";
+import { Localization } from '../Localization/LocalizationComponent'
+
 
 export function LicenseTableComponent() {
+  // setup i18next
+  const { t } = useTranslation();
   //Recoil setup
   const paginationPageState = atom({ key: 'licensePaginationPageState', default: 1, });
   const recordsCountState = atom({ key: 'licenseRecordsCountState', default: 10, });
@@ -108,10 +114,10 @@ export function LicenseTableComponent() {
             </div>
             <div className="d-inline-flex ms-3">
               {detailedData.active ?
-                <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="success" size="lg">Active</Button>
+                <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="success" size="lg">{t('dashboard_active')}</Button>
                 :
                 <>
-                  <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="danger" size="lg">Inactive</Button>
+                  <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="danger" size="lg">{t('dashboard_inactive')}</Button>
                 </>}
             </div>
           </Modal.Title>
@@ -120,11 +126,11 @@ export function LicenseTableComponent() {
         <Modal.Body>
           <Row>
             <Col xs lg="7">
-              <Form.Label>Product</Form.Label>
+              <Form.Label>{t('dashboard_product')}</Form.Label>
               <Form.Control readOnly value={detailedData.productName} />
             </Col>
             <Col xs lg="5">
-              <Form.Label>Reccurance</Form.Label>
+              <Form.Label>{t('dashboard_reccurence')}</Form.Label>
               <Form.Control readOnly value={detailedData.recurrence} />
             </Col>
           </Row>
@@ -135,32 +141,32 @@ export function LicenseTableComponent() {
               <Form.Control readOnly value={detailedData.email} />
             </Col>
             <Col xs lg="5">
-              <Form.Label>Purchase Location</Form.Label>
+              <Form.Label>{t('dashboard_purchase_location')}</Form.Label>
               <Form.Control readOnly value={detailedData.purchaseLocation} />
             </Col>
           </Row>
 
           <Row className="mt-2">
             <Col xs lg="3">
-              <Form.Label>Activations</Form.Label>
+              <Form.Label>{t('dashboard_activations')}</Form.Label>
               <Form.Control readOnly value={`${detailedData.activations}/${detailedData.maxUses}`} />
               {detailedData.activations > detailedData.maxUses &&
                 <MdOutlineError color="red" size="1.5em" className="d-flex ms-auto DetailedUserDanger" />
               }
             </Col>
             <Col xs lg="4">
-              <Form.Label>Expiration Date</Form.Label>
+              <Form.Label>{t('dashboard_expirationdate')}</Form.Label>
               <Form.Control readOnly value={detailedData.expiresAt ? `${detailedData.expiresAt}` : "-"} />
             </Col>
             <Col xs lg="5">
-              <Form.Label>Deactivation Reason</Form.Label>
+              <Form.Label>{t('dashboard_deactivated_reason')}</Form.Label>
               <Form.Control readOnly value={detailedData.endedReason ? `${detailedData.endedReason}` : "-"} />
             </Col>
           </Row>
 
           <Row>
             <Col xs lg="12">
-              <Form.Label>Activation Log</Form.Label>
+              <Form.Label>{t('dashboard_activation_log')}</Form.Label>
               <Form.Control as="textarea" value={detailedData.activationLogs && detailedData.activationLogs.map(x => x.message).join('\n\n')} readOnly rows={5} />
             </Col>
           </Row>
@@ -176,7 +182,7 @@ export function LicenseTableComponent() {
                 console.log(er)
               });
           }}>
-            {detailedData.active ? <>Disable</> : <>Enable</>}
+            {detailedData.active ? <>{t('dashboard_disable')}</> : <>{t('dashboard_enable')}</>}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -192,10 +198,10 @@ export function LicenseTableComponent() {
           {detailedSearch ?
             <tr>
               <th><Form.Control type="number" style={{ width: "80px" }} onChange={(e) => setSearchId(e.target.value)} value={searchId} placeholder="ID" /></th>
-              <th><Form.Control onChange={(e) => setSearchLicense(e.target.value.toUpperCase())} value={searchLicense} placeholder="License" /></th>
-              <th><Form.Control onChange={(e) => setSearchProduct(e.target.value)} value={searchProduct} placeholder="Product" /></th>
+              <th><Form.Control onChange={(e) => setSearchLicense(e.target.value.toUpperCase())} value={searchLicense} placeholder={t('dashboard_licenses')} /></th>
+              <th><Form.Control onChange={(e) => setSearchProduct(e.target.value)} value={searchProduct} placeholder={t('dashboard_product')} /></th>
               <th><Form.Control onChange={(e) => setSearchEmail(e.target.value.toLowerCase())} value={searchEmail} placeholder="Email" /></th>
-              <th><Form.Control type="number" onChange={(e) => setSearchActivations(e.target.value)} value={searchActivations} placeholder="Activations" /></th>
+              <th><Form.Control type="number" onChange={(e) => setSearchActivations(e.target.value)} value={searchActivations} placeholder={t('dashboard_activations')} /></th>
               <th>
                 <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown">
                   <option value="">Status</option>
@@ -203,17 +209,17 @@ export function LicenseTableComponent() {
                   <option value="inactive">Inactive</option>
                 </Form.Select>
               </th>
-              <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>Clear Filters</Button></th>
+              <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>{t('dashboard_clear_filters')}</Button></th>
             </tr>
             :
             <tr>
               <th>ID</th>
-              <th>License</th>
-              <th>Product</th>
+              <th>{t('dashboard_licenses')}</th>
+              <th>{t('dashboard_products')}</th>
               <th>Email</th>
-              <th>Activations</th>
+              <th>{t('dashboard_activations')}</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th>{t('dashboard_actions')}</th>
             </tr>
           }
 
@@ -248,9 +254,9 @@ export function LicenseTableComponent() {
                 </td>
                 <td className="align-middle">
                   {license.active ? (
-                    <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="success">Active</Button>
+                    <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="success">{t('dashboard_active')}</Button>
                   ) : (
-                    <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="danger">Inactive</Button>
+                    <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="danger">{t('dashboard_inactive')}</Button>
                   )}
                 </td>
                 <td className="align-middle" style={{ width: "110px" }}>
