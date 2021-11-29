@@ -3,9 +3,7 @@ import { Route, Switch, useHistory, useLocation, Redirect } from 'react-router-d
 import { Sugar } from 'react-preloaders2';
 
 import * as Components from './index';
-import ProtectedRoute from './ProtectedRoute';
 import { useAuth } from '../actions';
-import { Spinner } from 'react-bootstrap';
 import { authAtom } from '../state';
 import { useRecoilValue } from 'recoil';
 import jwt_decode from 'jwt-decode';
