@@ -52,7 +52,7 @@ export function DashboardBaseComponent() {
 
   return (
     <>
-      <div className="Full">
+      <div className="Full-dashboardBase">
         <NavigationBarComponent />
         <Container fluid className="mt-3">
           <Row className="justify-content-center">

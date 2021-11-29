@@ -14,13 +14,37 @@ export function UserProfilePageComponent() {
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/account`;
 
     function ChangePassword() {
-        // const currentPassword = "currentPassword";
         const [currentPassword, setCurrentPassword] = useState("");
         const [newPassword, setNewPassword] = useState("");
         const [repeatNewPassword, setRepeatNewPassword] = useState("");
 
+        function ChangePasswordAction() {
+
+            if (newPassword !== repeatNewPassword) {
+                return alert("Repeat New Password field should be the same as New Password");
+            }
+            if (newPassword.length < 5) {
+                return alert("New Password should be at least 5 digits long")
+            }
+
+            requestWrapper.post(`${baseUrl}/change-user-password`,
+                {
+                    currentPassword: currentPassword,
+                    newPassword: newPassword,
+                })
+                .then(() => {
+                    setCurrentPassword("");
+                    setNewPassword("");
+                    setRepeatNewPassword("");
+                    return alert("Password successfully changed!");
+                })
+                .catch((er) => {
+                    return alert(er);
+                })
+        }
+
         return (
-            <Card style={{ backgroundColor: "#DEEFF4", minHeight: "65vh" }} className="mb-2 mt-4">
+            <Card style={{ backgroundColor: "#EDEFFC", minHeight: "65vh" }} className="mb-2 mt-4">
                 <Container className="mt-4">
                     <h1 className="text-center profilePageHeader">Change password</h1>
                     <Card.Body className="align-middle mt-3">
@@ -50,7 +74,7 @@ export function UserProfilePageComponent() {
                         </Row>
                         <Row className="text-center justify-content-center mt-4 pt-2">
                             <Col xs="11" sm="10">
-                                <Button onClick={() => ChangePassword()}
+                                <Button onClick={() => ChangePasswordAction()}
                                     style={{
                                         borderRadius: "30px",
                                         backgroundColor: "#EFA9AE",
@@ -79,6 +103,10 @@ export function UserProfilePageComponent() {
         const [country, setCountry] = useState("");
         const [editFormat, setEditFormat] = useState(false);
 
+        function validateEmail(email) {
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
 
         useEffect(() => {
             requestWrapper.get(`${baseUrl}/get-user-info`)
@@ -107,6 +135,10 @@ export function UserProfilePageComponent() {
             if (email === "") {
                 return alert("Email should be filled in")
             }
+            if (!validateEmail(email))
+            {
+                return alert("Wrong email format")
+            }
 
             requestWrapper.post(`${baseUrl}/change-user-info`,
                 {
@@ -127,13 +159,13 @@ export function UserProfilePageComponent() {
         }
 
         return (
-            <Card style={{ backgroundColor: "#DEEFF4", minHeight: "65vh", flex: "1" }} className="mt-4">
+            <Card style={{ backgroundColor: "#EDEFFC", minHeight: "65vh", flex: "1" }} className="mt-4">
                 <Container className="p-3 pt-4">
-                    <Row className="ms-2">
+                    <Row className="ms-4">
                         <h1 className="profilePageHeader">Personal details</h1>
                     </Row>
-                    <Row className="mb-3">
-                        <Col lg="6">
+                    <Row className="mb-3 ms-2">
+                        <Col lg="5" >
                             <Form.Label className="mb-1">First Name</Form.Label>
                             {!editFormat ?
                                 <Form.Control
@@ -150,7 +182,7 @@ export function UserProfilePageComponent() {
                                     style={{ width: "80%" }} />
                             }
                         </Col>
-                        <Col lg="6">
+                        <Col lg="5" className="offset-xl-1">
                             <Form.Label className="mb-1">Last Name</Form.Label>
                             {!editFormat ?
                                 <Form.Control
@@ -168,14 +200,15 @@ export function UserProfilePageComponent() {
                             }
                         </Col>
                     </Row>
-                    <Row>
-                        <Col lg="5">
+                    <Row className="ms-2">
+                        <Col lg="5" >
                             <Form.Label className="mb-1">Email</Form.Label>
                             {!editFormat ?
                                 <Form.Control
                                     type="email"
                                     readOnly
                                     value={email}
+                                    style={{width: '80%'}}
                                 />
                                 :
                                 <Form.Control
@@ -183,6 +216,7 @@ export function UserProfilePageComponent() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Email"
+                                    style={{width: '80%'}}
                                 />
                             }
                         </Col>
@@ -193,7 +227,7 @@ export function UserProfilePageComponent() {
                                     type="date"
                                     readOnly
                                     value={birthdate}
-                                    format="dd-mm-yyyy"
+                                    style={{width: '80%'}}
                                 />
                                 :
                                 <Form.Control
@@ -203,6 +237,7 @@ export function UserProfilePageComponent() {
                                         setBirthdate(e.target.value);
                                         console.log(birthdate);
                                     }}
+                                    style={{width: '80%'}}
                                     placeholder="Country"
                                 />
                             }
@@ -212,11 +247,11 @@ export function UserProfilePageComponent() {
 
                 <Container className="pb-3 p-3" >
                     <hr />
-                    <Row className="ms-2">
+                    <Row className="ms-4">
                         <h1 className="profilePageHeader">Location details</h1>
                     </Row>
-                    <Row className="mb-3">
-                        <Col xs lg="6">
+                    <Row className="mb-3 ms-2">
+                        <Col lg="5">
                             <Form.Label className="mb-1">Address</Form.Label>
                             {!editFormat ?
                                 <Form.Control
@@ -233,7 +268,7 @@ export function UserProfilePageComponent() {
                                     style={{ width: "80%" }} />
                             }
                         </Col>
-                        <Col xs lg="6">
+                        <Col lg="5" className="offset-xl-1">
                             <Form.Label className="mb-1">Postal Code</Form.Label>
                             {!editFormat ?
                                 <Form.Control
@@ -251,8 +286,8 @@ export function UserProfilePageComponent() {
                             }
                         </Col>
                     </Row>
-                    <Row>
-                        <Col xs lg="6">
+                    <Row className="ms-2">
+                        <Col lg="5">
                             <Form.Label className="mb-1">City</Form.Label>
                             {!editFormat ?
                                 <Form.Control
@@ -269,7 +304,7 @@ export function UserProfilePageComponent() {
                                     style={{ width: "80%" }} />
                             }
                         </Col>
-                        <Col xs lg="6">
+                        <Col lg="5" className="offset-xl-1">
                             <Form.Label className="mb-1">Country</Form.Label>
                             {!editFormat ?
                                 <Form.Control
