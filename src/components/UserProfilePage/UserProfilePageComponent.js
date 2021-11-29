@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './UserProfilePageComponent.css';
 import { MdLanguage, MdPerson } from "react-icons/md";
 import { Container, Nav, Navbar, NavDropdown, Button, InputGroup, Form, Card, Col, Row } from "react-bootstrap";
 import logo from "../../assets/Logo.svg";
-import {useRequestWrapper} from "../../middleware";
-import {NavigationBarComponent} from "../"
-import {CgCollage} from "react-icons/all";
+import { useRequestWrapper } from "../../middleware";
+import { NavigationBarComponent } from "../"
+import { CgCollage } from "react-icons/all";
 //import {DashboardBaseComponent} from "../DashboardBase/DashboardBaseComponent";
 
 export function UserProfilePageComponent() {
@@ -20,7 +20,7 @@ export function UserProfilePageComponent() {
         const [repeatNewPassword, setRepeatNewPassword] = useState("");
 
         return (
-            <Card style={{ backgroundColor: "#DEEFF4", minHeight: "75vh" }} className="mb-2 mt-4">
+            <Card style={{ backgroundColor: "#DEEFF4", minHeight: "65vh" }} className="mb-2 mt-4">
                 <Container className="mt-4">
                     <h1 className="text-center profilePageHeader">Change password</h1>
                     <Card.Body className="align-middle mt-3">
@@ -30,7 +30,7 @@ export function UserProfilePageComponent() {
                                 type="password"
                                 value={currentPassword}
                                 onChange={(e) => setCurrentPassword(e.target.value)}
-                                placeholder="******"/>
+                                placeholder="******" />
                         </Row>
                         <Row className="my-3">
                             <Form.Label>New Password</Form.Label>
@@ -49,7 +49,7 @@ export function UserProfilePageComponent() {
                                 placeholder="******" />
                         </Row>
                         <Row className="text-center justify-content-center mt-4 pt-2">
-                            <Col xs="9">
+                            <Col xs="11" sm="10">
                                 <Button onClick={() => ChangePassword()}
                                     style={{
                                         borderRadius: "30px",
@@ -93,8 +93,8 @@ export function UserProfilePageComponent() {
                     setCountry(response.country);
                     console.log(response.birthdate);
                 }).catch((er) => {
-                console.log(er);
-            })
+                    console.log(er);
+                })
         }, [editFormat]);
 
         function ChangeUserInfo() {
@@ -120,14 +120,14 @@ export function UserProfilePageComponent() {
                     country: country
                 }).then(() => {
                     setEditFormat(false);
-            })
+                })
                 .catch((er) => {
                     return alert(er);
                 })
         }
 
         return (
-            <Card style={{ backgroundColor: "#DEEFF4", minHeight: "75vh", flex: "1" }} className="mt-4">
+            <Card style={{ backgroundColor: "#DEEFF4", minHeight: "65vh", flex: "1" }} className="mt-4">
                 <Container className="p-3 pt-4">
                     <Row className="ms-2">
                         <h1 className="profilePageHeader">Personal details</h1>
@@ -140,14 +140,14 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={firstName}
-                                    style={{width: "80%"}}/>
+                                    style={{ width: "80%" }} />
                                 :
                                 <Form.Control
                                     type="text"
                                     value={firstName}
                                     onChange={(e) => setFirstName(e.target.value)}
                                     placeholder="First name"
-                                    style={{width: "80%"}}/>
+                                    style={{ width: "80%" }} />
                             }
                         </Col>
                         <Col lg="6">
@@ -157,14 +157,14 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={lastName}
-                                    style={{width: "80%"}}/>
+                                    style={{ width: "80%" }} />
                                 :
                                 <Form.Control
                                     type="text"
                                     value={lastName}
                                     onChange={(e) => setLastName(e.target.value)}
                                     placeholder="Last name"
-                                    style={{width: "80%"}}/>
+                                    style={{ width: "80%" }} />
                             }
                         </Col>
                     </Row>
@@ -176,17 +176,17 @@ export function UserProfilePageComponent() {
                                     type="email"
                                     readOnly
                                     value={email}
-                                    />
+                                />
                                 :
                                 <Form.Control
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Email"
-                                    />
+                                />
                             }
                         </Col>
-                        <Col lg="5" className="offset-md-1">
+                        <Col lg="5" className="offset-xl-1">
                             <Form.Label className="mb-1">Date of Birth</Form.Label>
                             {!editFormat ?
                                 <Form.Control
@@ -194,7 +194,7 @@ export function UserProfilePageComponent() {
                                     readOnly
                                     value={birthdate}
                                     format="dd-mm-yyyy"
-                                    />
+                                />
                                 :
                                 <Form.Control
                                     type="date"
@@ -204,14 +204,14 @@ export function UserProfilePageComponent() {
                                         console.log(birthdate);
                                     }}
                                     placeholder="Country"
-                                    />
+                                />
                             }
                         </Col>
                     </Row>
                 </Container>
-                
+
                 <Container className="pb-3 p-3" >
-                <hr />
+                    <hr />
                     <Row className="ms-2">
                         <h1 className="profilePageHeader">Location details</h1>
                     </Row>
@@ -223,14 +223,14 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={address}
-                                    style={{width: "80%"}}/>
+                                    style={{ width: "80%" }} />
                                 :
                                 <Form.Control
                                     type="text"
                                     value={address}
                                     onChange={(e) => setAddress(e.target.value)}
                                     placeholder="Address"
-                                    style={{width: "80%"}}/>
+                                    style={{ width: "80%" }} />
                             }
                         </Col>
                         <Col xs lg="6">
@@ -240,14 +240,14 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={postalCode}
-                                    style={{width: "80%"}}/>
+                                    style={{ width: "80%" }} />
                                 :
                                 <Form.Control
                                     type="text"
                                     value={postalCode}
                                     onChange={(e) => setPostalCode(e.target.value)}
                                     placeholder="1234 AB"
-                                    style={{width: "80%"}}/>
+                                    style={{ width: "80%" }} />
                             }
                         </Col>
                     </Row>
@@ -259,14 +259,14 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={city}
-                                    style={{width: "80%"}}/>
+                                    style={{ width: "80%" }} />
                                 :
                                 <Form.Control
                                     type="text"
                                     value={city}
                                     onChange={(e) => setCity(e.target.value)}
                                     placeholder="City"
-                                    style={{width: "80%"}}/>
+                                    style={{ width: "80%" }} />
                             }
                         </Col>
                         <Col xs lg="6">
@@ -276,65 +276,62 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={country}
-                                    style={{width: "80%"}}/>
+                                    style={{ width: "80%" }} />
                                 :
                                 <Form.Control
                                     type="text"
                                     value={country}
                                     onChange={(e) => setCountry(e.target.value)}
                                     placeholder="Country"
-                                    style={{width: "80%"}}/>
+                                    style={{ width: "80%" }} />
                             }
                         </Col>
                     </Row>
-                    <Row className="d-flex justify-content-between mt-4 pt-2" fluid>
-                        <Col xs="9">
-                        {!editFormat ?
-                        <Button
-                                style={{
-                                    borderRadius: "30px",
-                                    backgroundColor: "#EFA9AE",
-                                    color: "#02021E",
-                                    margin: "20px 0px 0px 0px",
-                                    fontSize: "22px",
-                                    border: "transparent",
-                                    visibility: "hidden"
-                                }}>Cancel</Button>
-                            :
-                            <Button onClick={() => setEditFormat(false)}
-                                    style={{
-                                        borderRadius: "30px",
-                                        backgroundColor: "#FA153E",
-                                        color: "#FFFFFF",
-                                        margin: "20px 0px 0px 0px",
-                                        fontSize: "22px",
-                                        border: "transparent",
-                                        visibility: "visible"
-                                    }}>Cancel</Button> }
-                        </Col>
-                        <Col className="d-flex ms-auto" xs="9">
-                        {!editFormat ?
-                            <Button onClick={() => setEditFormat(true)}
-                                    style={{
-                                        borderRadius: "30px",
-                                        backgroundColor: "#EFA9AE",
-                                        color: "#02021E",
-                                        margin: "20px 0px 0px 0px",
-                                        fontSize: "22px",
-                                        border: "transparent"
-                                    }}>Edit information</Button>
-                            :
-                            <Button onClick={() => {
-                                ChangeUserInfo();
-                            }}
-                                    style={{
-                                        borderRadius: "30px",
-                                        backgroundColor: "#EFA9AE",
-                                        color: "#02021E",
-                                        margin: "20px 0px 0px 0px",
-                                        fontSize: "22px",
-                                        border: "transparent"
-                                    }}>Save changes</Button> }
+                    <Row fluid className="d-flex mt-4 pt-2">
+                        <Col sm="11" className="d-flex justify-content-between">
+                            {editFormat ?
+                                <Col>
+                                    <Button
+                                        onClick={() => setEditFormat(false)}
+                                        style={{
+                                            borderRadius: "30px",
+                                            backgroundColor: "#FA153E",
+                                            color: "#FFFFFF",
+                                            margin: "20px 0px 0px 0px",
+                                            fontSize: "22px",
+                                            border: "transparent",
+                                        }}>
+                                        Cancel
+                                    </Button>
+                                </Col>
+                                :
+                                <> </>
+                            }
+
+                            <Col className="d-flex">
+                                {!editFormat ?
+                                    <Button className="d-flex ms-auto" onClick={() => setEditFormat(true)}
+                                        style={{
+                                            borderRadius: "30px",
+                                            backgroundColor: "#EFA9AE",
+                                            color: "#02021E",
+                                            margin: "20px 0px 0px 0px",
+                                            fontSize: "22px",
+                                            border: "transparent"
+                                        }}>Edit information</Button>
+                                    :
+                                    <Button className="d-flex ms-auto" onClick={() => {
+                                        ChangeUserInfo();
+                                    }}
+                                        style={{
+                                            borderRadius: "30px",
+                                            backgroundColor: "#EFA9AE",
+                                            color: "#02021E",
+                                            margin: "20px 0px 0px 0px",
+                                            fontSize: "22px",
+                                            border: "transparent"
+                                        }}>Save changes</Button>}
+                            </Col>
                         </Col>
                     </Row>
                 </Container>
