@@ -6,8 +6,42 @@ import { useEffect, useState } from 'react';
 import { useRequestWrapper } from '../../middleware';
 import { MdOutlineManageSearch, MdContentCopy, MdLibraryAddCheck, MdOutlineError } from "react-icons/md";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import i18n from "i18next";
+import { useTranslation, initReactI18next } from "react-i18next";
+import languageDetector from 'i18next-browser-languagedetector';
+import HttpApi from 'i18next-http-backend';
+
+import { Localization } from '../Localization/LocalizationComponent'
+<Localization />
+i18n
+    .use(initReactI18next)
+    .use(languageDetector)
+    .use(HttpApi)
+
+    .init({
+        //if you're using a language detector don't define the lng option
+        fallbackLng: "en",
+
+        //language detection
+        detection: {
+            order: ['cookie', 'htmlTag', 'localStorage', 'path', 'subdomain'],
+            caches: ['cookie'],
+        },
+
+        //i18next http backend
+        backend: {
+            loadPath: '../../assets/locales/{{lng}}/translation.json'
+
+        },
+
+        react: { useSuspense: false }
+    })
+
+
 
 export function UsersTableComponent() {
+    //setup i18next
+    const { t } = useTranslation();
     //Recoil setup
     const paginationPageState = atom({ key: 'userPaginationPageState', default: 1, });
     const recordsCountState = atom({ key: 'userRecordsCountState', default: 10, });
@@ -114,7 +148,7 @@ export function UsersTableComponent() {
                 <Modal.Body>
                     <Row>
                         <Col xs lg="6">
-                            <Form.Label>First name</Form.Label>
+                            <Form.Label>{t('dashboard_firstname')}</Form.Label>
                             {editUser ?
                                 <Form.Control onChange={(e) => setFirstName(e.target.value)} value={firstName} />
                                 :
@@ -122,7 +156,7 @@ export function UsersTableComponent() {
                             }
                         </Col>
                         <Col xs lg="6">
-                            <Form.Label>Last name</Form.Label>
+                            <Form.Label>{t('dashboard_lastname')}</Form.Label>
                             {editUser ?
                                 <Form.Control onChange={(e) => setLastName(e.target.value)} value={lastName} />
                                 :
@@ -151,7 +185,7 @@ export function UsersTableComponent() {
                             }
                         </Col>
                         <Col xs lg="3">
-                            <Form.Label>Role</Form.Label>
+                            <Form.Label>{t('dashboard_role')}</Form.Label>
                             {editUser ?
                                 <Form.Select onChange={(e) => setRole(e.target.value)} value={role}>
                                     <option value="User">User</option>
@@ -170,7 +204,7 @@ export function UsersTableComponent() {
                             return (
                                 <Row key={i} className="mb-2">
                                     <Col xs lg="7">
-                                        <Form.Label className="mb-0">License Key</Form.Label>
+                                        <Form.Label className="mb-0">{t('dashboard_licensekey')}</Form.Label>
                                         <Form.Control readOnly value={license.licenseKey} />
                                         <CopyToClipboard text={license.licenseKey} className="DetailedUserEmailCopy d-flex ms-auto PointOnHover"
                                             onCopy={() => setCopiedText(license.licenseKey)}>
@@ -182,11 +216,11 @@ export function UsersTableComponent() {
                                         </CopyToClipboard>
                                     </Col>
                                     <Col xs lg="3">
-                                        <Form.Label className="mb-0">Product</Form.Label>
+                                        <Form.Label className="mb-0">{t('dashboard_products')}</Form.Label>
                                         <Form.Control readOnly value={license.productName} />
                                     </Col>
                                     <Col xs lg="2">
-                                        <Form.Label className="mb-0">Activations</Form.Label>
+                                        <Form.Label className="mb-0">{t('dashboard_activations')}</Form.Label>
                                         <Form.Control readOnly value={`${license.activations}/${license.maxActivations}`} />
                                         {license.activations > license.maxActivations &&
                                             <MdOutlineError color="red" size="1.5em" className="d-flex ms-auto DetailedUserDanger" />
@@ -199,7 +233,7 @@ export function UsersTableComponent() {
                 </Modal.Body>
                 {editUser ?
                     <Modal.Footer className="pb-1 pt-1 d-flex">
-                        <Button variant="secondary" onClick={() => setEditUser(false)}>Cancel</Button>
+                        <Button variant="secondary" onClick={() => setEditUser(false)}>{t('dashboard_cancel')}</Button>
                         <Button variant="success" onClick={() => {
 
                             console.log(detailedData);
@@ -218,11 +252,11 @@ export function UsersTableComponent() {
                                     console.log(er)
                                     return alert(er);
                                 })
-                        }}>Save</Button>
+                        }}>{t('dashboard_save')}</Button>
                     </Modal.Footer>
                     :
                     <Modal.Footer className="pb-1 pt-1">
-                        <Button variant="secondary" onClick={() => setEditUser(true)}>Edit</Button>
+                        <Button variant="secondary" onClick={() => setEditUser(true)}>{t('dashboard_edit')}</Button>
                     </Modal.Footer>
                 }
             </Modal >
@@ -281,17 +315,17 @@ export function UsersTableComponent() {
             >
                 <Modal.Header closeButton className="DetailedRecordModalHeader">
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Creating admin Account
+                        {t('dashboard_create_admin')}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
                         <Col xs lg="6">
-                            <Form.Label>First name*</Form.Label>
+                            <Form.Label>{t('dashboard_firstname')}*</Form.Label>
                             <Form.Control value={firstName} placeholder="John" onChange={(e) => setFirstName(e.target.value)} />
                         </Col>
                         <Col xs lg="6">
-                            <Form.Label>Last name*</Form.Label>
+                            <Form.Label>{t('dashboard_lastname')}*</Form.Label>
                             <Form.Control value={lastName} placeholder="Doe" onChange={(e) => setLastName(e.target.value)} />
                         </Col>
                     </Row>
@@ -304,17 +338,17 @@ export function UsersTableComponent() {
                     </Row>
                     <Row className="mt-2">
                         <Col xs lg="6">
-                            <Form.Label>Password*</Form.Label>
+                            <Form.Label>{t('dashboard_password')}*</Form.Label>
                             <Form.Control type="password" value={password} placeholder="******" onChange={(e) => setPassword(e.target.value)} />
                         </Col>
                         <Col xs lg="6">
-                            <Form.Label>Repeat password*</Form.Label>
+                            <Form.Label>{t('dashboard_repeat_password')}*</Form.Label>
                             <Form.Control type="password" value={repeatPassword} placeholder="******" onChange={(e) => setRepeatPassword(e.target.value)} />
                         </Col>
                     </Row>
                 </Modal.Body>
                 <Modal.Footer className="pb-1 pt-1">
-                    <Button variant="secondary" onClick={() => CreateAdmin()}>Create</Button>
+                    <Button variant="secondary" onClick={() => CreateAdmin()}>{t('dashboard_create')}</Button>
                 </Modal.Footer>
             </Modal >
         );
@@ -331,7 +365,7 @@ export function UsersTableComponent() {
                     <Button variant="primary" className="p-1 d-flex ms-auto me-3" onClick={() => {
                         setShowCreateAdmin(true);
                     }}>
-                        Create Admin
+                        {t('dashboard_create_admin')}
                     </Button>
                 </Col>
             </Row>
@@ -344,10 +378,10 @@ export function UsersTableComponent() {
                     {detailedSearch ?
                         <tr>
                             <th><Form.Control type="number" style={{ width: "80px" }} onChange={(e) => setSearchId(e.target.value)} value={searchId} placeholder="ID" /></th>
-                            <th><Form.Control onChange={(e) => setSearchFirstName(e.target.value)} value={searchFirstName} placeholder="First name" /></th>
-                            <th><Form.Control onChange={(e) => setSearchLastName(e.target.value)} value={searchLastName} placeholder="Last name" /></th>
+                            <th><Form.Control onChange={(e) => setSearchFirstName(e.target.value)} value={searchFirstName} placeholder={t('dashboard_firstname')} /></th>
+                            <th><Form.Control onChange={(e) => setSearchLastName(e.target.value)} value={searchLastName} placeholder={t('dashboard_lastname')} /></th>
                             <th><Form.Control onChange={(e) => setSearchEmail(e.target.value.toLowerCase())} value={searchEmail} placeholder="Email" /></th>
-                            <th><Form.Control type="number" onChange={(e) => setSearchLicenses(e.target.value)} value={searchLicenses} placeholder="Licenses" /></th>
+                            <th><Form.Control type="number" onChange={(e) => setSearchLicenses(e.target.value)} value={searchLicenses} placeholder={t('dashboard_licenses')} /></th>
                             <th>
                                 <Form.Select id="TableRoleDropdown" onChange={(e) => setSearchRole(e.target.value)} value={searchRole}>
                                     <option value="">Role</option>
@@ -355,17 +389,17 @@ export function UsersTableComponent() {
                                     <option value="Admin">Admin</option>
                                 </Form.Select>
                             </th>
-                            <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>Clear Filters</Button></th>
+                            <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>{t('dashboard_clear_filters')}</Button></th>
                         </tr>
                         :
                         <tr>
                             <th>ID</th>
-                            <th>First name</th>
-                            <th>Last name</th>
+                            <th>{t('dashboard_firstname')}</th>
+                            <th>{t('dashboard_lastname')}</th>
                             <th>Email</th>
-                            <th>Licenses</th>
-                            <th>Role</th>
-                            <th>Actions</th>
+                            <th>{t('dashboard_licenses')}</th>
+                            <th>{t('dashboard_role')}</th>
+                            <th>{t('dashboard_actions')}</th>
                         </tr>
                     }
 
