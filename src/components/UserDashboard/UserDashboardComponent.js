@@ -1,6 +1,6 @@
 import './userDashboardComponent.css'
 import React from 'react';
-import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown, Glyphicon, Button, Badge } from 'react-bootstrap';
+import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown, Glyphicon, Button, Table, Badge } from 'react-bootstrap';
 
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import logo from '../../assets/Logo.svg';
 import { MdLanguage, MdPerson } from "react-icons/md";
 
 import { authAtom } from '../../state';
+import {NavigationBarComponent} from '../';
 
 export function UserDashboard() {
 
@@ -46,30 +47,7 @@ export function UserDashboard() {
 
     return (
         <div className="Full" >
-
-            <Navbar bg="dark">
-                <Navbar.Brand href="#home">
-                    <img
-                        src={logo}
-                        width="50%"
-                        height="50%"
-                        className="d-inline-block ms-5"
-                        alt="React Bootstrap logo"
-                    />
-                </Navbar.Brand>
-                <Container className="d-flex justify-content-end">
-                    <Nav.Link href="#profile" >
-                        <MdPerson color="white" size="2em" />
-                    </Nav.Link>
-                    <NavDropdown title={navDropdownTitle} color="white" id="basic-nav-dropdown" >
-                        <NavDropdown.Item href="#action/3.1">Dutch</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4">English</NavDropdown.Item>
-                    </NavDropdown>
-                </Container>
-
-            </Navbar>
-
+            <NavigationBarComponent/>
             <Container fluid className="pt-3">
                 <Row>
                     <Col>
@@ -82,7 +60,7 @@ export function UserDashboard() {
                             </Card.Header>
                             <Card.Body style={{ backgroundColor: "white" }}>
 
-                                <table className="table hover responsive">
+                                <Table striped hover responsive>
                                     <thead>
                                         <tr>
                                             <th scope="col">Licenses</th>
@@ -114,7 +92,7 @@ export function UserDashboard() {
                                         }
                                         ) : null}
                                     </tbody>
-                                </table>
+                                </Table>
 
                             </Card.Body>
                         </Card>

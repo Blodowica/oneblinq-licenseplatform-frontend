@@ -4,41 +4,14 @@ import { MdLanguage, MdPerson } from "react-icons/md";
 import { Container, Nav, Navbar, NavDropdown, Button, InputGroup, Form, Card, Col, Row } from "react-bootstrap";
 import logo from "../../assets/Logo.svg";
 import {useRequestWrapper} from "../../middleware";
+import {NavigationBarComponent} from "../"
+import {CgCollage} from "react-icons/all";
 //import {DashboardBaseComponent} from "../DashboardBase/DashboardBaseComponent";
 
 export function UserProfilePageComponent() {
 
     const requestWrapper = useRequestWrapper();
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/account`;
-
-    function NavigationBar() {
-        const navDropdownTitle = (<MdLanguage color="white" size="2em" />);
-
-        return (
-            <Navbar bg="dark">
-                <Navbar.Brand href="/dashboard">
-                    <img
-                        src={logo}
-                        width="50%"
-                        height="50%"
-                        className="d-inline-block ms-5"
-                        alt="React Bootstrap logo"
-                    />
-                </Navbar.Brand>
-                <Container className="d-flex justify-content-end">
-                    <Nav.Link href="#profile" >
-                        <MdPerson color="white" size="2em" />
-                    </Nav.Link>
-                    <NavDropdown title={navDropdownTitle} color="white" id="basic-nav-dropdown" >
-                        <NavDropdown.Item href="#action/3.1">Dutch</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4">English</NavDropdown.Item>
-                    </NavDropdown>
-                </Container>
-
-            </Navbar>
-        )
-    }
 
     function ChangePassword() {
         // const currentPassword = "currentPassword";
@@ -314,7 +287,8 @@ export function UserProfilePageComponent() {
                             }
                         </Col>
                     </Row>
-                    <Row className="d-flex justify-content-between mt-4 pt-2" lg="6">
+                    <Row className="d-flex justify-content-between mt-4 pt-2" fluid>
+                        <Col xs="9">
                         {!editFormat ?
                         <Button
                                 style={{
@@ -337,7 +311,8 @@ export function UserProfilePageComponent() {
                                         border: "transparent",
                                         visibility: "visible"
                                     }}>Cancel</Button> }
-
+                        </Col>
+                        <Col className="d-flex ms-auto" xs="9">
                         {!editFormat ?
                             <Button onClick={() => setEditFormat(true)}
                                     style={{
@@ -360,6 +335,7 @@ export function UserProfilePageComponent() {
                                         fontSize: "22px",
                                         border: "transparent"
                                     }}>Save changes</Button> }
+                        </Col>
                     </Row>
                 </Container>
             </Card>
@@ -369,7 +345,7 @@ export function UserProfilePageComponent() {
     return (
         <>
             <div className="Full">
-                <NavigationBar />
+                <NavigationBarComponent />
                 <Container fluid className="mt-3">
                     <Row>
                         <Col xs lg="3">
