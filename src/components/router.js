@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
-// import { Sugar } from 'react-preloaders2';
+import { Sugar } from 'react-preloaders2'
 
 import * as Components from './index';
 import { useAuth } from '../actions';
@@ -38,7 +38,7 @@ const Routes = () => {
 
     return (
         <main>
-            {/* <Sugar customLoading={isLoading} background="#010115" color="#b2b2b2" time={0}/> */}
+            <Sugar customLoading={isLoading} background="#010115" color="#b2b2b2" time={0}/>
             <Switch>
                 {!authState &&
                 <Route path={['/login', '/']} component={Components.LrBaseComponent}/>
