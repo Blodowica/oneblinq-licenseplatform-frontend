@@ -172,6 +172,7 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={firstName}
+                                    placeholder="First name"
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
@@ -189,6 +190,7 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={lastName}
+                                    placeholder="Last name"
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
@@ -208,14 +210,17 @@ export function UserProfilePageComponent() {
                                     type="email"
                                     readOnly
                                     value={email}
+                                    placeholder="email@gmail.com"
                                     style={{width: '80%'}}
                                 />
                                 :
                                 <Form.Control
                                     type="email"
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Email"
+                                    onChange={(e) => {
+                                        setEmail(e.target.value);
+                                    }}
+                                    placeholder="email@gmail.com"
                                     style={{width: '80%'}}
                                 />
                             }
@@ -235,10 +240,9 @@ export function UserProfilePageComponent() {
                                     value={birthdate}
                                     onChange={(e) => {
                                         setBirthdate(e.target.value);
-                                        console.log(birthdate);
+                                        console.log(e.target.value);
                                     }}
                                     style={{width: '80%'}}
-                                    placeholder="Country"
                                 />
                             }
                         </Col>
@@ -258,6 +262,7 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={address}
+                                    placeholder="Address"
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
@@ -275,6 +280,7 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={postalCode}
+                                    placeholder="1234 AB"
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
@@ -294,6 +300,7 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={city}
+                                    placeholder="City"
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
@@ -311,6 +318,7 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={country}
+                                    placeholder="Country"
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
