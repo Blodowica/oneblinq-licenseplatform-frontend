@@ -61,7 +61,7 @@ export function LicenseTableComponent() {
       if (paginationPage > response.maxPages) {
         setPaginationPage(1);
       }
-      setLicenses(response.licenses);
+      setLicenses(response.records);
     }).catch((er) => {
       setLicenses(null)
       console.log(er)

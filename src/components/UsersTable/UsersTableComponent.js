@@ -92,7 +92,7 @@ export function UsersTableComponent() {
             if (paginationPage > response.maxPages) {
                 setPaginationPage(1);
             }
-            setUsers(response.users);
+            setUsers(response.records);
         }).catch((er) => {
             setUsers(null)
             console.log(er)

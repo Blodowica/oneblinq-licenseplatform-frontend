@@ -63,7 +63,7 @@ export function ProductsTableComponent() {
                 if (paginationPage > response.maxPages) {
                     setPaginationPage(1);
                 }
-                setProducts(response.products);
+                setProducts(response.records);
             }).catch((er) => {
                 setProducts(null)
                 console.log(er)

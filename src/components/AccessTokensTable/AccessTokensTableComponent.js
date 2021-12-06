@@ -65,11 +65,11 @@ export function AccessTokensTableComponent() {
                 if (paginationPage > response.maxPages) {
                     setPaginationPage(1);
                 }
-                response.accessTokens.forEach(token => {
+                response.records.forEach(token => {
                     var displayDate = new Date(Date.parse(token.createdAt))
                     token.createdAt = `${displayDate.getDate()}-${displayDate.getMonth() + 1}-${displayDate.getFullYear()}`
                 });
-                setAccessTokens(response.accessTokens);
+                setAccessTokens(response.records);
             }).catch((er) => {
                 setAccessTokens(null)
                 console.log(er)
