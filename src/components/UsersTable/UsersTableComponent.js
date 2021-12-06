@@ -1,17 +1,18 @@
-import './UsersTableComponent.css'
-import { PaginationNavigationComponent, GlobalFilterComponent } from '../index'
-import { Table, Button, Modal, Row, Col, Form } from 'react-bootstrap';
-import { atom, useRecoilState, useRecoilValue } from 'recoil';
-import { useEffect, useState } from 'react';
-import { useRequestWrapper } from '../../middleware';
-import { MdOutlineManageSearch, MdContentCopy, MdLibraryAddCheck, MdOutlineError } from "react-icons/md";
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import i18n from "i18next";
-import { useTranslation, initReactI18next } from "react-i18next";
 import languageDetector from 'i18next-browser-languagedetector';
 import HttpApi from 'i18next-http-backend';
+import { useEffect, useRef, useState } from 'react';
+import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { initReactI18next, useTranslation } from "react-i18next";
+import { MdContentCopy, MdLibraryAddCheck, MdOutlineError } from "react-icons/md";
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRequestWrapper } from '../../middleware';
+import { TableAmountAtom, TableFiltersAtom, TablePageAtom, TableSearchToggleAtom } from '../../state';
+import { GlobalFilterComponent, PaginationNavigationComponent } from '../index';
+import { Localization } from '../Localization/LocalizationComponent';
+import './UsersTableComponent.css';
 
-import { Localization } from '../Localization/LocalizationComponent'
 <Localization />
 i18n
     .use(initReactI18next)
@@ -42,64 +43,72 @@ i18n
 export function UsersTableComponent() {
     //setup i18next
     const { t } = useTranslation();
-    //Recoil setup
-    const paginationPageState = atom({ key: 'userPaginationPageState', default: 1, });
-    const recordsCountState = atom({ key: 'userRecordsCountState', default: 10, });
-    const filterSearchStringState = atom({ key: 'userFilterSearchStringState', default: "", });
-    const filterDetailedSearchState = atom({ key: 'userFilterDetailedSearchState', default: false, });
-
+    
     //general setup
+    const requestWrapper = useRequestWrapper()
+    const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/`;
+
     const [users, setUsers] = useState("");
     const [modalShow, setModalShow] = useState(false);
     const [detailedUser, setDetailedUser] = useState();
-    const requestWrapper = useRequestWrapper()
     const [copiedText, setCopiedText] = useState("");
-    const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/`;
     const [showCreateAdmin, setShowCreateAdmin] = useState(false);
     const [updateTable, setUpdateTable] = useState(false);
     const [editUser, setEditUser] = useState(false);
 
-    //Filtering
-    const detailedSearch = useRecoilValue(filterDetailedSearchState);
-    const recordsCount = useRecoilValue(recordsCountState);
-    const searchString = useRecoilValue(filterSearchStringState);
+    //filtering delay
+    const [timer, setTimer] = useState(null);
+    const isMounted = useRef(false);
 
-    const [searchId, setSearchId] = useRecoilState(atom({ key: 'userFilterId', default: "", }));
-    const [searchFirstName, setSearchFirstName] = useRecoilState(atom({ key: 'userFilterFirstName', default: "", }));
-    const [searchLastName, setSearchLastName] = useRecoilState(atom({ key: 'userFilterLastName', default: "", }));
-    const [searchEmail, setSearchEmail] = useRecoilState(atom({ key: 'userFilterEmail', default: "", }));
-    const [searchLicenses, setSearchLicenses] = useRecoilState(atom({ key: 'userFilterLicenses', default: "", }));
-    const [searchRole, setSearchRole] = useRecoilState(atom({ key: 'userFilterRole', default: "", }));
+    //Filtering
+    const detailedSearch = useRecoilValue(TableSearchToggleAtom("User"));
+    const recordsCount = useRecoilValue(TableAmountAtom("User"));
+    const searchString = useRecoilValue(TableFiltersAtom("User"));
+
+    const [searchId, setSearchId] = useRecoilState(TableFiltersAtom("UserId"));
+    const [searchFirstName, setSearchFirstName] = useRecoilState(TableFiltersAtom("UserFirstName"));
+    const [searchLastName, setSearchLastName] = useRecoilState(TableFiltersAtom("UserLastName"));
+    const [searchEmail, setSearchEmail] = useRecoilState(TableFiltersAtom("UserEmail"));
+    const [searchLicenses, setSearchLicenses] = useRecoilState(TableFiltersAtom("UserLicenses"));
+    const [searchRole, setSearchRole] = useRecoilState(TableFiltersAtom("UserRole"));
 
     //Pagination
     const [paginationPages, setPaginationPages] = useState(1);
-    const [paginationPage, setPaginationPage] = useRecoilState(paginationPageState);
+    const [paginationPage, setPaginationPage] = useRecoilState(TablePageAtom("User"));
+
+    function FetchUsers() {
+        requestWrapper.post(`${baseUrl}pagination/get-users`,
+        {
+            globalFilter: searchString,
+            filterId: searchId,
+            filterFirstName: searchFirstName,
+            filterLastName: searchLastName,
+            filterEmail: searchEmail,
+            filterLicenseCount: searchLicenses,
+            filterRole: searchRole,
+            pageNumber: paginationPage,
+            pageSize: recordsCount,
+        })
+        .then(response => {
+            setPaginationPages(response.maxPages);
+            if (paginationPage > response.maxPages) {
+                setPaginationPage(1);
+            }
+            setUsers(response.users);
+        }).catch((er) => {
+            setUsers(null)
+            console.log(er)
+        });
+    }
 
     useEffect(() => {
-        requestWrapper.post(`${baseUrl}pagination/get-users`,
-            {
-                globalFilter: searchString,
-                filterId: searchId,
-                filterFirstName: searchFirstName,
-                filterLastName: searchLastName,
-                filterEmail: searchEmail,
-                filterLicenseCount: searchLicenses,
-                filterRole: searchRole,
-                pageNumber: paginationPage,
-                pageSize: recordsCount,
-            })
-            .then(response => {
-                setPaginationPages(response.maxPages);
-                if (paginationPage > response.maxPages) {
-                    setPaginationPage(1);
-                }
-                setUsers(response.users);
-            }).catch((er) => {
-                setUsers(null)
-                console.log(er)
-            });
-    }, [searchString, searchId, searchFirstName, searchLastName, searchEmail, searchLicenses, searchRole, recordsCount, paginationPage, updateTable])
+        FetchUsers();
+    }, [recordsCount, paginationPage, updateTable, searchRole])
 
+    useEffect(() => {
+        clearTimeout(timer);
+        isMounted.current ? setTimer(setTimeout(() => { FetchUsers() }, 300)) : isMounted.current = true;
+    }, [searchString, searchId, searchFirstName, searchLastName, searchEmail, searchLicenses])
 
     //detailed Users display
     function UserModal({ onHide, user, show }) {
@@ -359,7 +368,7 @@ export function UsersTableComponent() {
         <>
             <Row className="d-flex">
                 <Col xs lg="9">
-                    <GlobalFilterComponent recordsCountState={recordsCountState} filterSearchStringState={filterSearchStringState} filterDetailedSearchState={filterDetailedSearchState} />
+                    <GlobalFilterComponent table="User"/>
                 </Col>
                 <Col xs lg="3">
                     <Button variant="primary" className="p-1 d-flex ms-auto me-3" onClick={() => {
@@ -430,7 +439,7 @@ export function UsersTableComponent() {
 
                 </tbody>
             </Table>
-            <PaginationNavigationComponent paginationPages={paginationPages} paginationPageState={paginationPageState} />
+            <PaginationNavigationComponent table="User" pages={paginationPages} />
         </>
     )
 

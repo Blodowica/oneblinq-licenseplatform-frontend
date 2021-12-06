@@ -1,11 +1,12 @@
 import { useRecoilState } from 'recoil';
 import { Row, Col, Form } from 'react-bootstrap';
 import { MdOutlineManageSearch } from "react-icons/md";
+import { TableAmountAtom, TableFiltersAtom, TableSearchToggleAtom } from '../../state';
 
-export function GlobalFilterComponent({ recordsCountState, filterSearchStringState, filterDetailedSearchState }) {
-  const [recordsCount, setRecordsCount] = useRecoilState(recordsCountState);
-  const [searchString, setSearchString] = useRecoilState(filterSearchStringState);
-  const [detailedSearch, setDetailedSearch] = useRecoilState(filterDetailedSearchState);
+export function GlobalFilterComponent({ table }) {
+  const [recordsCount, setRecordsCount] = useRecoilState(TableAmountAtom(table));
+  const [searchString, setSearchString] = useRecoilState(TableFiltersAtom(table));
+  const [detailedSearch, setDetailedSearch] = useRecoilState(TableSearchToggleAtom(table));
 
   return (
     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">

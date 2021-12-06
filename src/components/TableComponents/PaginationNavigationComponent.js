@@ -1,9 +1,10 @@
 import { Row } from 'react-bootstrap';
 import { RiArrowRightLine, RiArrowLeftLine } from "react-icons/ri";
 import { useRecoilState } from 'recoil';
+import { TablePageAtom } from '../../state';
 
-export function PaginationNavigationComponent({ paginationPages, paginationPageState }) {
-    const [paginationPage, setPaginationPage] = useRecoilState(paginationPageState);
+export function PaginationNavigationComponent({ pages, table }) {
+    const [paginationPage, setPaginationPage] = useRecoilState(TablePageAtom(table));
 
     return (
         <Row className="d-flex pe-4 overflow-auto">
@@ -11,7 +12,7 @@ export function PaginationNavigationComponent({ paginationPages, paginationPageS
                 <li className="page-item PointOnHover">
                     <a className="page-link" onClick={() => PreviousPage()}><RiArrowLeftLine /></a>
                 </li>
-                {(paginationPage < 3 || paginationPages == 3) ?
+                {(paginationPage < 3 || pages == 3) ?
                     <></>
                     :
                     <>
@@ -21,18 +22,18 @@ export function PaginationNavigationComponent({ paginationPages, paginationPageS
                 {paginationPage == 1 ?
                     <>
                         <li className="page-item disabled"><a className="page-link">1</a></li>
-                        {paginationPages > 1 &&
+                        {pages > 1 &&
                             <li className="page-item PointOnHover"><a className="page-link" onClick={() => setPaginationPage(2)}>2</a></li>
                         }
-                        {paginationPages > 2 &&
+                        {pages > 2 &&
                             <li className="page-item PointOnHover"><a className="page-link" onClick={() => setPaginationPage(3)}>3</a></li>
                         }
                     </>
                     :
                     <>
-                        {paginationPage == paginationPages ?
+                        {paginationPage == pages ?
                             <>
-                            {paginationPages != 2 &&
+                            {pages != 2 &&
                                 <li className="page-item PointOnHover"><a className="page-link" onClick={() => setPaginationPage(paginationPage - 2)}>{paginationPage - 2}</a></li>
                             }
                                 <li className="page-item PointOnHover"><a className="page-link" onClick={() => setPaginationPage(paginationPage - 1)}>{paginationPage - 1}</a></li>
@@ -47,11 +48,11 @@ export function PaginationNavigationComponent({ paginationPages, paginationPageS
                         }
                     </>
                 }
-                {(paginationPages < 4) || (paginationPage > paginationPages - 2) ?
+                {(pages < 4) || (paginationPage > pages - 2) ?
                     <></>
                     :
                     <>
-                        <li className="page-item PointOnHover"><a className="page-link" onClick={() => setPaginationPage(paginationPages)}>{paginationPages}</a></li>
+                        <li className="page-item PointOnHover"><a className="page-link" onClick={() => setPaginationPage(pages)}>{pages}</a></li>
                     </>
                 }
                 <li className="page-item PointOnHover">
@@ -62,7 +63,7 @@ export function PaginationNavigationComponent({ paginationPages, paginationPageS
     );
 
     function NextPage() {
-        if (paginationPage + 1 <= paginationPages) {
+        if (paginationPage + 1 <= pages) {
             setPaginationPage(paginationPage + 1);
         }
     }

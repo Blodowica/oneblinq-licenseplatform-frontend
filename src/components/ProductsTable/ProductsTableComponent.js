@@ -1,49 +1,51 @@
-import './ProductsTableComponent.css'
-import { PaginationNavigationComponent, GlobalFilterComponent } from '../index'
-import { Table, Button, Row, Col, Form } from 'react-bootstrap';
-import { atom, useRecoilState, useRecoilValue } from 'recoil';
-import { useEffect, useState } from 'react';
-import { useRequestWrapper } from '../../middleware';
+import { useEffect, useRef, useState } from 'react';
+import { Button, Col, Form, Row, Table } from 'react-bootstrap';
+import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from "react-i18next";
 import { FaEdit } from "react-icons/fa";
 import { IoMdCheckboxOutline } from "react-icons/io";
-import "react-datepicker/dist/react-datepicker.css";
-import { useTranslation, initReactI18next } from "react-i18next";
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRequestWrapper } from '../../middleware';
+import { TableAmountAtom, TableFiltersAtom, TablePageAtom, TableSearchToggleAtom } from '../../state';
+import { GlobalFilterComponent, PaginationNavigationComponent } from '../index';
+import './ProductsTableComponent.css';
 
 export function ProductsTableComponent() {
     //setup i18next
     const { t } = useTranslation();
-    //Recoil setup
-    const paginationPageState = atom({ key: 'ProductPaginationPageState', default: 1, });
-    const recordsCountState = atom({ key: 'ProductPaginationPageStateRecordsCountState', default: 10, });
-    const filterSearchStringState = atom({ key: 'ProductPaginationPageStateFilterSearchStringState', default: "", });
-    const filterDetailedSearchState = atom({ key: 'ProductPaginationPageStateFilterDetailedSearchState', default: false, });
 
     //general setup
-    const [updateTable, setUpdateTable] = useState(false);
-    const [products, setProducts] = useState("");
     const requestWrapper = useRequestWrapper()
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/`;
+
+    const [updateTable, setUpdateTable] = useState(false);
+    const [products, setProducts] = useState("");
+
+    //filtering delay
+    const [timer, setTimer] = useState(null);
+    const isMounted = useRef(false);
+
     //edit max uses
     const [editingRow, setEditingRow] = useState(null);
     const [newMaxUses, setNewMaxUses] = useState("");
 
     //Filtering
-    const detailedSearch = useRecoilValue(filterDetailedSearchState);
-    const recordsCount = useRecoilValue(recordsCountState);
-    const searchString = useRecoilValue(filterSearchStringState);
+    const detailedSearch = useRecoilValue(TableSearchToggleAtom("Product"));
+    const recordsCount = useRecoilValue(TableAmountAtom("Product"));
+    const searchString = useRecoilValue(TableFiltersAtom("Product"));
 
-    const [searchId, setSearchId] = useRecoilState(atom({ key: 'ProductFilterId', default: "", }));
-    const [searchProductName, setSearchProductName] = useRecoilState(atom({ key: 'ProductFilterProductName', default: "", }));
-    const [searchVariantname, setSearchVariantName] = useRecoilState(atom({ key: 'ProductFilterVariantName', default: "", }));
-    const [searchActive, setSearchStatus] = useRecoilState(atom({ key: 'ProductFilterActive', default: "", }));
-    const [searchLicenses, setSearchLicenses] = useRecoilState(atom({ key: 'ProductFilterLicenses', default: "", }));
-    const [searchMaxUses, setSearchMaxUses] = useRecoilState(atom({ key: 'ProductFilterMaxUses', default: "", }));
+    const [searchId, setSearchId] = useRecoilState(TableFiltersAtom("ProductId"));
+    const [searchProductName, setSearchProductName] = useRecoilState(TableFiltersAtom("ProductName"));
+    const [searchVariantname, setSearchVariantName] = useRecoilState(TableFiltersAtom("ProductVariant"));
+    const [searchActive, setSearchStatus] = useRecoilState(TableFiltersAtom("ProductStatus"));
+    const [searchLicenses, setSearchLicenses] = useRecoilState(TableFiltersAtom("ProductLicenses"));
+    const [searchMaxUses, setSearchMaxUses] = useRecoilState(TableFiltersAtom("ProductMaxUses"));
 
     //Pagination
     const [paginationPages, setPaginationPages] = useState(1);
-    const [paginationPage, setPaginationPage] = useRecoilState(paginationPageState);
+    const [paginationPage, setPaginationPage] = useRecoilState(TablePageAtom("Product"));
 
-    useEffect(() => {
+    function FetchProducts() {
         requestWrapper.post(`${baseUrl}pagination/get-Products`,
             {
                 globalFilter: searchString,
@@ -66,14 +68,23 @@ export function ProductsTableComponent() {
                 setProducts(null)
                 console.log(er)
             });
-    }, [searchString, searchId, searchProductName, searchVariantname, searchActive, searchLicenses, searchMaxUses, recordsCount, paginationPage, updateTable])
+    }
+
+    useEffect(() => {
+        FetchProducts();
+    }, [recordsCount, paginationPage, updateTable, searchActive])
+
+    useEffect(() => {
+        clearTimeout(timer);
+        isMounted.current ? setTimer(setTimeout(() => { FetchProducts() }, 300)) : isMounted.current = true;
+    }, [searchString, searchId, searchProductName, searchVariantname, searchLicenses, searchMaxUses])
 
     //table render
     return (
         <>
             <Row className="d-flex">
                 <Col xs lg="9">
-                    <GlobalFilterComponent recordsCountState={recordsCountState} filterSearchStringState={filterSearchStringState} filterDetailedSearchState={filterDetailedSearchState} />
+                    <GlobalFilterComponent table="Product" />
                 </Col>
                 <Col xs lg="3">
                     <Button variant="primary" className="p-1 d-flex ms-auto me-3" onClick={() => {
@@ -169,7 +180,7 @@ export function ProductsTableComponent() {
                         : null}
                 </tbody>
             </Table>
-            <PaginationNavigationComponent paginationPages={paginationPages} paginationPageState={paginationPageState} />
+            <PaginationNavigationComponent table="Product" pages={paginationPages}/>
         </>
     )
 

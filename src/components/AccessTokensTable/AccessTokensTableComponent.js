@@ -2,51 +2,52 @@ import './AccessTokensTableComponent.css'
 import { PaginationNavigationComponent, GlobalFilterComponent } from '../index'
 import { Table, Button, Modal, Row, Col, Form, Alert } from 'react-bootstrap';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { useRequestWrapper } from '../../middleware';
 import { MdOutlineManageSearch, MdContentCopy, MdLibraryAddCheck, MdOutlineError } from "react-icons/md";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation, initReactI18next } from "react-i18next";
+import { AccessTokenWarningAtom, TableAmountAtom, TableFiltersAtom, TablePageAtom, TableSearchToggleAtom } from '../../state';
 
 export function AccessTokensTableComponent() {
     //setup i18next
     const { t } = useTranslation();
-    //Recoil setup
-    const paginationPageState = atom({ key: 'accessTokenPaginationPageState', default: 1, });
-    const recordsCountState = atom({ key: 'accessTokenPaginationPageStateRecordsCountState', default: 10, });
-    const filterSearchStringState = atom({ key: 'accessTokenPaginationPageStateFilterSearchStringState', default: "", });
-    const filterDetailedSearchState = atom({ key: 'accessTokenPaginationPageStateFilterDetailedSearchState', default: false, });
 
     //general setup
-    const [updateTable, setUpdateTable] = useState(false);
-    const [showAlert, setShowAlert] = useRecoilState(atom({ key: 'accessTokenShowAlert', default: true, }));
-    const [accessTokens, setAccessTokens] = useState("");
-    const requestWrapper = useRequestWrapper()
-    const [copiedText, setCopiedText] = useState("");
+    const requestWrapper = useRequestWrapper();
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/`;
+
+    const [updateTable, setUpdateTable] = useState(false);
+    const [showAlert, setShowAlert] = useRecoilState(AccessTokenWarningAtom);
+    const [accessTokens, setAccessTokens] = useState("");
+    const [copiedText, setCopiedText] = useState("");
+    
+    //filtering delay
+    const [timer, setTimer] = useState(null);
+    const isMounted = useRef(false);
+    
     //datePicker Form
-    // const DatePickerForm = <Form.Control placeholder="Created" />
     const DatePickerForm = forwardRef(({ value, onClick }, ref) => (
         <Form.Control value={value} onChange={() => { }} placeholder="Created" onClick={onClick} />
     ));
     //Filtering
-    const detailedSearch = useRecoilValue(filterDetailedSearchState);
-    const recordsCount = useRecoilValue(recordsCountState);
-    const searchString = useRecoilValue(filterSearchStringState);
+    const detailedSearch = useRecoilValue(TableSearchToggleAtom("AccessToken"));
+    const recordsCount = useRecoilValue(TableAmountAtom("AccessToken"));
+    const searchString = useRecoilValue(TableFiltersAtom("AccessToken"));
 
-    const [searchId, setSearchId] = useRecoilState(atom({ key: 'accessTokenFilterId', default: "", }));
-    const [searchAccesstoken, setSearchAccessToken] = useRecoilState(atom({ key: 'AccessTokenFilterAccessToken', default: "", }));
-    const [searchEmail, setSearchEmail] = useRecoilState(atom({ key: 'AccessTokenFilterEmail', default: "", }));
-    const [searchActive, setSearchStatus] = useRecoilState(atom({ key: 'AccessTokenFilterActive', default: "", }));
-    const [searchCreatedAt, setSearchCreatedAt] = useRecoilState(atom({ key: 'AccesstokenFilterCreatedAt', default: null, }));
+    const [searchId, setSearchId] = useRecoilState(TableFiltersAtom("AccessTokenId"));
+    const [searchAccesstoken, setSearchAccessToken] = useRecoilState(TableFiltersAtom("AccessTokenToken"));
+    const [searchEmail, setSearchEmail] = useRecoilState(TableFiltersAtom("AccessTokenEmail"));
+    const [searchActive, setSearchStatus] = useRecoilState(TableFiltersAtom("AccessTokenStatus"));
+    const [searchCreatedAt, setSearchCreatedAt] = useRecoilState(TableFiltersAtom("AccessTokenCreatedAt"));
 
     //Pagination
     const [paginationPages, setPaginationPages] = useState(1);
-    const [paginationPage, setPaginationPage] = useRecoilState(paginationPageState);
+    const [paginationPage, setPaginationPage] = useRecoilState(TablePageAtom("AccessToken"));
 
-    useEffect(() => {
+    function fetchAccessTokens() {
         var expiresAtDate = new Date(Date.parse(searchCreatedAt));
         requestWrapper.post(`${baseUrl}pagination/get-AccessTokens`,
             {
@@ -73,7 +74,16 @@ export function AccessTokensTableComponent() {
                 setAccessTokens(null)
                 console.log(er)
             });
-    }, [searchString, searchId, searchAccesstoken, searchEmail, searchActive, searchCreatedAt, recordsCount, paginationPage, updateTable])
+    }
+
+    useEffect(() => {
+        fetchAccessTokens();
+    }, [recordsCount, paginationPage, updateTable, searchActive, searchCreatedAt])
+
+    useEffect(() => {
+        clearTimeout(timer);
+        isMounted.current ? setTimer(setTimeout(() => { fetchAccessTokens() }, 300)) : isMounted.current = true;
+    }, [searchString, searchId, searchAccesstoken, searchEmail])
 
     //table render
     return (
@@ -88,7 +98,7 @@ export function AccessTokensTableComponent() {
             }
             <Row className="d-flex">
                 <Col xs lg="9">
-                    <GlobalFilterComponent recordsCountState={recordsCountState} filterSearchStringState={filterSearchStringState} filterDetailedSearchState={filterDetailedSearchState} />
+                    <GlobalFilterComponent table="AccessToken" />
                 </Col>
                 <Col xs lg="3">
                     <Button variant="primary" className="p-1 d-flex ms-auto me-3" onClick={() => {
@@ -190,7 +200,7 @@ export function AccessTokensTableComponent() {
                     }
                 </tbody>
             </Table>
-            <PaginationNavigationComponent paginationPages={paginationPages} paginationPageState={paginationPageState} />
+            <PaginationNavigationComponent table="AccessToken" pages={paginationPages} />
         </>
     )
 
