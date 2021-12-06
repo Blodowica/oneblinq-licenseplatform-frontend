@@ -38,8 +38,6 @@ i18n
         react: { useSuspense: false }
     })
 
-
-
 export function UsersTableComponent() {
     //setup i18next
     const { t } = useTranslation();

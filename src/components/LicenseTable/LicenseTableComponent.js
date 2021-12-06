@@ -9,8 +9,6 @@ import { TableAmountAtom, TableFiltersAtom, TablePageAtom, TableSearchToggleAtom
 import { GlobalFilterComponent, PaginationNavigationComponent } from '../index';
 import './LicenseTableComponent.css';
 
-
-
 export function LicenseTableComponent() {
   // setup i18next
   const { t } = useTranslation();
@@ -212,7 +210,7 @@ useEffect(() => {
               <th><Form.Control onChange={(e) => setSearchEmail(e.target.value.toLowerCase())} value={searchEmail} placeholder="Email" /></th>
               <th><Form.Control type="number" onChange={(e) => setSearchActivations(e.target.value)} value={searchActivations} placeholder={t('dashboard_activations')} /></th>
               <th>
-                <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown">
+                <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown" value={searchStatus}>
                   <option value="">Status</option>
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>

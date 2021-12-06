@@ -40,7 +40,7 @@ export function AccessTokensTableComponent() {
     const [searchId, setSearchId] = useRecoilState(TableFiltersAtom("AccessTokenId"));
     const [searchAccesstoken, setSearchAccessToken] = useRecoilState(TableFiltersAtom("AccessTokenToken"));
     const [searchEmail, setSearchEmail] = useRecoilState(TableFiltersAtom("AccessTokenEmail"));
-    const [searchActive, setSearchStatus] = useRecoilState(TableFiltersAtom("AccessTokenStatus"));
+    const [searchStatus, setSearchStatus] = useRecoilState(TableFiltersAtom("AccessTokenStatus"));
     const [searchCreatedAt, setSearchCreatedAt] = useRecoilState(TableFiltersAtom("AccessTokenCreatedAt"));
 
     //Pagination
@@ -55,7 +55,7 @@ export function AccessTokensTableComponent() {
                 filterId: searchId,
                 filterAccesstoken: searchAccesstoken,
                 filterEmail: searchEmail,
-                FilterActive: searchActive,
+                FilterActive: searchStatus,
                 filterCreatedAt: expiresAtDate.toJSON(),
                 pageNumber: paginationPage,
                 pageSize: recordsCount,
@@ -78,7 +78,7 @@ export function AccessTokensTableComponent() {
 
     useEffect(() => {
         fetchAccessTokens();
-    }, [recordsCount, paginationPage, updateTable, searchActive, searchCreatedAt])
+    }, [recordsCount, paginationPage, updateTable, searchStatus, searchCreatedAt])
 
     useEffect(() => {
         clearTimeout(timer);
@@ -135,7 +135,7 @@ export function AccessTokensTableComponent() {
                                 />
                             </th>
                             <th>
-                                <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown">
+                                <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown" value={searchStatus}>
                                     <option value="">Status</option>
                                     <option value="true">Active</option>
                                     <option value="false">Inactive</option>

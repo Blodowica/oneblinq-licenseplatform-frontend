@@ -37,7 +37,7 @@ export function ProductsTableComponent() {
     const [searchId, setSearchId] = useRecoilState(TableFiltersAtom("ProductId"));
     const [searchProductName, setSearchProductName] = useRecoilState(TableFiltersAtom("ProductName"));
     const [searchVariantname, setSearchVariantName] = useRecoilState(TableFiltersAtom("ProductVariant"));
-    const [searchActive, setSearchStatus] = useRecoilState(TableFiltersAtom("ProductStatus"));
+    const [searchStatus, setSearchStatus] = useRecoilState(TableFiltersAtom("ProductStatus"));
     const [searchLicenses, setSearchLicenses] = useRecoilState(TableFiltersAtom("ProductLicenses"));
     const [searchMaxUses, setSearchMaxUses] = useRecoilState(TableFiltersAtom("ProductMaxUses"));
 
@@ -52,7 +52,7 @@ export function ProductsTableComponent() {
                 filterId: searchId,
                 filterProductName: searchProductName,
                 filterVariantName: searchVariantname,
-                FilterActive: searchActive,
+                FilterActive: searchStatus,
                 filterLicenseCount: searchLicenses,
                 filterMaxUses: searchMaxUses,
                 pageNumber: paginationPage,
@@ -72,7 +72,7 @@ export function ProductsTableComponent() {
 
     useEffect(() => {
         FetchProducts();
-    }, [recordsCount, paginationPage, updateTable, searchActive])
+    }, [recordsCount, paginationPage, updateTable, searchStatus])
 
     useEffect(() => {
         clearTimeout(timer);
@@ -109,7 +109,7 @@ export function ProductsTableComponent() {
                             <th><Form.Control type="number" onChange={(e) => setSearchMaxUses(e.target.value)} value={searchMaxUses} placeholder={t('dashboard_maxuses')} /></th>
                             <th><Form.Control type="number" onChange={(e) => setSearchLicenses(e.target.value)} value={searchLicenses} placeholder={t('dashboard_licenses')} /></th>
                             <th>
-                                <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown">
+                                <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown" value={searchStatus}>
                                     <option value="">Status</option>
                                     <option value="true">Active</option>
                                     <option value="false">Inactive</option>
