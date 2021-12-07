@@ -4,7 +4,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import logo from '../../assets/Logo.svg';
 import { MdLanguage, MdPerson } from "react-icons/md";
-import { AccessTokensTableComponent, UsersTableComponent, LicenseTableComponent, ProductsTableComponent, NavigationBarComponent } from '../';
+import { AccessTokensTableComponent, UsersTableComponent, LicenseTableComponent, ProductsTableComponent, NavigationBarComponent, FreeTrialComponent } from '../';
 
 export function DashboardBaseComponent() {
 
@@ -37,8 +37,8 @@ export function DashboardBaseComponent() {
         <Tab eventKey="users" title="Users">
           <UsersTableComponent />
         </Tab>
-        <Tab disabled eventKey="freeTrials" title="Free trials">
-          
+        <Tab eventKey="freeTrials" title="Free trials">
+          <FreeTrialComponent />
         </Tab>
         <Tab eventKey="accessTokens" title="Access tokens">
           <AccessTokensTableComponent />
