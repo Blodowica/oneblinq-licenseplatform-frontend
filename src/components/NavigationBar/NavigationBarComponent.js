@@ -28,7 +28,7 @@ export function NavigationBarComponent() {
                 } 
                 id="basic-nav-dropdown">
                 <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-                <NavDropdown.Item href="./" onClick={authActions.logout()}>Logout</NavDropdown.Item>
+                <NavDropdown.Item href="./" onClick={() => authActions.logout()}>Logout</NavDropdown.Item>
             </NavDropdown>
         <NavDropdown align="end" title={navDropdownTitle} variant="dark" className="LanguageDropdownIcon">
           <NavDropdown.Item href="#action/3.1" onClick={() => i18next.changeLanguage('nl')}>Dutch</NavDropdown.Item>
