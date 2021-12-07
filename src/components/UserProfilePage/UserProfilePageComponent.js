@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import './UserProfilePageComponent.css';
-import { MdLanguage, MdPerson } from "react-icons/md";
-import { Container, Nav, Navbar, NavDropdown, Button, InputGroup, Form, Card, Col, Row } from "react-bootstrap";
-import logo from "../../assets/Logo.svg";
+// import { Container, Checkbox, Button, Form, Card, Col, Row } from "react-bootstrap";
+// why cant I get Checkbox from React-bootstrap? I saw an example on stackoverflow
+import { Container, Button, Form, Card, Col, Row } from "react-bootstrap";
 import { useRequestWrapper } from "../../middleware";
 import { NavigationBarComponent } from "../"
-import { CgCollage } from "react-icons/all";
-//import {DashboardBaseComponent} from "../DashboardBase/DashboardBaseComponent";
 
 export function UserProfilePageComponent() {
 
     const requestWrapper = useRequestWrapper();
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/account`;
+    const [ admin, setAdmin] = useState(false);
+
+    useEffect(() => {
+        requestWrapper.get(`${baseUrl}/get-admin`)
+            .then(response => {
+                setAdmin(response);
+            })
+            .catch(er => {
+            console.log(er.message)
+        })
+    })
 
     function ChangePassword() {
         const [currentPassword, setCurrentPassword] = useState("");
@@ -44,11 +53,11 @@ export function UserProfilePageComponent() {
         }
 
         return (
-            <Card style={{ backgroundColor: "#EDEFFC", minHeight: "65vh" }} className="mb-2 mt-4">
+            <Card style={{ backgroundColor: "#EDEFFC", minHeight: "55vh" }} className="mb-2 mt-4">
                 <Container className="mt-4">
                     <h1 className="text-center profilePageHeader">Change password</h1>
-                    <Card.Body className="align-middle mt-3">
-                        <Row className="my-3">
+                    <Card.Body className="align-middle mt-2">
+                        <Row className="my-2">
                             <Form.Label>Current Password</Form.Label>
                             <Form.Control
                                 type="password"
@@ -56,7 +65,7 @@ export function UserProfilePageComponent() {
                                 onChange={(e) => setCurrentPassword(e.target.value)}
                                 placeholder="******" />
                         </Row>
-                        <Row className="my-3">
+                        <Row className="my-2">
                             <Form.Label>New Password</Form.Label>
                             <Form.Control
                                 type="password"
@@ -64,15 +73,18 @@ export function UserProfilePageComponent() {
                                 onChange={(e) => setNewPassword(e.target.value)}
                                 placeholder="******" />
                         </Row>
-                        <Row className="my-3">
+                        <Row className="my-2">
                             <Form.Label>Repeat New Password</Form.Label>
                             <Form.Control
                                 type="password"
                                 value={repeatNewPassword}
-                                onChange={(e) => setRepeatNewPassword(e.target.value)}
+                                onChange={(e) =>
+                                        setRepeatNewPassword(e.target.value)
+                                    }
+
                                 placeholder="******" />
                         </Row>
-                        <Row className="text-center justify-content-center mt-4 pt-2">
+                        <Row className="text-center justify-content-center mt-1 pt-1">
                             <Col xs="11" sm="10">
                                 <Button onClick={() => ChangePasswordAction()}
                                     style={{
@@ -87,6 +99,69 @@ export function UserProfilePageComponent() {
                         </Row>
                     </Card.Body>
                 </Container>
+            </Card>
+        )
+    }
+
+    function SetNotifications() {
+
+        const [abuseNotifications, setAbuseNotifications] = useState("");
+
+        useEffect(() => {
+            requestWrapper.get(`${baseUrl}/get-notification-decisions`)
+                .then(response => {
+                    setAbuseNotifications(response.abuseNotifications)
+                })
+                .catch(er => {
+                    console.log(er)
+                })
+        }, [false])
+
+        function SaveSetNotifications() {
+            requestWrapper.post(`${baseUrl}/set-notification-decisions`, {
+                abuseNotifications: abuseNotifications
+            })
+                .catch(err => {
+                    alert(err.message)
+                })
+        }
+
+        return (
+            <Card style={{ backgroundColor: "#EDEFFC", minHeight: "15vh", flex: "1" }} className="mt-1">
+                <Card.Body className="align-middle p-3 pt-4">
+                    <Row className="text-center">
+                        <h1 className="profilePageHeader">Notifications</h1>
+                    </Row>
+                    <Col className="mt-2">
+                        <Row className="ms-3">
+                            <div className="form-check">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    checked={abuseNotifications}
+                                    onChange={(e) => setAbuseNotifications(e.target.checked)}
+                                    id="defaultCheck1"
+                                />
+                                    <label className="form-check-label" htmlFor="defaultCheck1">
+                                        Get abuse license notifications
+                                    </label>
+                            </div>
+                        </Row>
+                        {/*<Checkbox >Some text</Checkbox>*/}
+                        <Row className="text-center justify-content-center mt-1 pt-1">
+                            <Col xs="11" sm="10" className="text-center">
+                                <Button className="text-center justify-content-center mt-2" onClick={() => SaveSetNotifications()}
+                                        style={{
+                                            borderRadius: "30px",
+                                            backgroundColor: "#EFA9AE",
+                                            color: "#02021E",
+                                            fontSize: "22px",
+                                            border: "transparent"
+                                        }}>Save changes</Button>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Card.Body>
             </Card>
         )
     }
@@ -159,7 +234,7 @@ export function UserProfilePageComponent() {
         }
 
         return (
-            <Card style={{ backgroundColor: "#EDEFFC", minHeight: "65vh", flex: "1" }} className="mt-4">
+            <Card style={{ backgroundColor: "#EDEFFC", minHeight: "79vh", flex: "1" }} className="mt-4">
                 <Container className="p-3 pt-4">
                     <Row className="ms-4">
                         <h1 className="profilePageHeader">Personal details</h1>
@@ -183,7 +258,7 @@ export function UserProfilePageComponent() {
                                     style={{ width: "80%" }} />
                             }
                         </Col>
-                        <Col lg="5" className="offset-xl-1">
+                        <Col lg="5" className="offset-xl-1 mt-sm-1">
                             <Form.Label className="mb-1">Last Name</Form.Label>
                             {!editFormat ?
                                 <Form.Control
@@ -390,6 +465,11 @@ export function UserProfilePageComponent() {
                     <Row>
                         <Col xs lg="3">
                             <ChangePassword />
+                            {admin ?
+                            <SetNotifications />
+                                :
+                                <div />
+                            }
                         </Col>
                         <Col xs lg="9">
                             <EditPersonalInfo />
