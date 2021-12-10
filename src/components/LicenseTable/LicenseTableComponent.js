@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRequestWrapper } from '../../middleware';
 import { MdOutlineError, MdOutlineManageSearch, MdContentCopy, MdLibraryAddCheck } from "react-icons/md";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import i18n from "i18next";
+import i18next from 'i18next';
 import { useTranslation, initReactI18next } from "react-i18next";
 import { Localization } from '../Localization/LocalizationComponent'
 
