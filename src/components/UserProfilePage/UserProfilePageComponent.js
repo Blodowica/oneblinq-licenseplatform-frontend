@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import './UserProfilePageComponent.css';
-import { MdLanguage, MdPerson } from "react-icons/md";
-import { Container, Nav, Navbar, NavDropdown, Button, InputGroup, Form, Card, Col, Row } from "react-bootstrap";
-import logo from "../../assets/Logo.svg";
+// import { Container, Checkbox, Button, Form, Card, Col, Row } from "react-bootstrap";
+// why cant I get Checkbox from React-bootstrap? I saw an example on stackoverflow
+import { Container, Button, Form, Card, Col, Row } from "react-bootstrap";
 import { useRequestWrapper } from "../../middleware";
 import { NavigationBarComponent } from "../"
-import { CgCollage } from "react-icons/all";
-//import {DashboardBaseComponent} from "../DashboardBase/DashboardBaseComponent";
 
 export function UserProfilePageComponent() {
 
     const requestWrapper = useRequestWrapper();
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/account`;
+    const [ admin, setAdmin] = useState(false);
+
+    useEffect(() => {
+        requestWrapper.get(`${baseUrl}/is-user-admin`)
+            .then(response => {
+                setAdmin(response);
+            })
+            .catch(er => {
+            console.log(er.message)
+        })
+    })
 
     function ChangePassword() {
         const [currentPassword, setCurrentPassword] = useState("");
@@ -44,11 +53,12 @@ export function UserProfilePageComponent() {
         }
 
         return (
-            <Card style={{ backgroundColor: "#EDEFFC", minHeight: "65vh" }} className="mb-2 mt-4">
+            //, height: '70%'
+            <Card style={{ backgroundColor: "#EDEFFC", minHeight: "55vh" }} className="mt-3 mt-lg-4">
                 <Container className="mt-4">
                     <h1 className="text-center profilePageHeader">Change password</h1>
-                    <Card.Body className="align-middle mt-3">
-                        <Row className="my-3">
+                    <Card.Body className="align-middle mt-2">
+                        <Row className="my-2">
                             <Form.Label>Current Password</Form.Label>
                             <Form.Control
                                 type="password"
@@ -56,7 +66,7 @@ export function UserProfilePageComponent() {
                                 onChange={(e) => setCurrentPassword(e.target.value)}
                                 placeholder="******" />
                         </Row>
-                        <Row className="my-3">
+                        <Row className="my-2">
                             <Form.Label>New Password</Form.Label>
                             <Form.Control
                                 type="password"
@@ -64,15 +74,18 @@ export function UserProfilePageComponent() {
                                 onChange={(e) => setNewPassword(e.target.value)}
                                 placeholder="******" />
                         </Row>
-                        <Row className="my-3">
+                        <Row className="my-2">
                             <Form.Label>Repeat New Password</Form.Label>
                             <Form.Control
                                 type="password"
                                 value={repeatNewPassword}
-                                onChange={(e) => setRepeatNewPassword(e.target.value)}
+                                onChange={(e) =>
+                                        setRepeatNewPassword(e.target.value)
+                                    }
+
                                 placeholder="******" />
                         </Row>
-                        <Row className="text-center justify-content-center mt-4 pt-2">
+                        <Row className="text-center justify-content-center mt-1 pt-1">
                             <Col xs="11" sm="10">
                                 <Button onClick={() => ChangePasswordAction()}
                                     style={{
@@ -87,6 +100,70 @@ export function UserProfilePageComponent() {
                         </Row>
                     </Card.Body>
                 </Container>
+            </Card>
+        )
+    }
+
+    function SetNotifications() {
+
+        const [abuseNotifications, setAbuseNotifications] = useState("");
+
+        useEffect(() => {
+            requestWrapper.get(`${baseUrl}/get-notification-decisions`)
+                .then(response => {
+                    setAbuseNotifications(response.abuseNotifications)
+                })
+                .catch(er => {
+                    console.log(er)
+                })
+        }, [false])
+
+        function SaveSetNotifications() {
+            requestWrapper.post(`${baseUrl}/set-notification-decisions`, {
+                abuseNotifications: abuseNotifications
+            })
+                .catch(err => {
+                    alert(err.message)
+                })
+        }
+
+        return (
+            // , height: '28.75%'
+            <Card style={{ backgroundColor: "#EDEFFC", minHeight: "15vh", flex: "1" }} className="mt-3 mt-lg-1">
+                <Card.Body className="align-middle p-3 pt-3">
+                    <Row className="text-center">
+                        <h1 className="profilePageHeader">Notifications</h1>
+                    </Row>
+                    <Col className="mt-2">
+                        <Row className="ms-3">
+                            <div className="form-check">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    checked={abuseNotifications}
+                                    onChange={(e) => setAbuseNotifications(e.target.checked)}
+                                    id="abuseNotificationsCheck"
+                                />
+                                    <label className="form-check-label" htmlFor="abuseNotificationsCheck">
+                                        Get abuse license notifications
+                                    </label>
+                            </div>
+                        </Row>
+                        {/*<Checkbox >Some text</Checkbox>*/}
+                        <Row className="text-center justify-content-center my-1 pt-1">
+                            <Col xs="11" sm="10" className="text-center">
+                                <Button className="text-center justify-content-center mt-2 mb-1" onClick={() => SaveSetNotifications()}
+                                        style={{
+                                            borderRadius: "30px",
+                                            backgroundColor: "#EFA9AE",
+                                            color: "#02021E",
+                                            fontSize: "22px",
+                                            border: "transparent"
+                                        }}>Save changes</Button>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Card.Body>
             </Card>
         )
     }
@@ -159,12 +236,13 @@ export function UserProfilePageComponent() {
         }
 
         return (
-            <Card style={{ backgroundColor: "#EDEFFC", minHeight: "65vh", flex: "1" }} className="mt-4">
+            // height: "100%",
+            <Card style={{ backgroundColor: "#EDEFFC",  flex: "1" }} className="my-3 mb-md-0 mt-lg-4 me-2">
                 <Container className="p-3 pt-4">
                     <Row className="ms-4">
                         <h1 className="profilePageHeader">Personal details</h1>
                     </Row>
-                    <Row className="mb-3 ms-2">
+                    <Row className="my-2 my-lg-3 ms-2">
                         <Col lg="5" >
                             <Form.Label className="mb-1">First Name</Form.Label>
                             {!editFormat ?
@@ -172,6 +250,7 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={firstName}
+                                    placeholder="First name"
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
@@ -182,13 +261,14 @@ export function UserProfilePageComponent() {
                                     style={{ width: "80%" }} />
                             }
                         </Col>
-                        <Col lg="5" className="offset-xl-1">
+                        <Col lg="5" className="offset-xl-1 mt-2 my-lg-0">
                             <Form.Label className="mb-1">Last Name</Form.Label>
                             {!editFormat ?
                                 <Form.Control
                                     type="text"
                                     readOnly
                                     value={lastName}
+                                    placeholder="Last name"
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
@@ -208,19 +288,22 @@ export function UserProfilePageComponent() {
                                     type="email"
                                     readOnly
                                     value={email}
+                                    placeholder="email@gmail.com"
                                     style={{width: '80%'}}
                                 />
                                 :
                                 <Form.Control
                                     type="email"
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Email"
+                                    onChange={(e) => {
+                                        setEmail(e.target.value);
+                                    }}
+                                    placeholder="email@gmail.com"
                                     style={{width: '80%'}}
                                 />
                             }
                         </Col>
-                        <Col lg="5" className="offset-xl-1">
+                        <Col lg="5" className="offset-xl-1 mt-2 my-lg-0">
                             <Form.Label className="mb-1">Date of Birth</Form.Label>
                             {!editFormat ?
                                 <Form.Control
@@ -235,22 +318,21 @@ export function UserProfilePageComponent() {
                                     value={birthdate}
                                     onChange={(e) => {
                                         setBirthdate(e.target.value);
-                                        console.log(birthdate);
+                                        console.log(e.target.value);
                                     }}
                                     style={{width: '80%'}}
-                                    placeholder="Country"
                                 />
                             }
                         </Col>
                     </Row>
                 </Container>
 
-                <Container className="pb-3 p-3" >
+                <Container className="pb-3 p-3">
                     <hr />
                     <Row className="ms-4">
                         <h1 className="profilePageHeader">Location details</h1>
                     </Row>
-                    <Row className="mb-3 ms-2">
+                    <Row className="my-2 my-lg-3 ms-2">
                         <Col lg="5">
                             <Form.Label className="mb-1">Address</Form.Label>
                             {!editFormat ?
@@ -258,6 +340,7 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={address}
+                                    placeholder="Address"
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
@@ -268,13 +351,14 @@ export function UserProfilePageComponent() {
                                     style={{ width: "80%" }} />
                             }
                         </Col>
-                        <Col lg="5" className="offset-xl-1">
+                        <Col lg="5" className="offset-xl-1 mt-2 my-lg-0">
                             <Form.Label className="mb-1">Postal Code</Form.Label>
                             {!editFormat ?
                                 <Form.Control
                                     type="text"
                                     readOnly
                                     value={postalCode}
+                                    placeholder="1234 AB"
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
@@ -294,6 +378,7 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     readOnly
                                     value={city}
+                                    placeholder="City"
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
@@ -304,13 +389,14 @@ export function UserProfilePageComponent() {
                                     style={{ width: "80%" }} />
                             }
                         </Col>
-                        <Col lg="5" className="offset-xl-1">
+                        <Col lg="5" className="offset-xl-1 mt-2 my-lg-0">
                             <Form.Label className="mb-1">Country</Form.Label>
                             {!editFormat ?
                                 <Form.Control
                                     type="text"
                                     readOnly
                                     value={country}
+                                    placeholder="Country"
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
@@ -350,7 +436,7 @@ export function UserProfilePageComponent() {
                                             borderRadius: "30px",
                                             backgroundColor: "#EFA9AE",
                                             color: "#02021E",
-                                            margin: "20px 0px 0px 0px",
+                                            margin: "15px 0px 0px 0px",
                                             fontSize: "22px",
                                             border: "transparent"
                                         }}>Edit information</Button>
@@ -362,7 +448,7 @@ export function UserProfilePageComponent() {
                                             borderRadius: "30px",
                                             backgroundColor: "#EFA9AE",
                                             color: "#02021E",
-                                            margin: "20px 0px 0px 0px",
+                                            margin: "15px 0px 0px 0px",
                                             fontSize: "22px",
                                             border: "transparent"
                                         }}>Save changes</Button>}
@@ -379,11 +465,16 @@ export function UserProfilePageComponent() {
             <div className="Full">
                 <NavigationBarComponent />
                 <Container fluid className="mt-3">
-                    <Row>
-                        <Col xs lg="3">
+                    <Row style={{maxHeight: '75hv'}}>
+                        <Col xs md="4" lg="3">
                             <ChangePassword />
+                            {admin ?
+                            <SetNotifications />
+                                :
+                                <div />
+                            }
                         </Col>
-                        <Col xs lg="9">
+                        <Col xs md="8" lg="9">
                             <EditPersonalInfo />
                         </Col>
                     </Row>
