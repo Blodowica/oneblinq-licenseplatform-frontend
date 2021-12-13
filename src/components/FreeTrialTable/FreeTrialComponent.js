@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,8 @@ import { useRequestWrapper } from '../../middleware';
 import { TableAmountAtom, TableFiltersAtom, TablePageAtom, TableSearchToggleAtom } from '../../state';
 import { GlobalFilterComponent, PaginationNavigationComponent } from '../index';
 import './FreeTrialComponent.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export function FreeTrialComponent() {
     //setup i18next
@@ -25,18 +27,29 @@ export function FreeTrialComponent() {
     const [timer, setTimer] = useState(null);
     const isMounted = useRef(false);
 
-    //edit max uses
+    //edit end date
     const [editingRow, setEditingRow] = useState(null);
-    const [newEndDate, setNewEndDate] = useState(null);
+    const [newEndDate, setNewEndDate] = useState(new Date());
 
+    //datePicker Form
+    const DatePickerStartDateForm = forwardRef(({ value, onClick }, ref) => (
+        <Form.Control value={value} onChange={() => { }} placeholder="Starts at" onClick={onClick} />
+    ));
+    const DatePickerEndDateForm = forwardRef(({ value, onClick }, ref) => (
+        <Form.Control value={value} onChange={() => { }} placeholder="Ends at" onClick={onClick} />
+    ));
+    const DatePickerSetEndDate = forwardRef(({ value, onClick }, ref) => (
+        <Form.Control value={value} onChange={() => { }} placeholder="End date" onClick={onClick} />
+    ));
     //Filtering
     const detailedSearch = useRecoilValue(TableSearchToggleAtom("FreeTrial"));
     const recordsCount = useRecoilValue(TableAmountAtom("FreeTrial"));
     const searchString = useRecoilValue(TableFiltersAtom("FreeTrial"));
 
     const [searchId, setSearchId] = useRecoilState(TableFiltersAtom("FreeTrialId"));
-    const [searchFigmaId, setSearchFigmaId] = useRecoilState(TableFiltersAtom("FreeTrialFigmaId"));
+    const [searchUserId, setSearchUserId] = useRecoilState(TableFiltersAtom("FreeTrialUserId"));
     const [searchPluginName, setSearchPluginName] = useRecoilState(TableFiltersAtom("FreeTrialPluginName"));
+    const [searchProgramName, setSearchProgramName] = useRecoilState(TableFiltersAtom("FreeTrialProgramName"));
     const [searchStartDate, setSearchStartDate] = useRecoilState(TableFiltersAtom("FreeTrialStartDate"));
     const [searchEndDate, setSearchEndDate] = useRecoilState(TableFiltersAtom("FreeTrialEndDate"));
     const [searchActive, setSearchActive] = useRecoilState(TableFiltersAtom("FreeTrialActive"));
@@ -46,11 +59,11 @@ export function FreeTrialComponent() {
     const [paginationPage, setPaginationPage] = useRecoilState(TablePageAtom("FreeTrial"));
 
     function FetchFreeTrials() {
-        requestWrapper.post(`${baseUrl}pagination/get-FreeTrial`,
+        requestWrapper.post(`${baseUrl}pagination/get-FreeTrials`,
             {
                 globalFilter: searchString,
                 filterId: searchId,
-                FilterFigmaId: searchFigmaId,
+                FilterFigmaId: 1,
                 FilterPluginName: searchPluginName,
                 FilterStartDate: searchStartDate,
                 FilterEndDate: searchEndDate,
@@ -63,6 +76,13 @@ export function FreeTrialComponent() {
                 if (paginationPage > response.maxPages) {
                     setPaginationPage(1);
                 }
+                response.records.forEach(trial => {
+                    var displayStartDate = new Date(Date.parse(trial.startDate));
+                    var displayEndDate = new Date(Date.parse(trial.endDate));
+                    trial.displayStartDate = `${displayStartDate.getDate()}-${displayStartDate.getMonth() + 1}-${displayStartDate.getFullYear()}`;
+                    trial.displayEndDate = `${displayEndDate.getDate()}-${displayEndDate.getMonth() + 1}-${displayEndDate.getFullYear()}`;
+                    trial.active = Date.parse(trial.endDate) > new Date().valueOf();
+                });
                 setFreeTrials(response.records);
                 console.log(response.records);
             }).catch((er) => {
@@ -73,132 +93,170 @@ export function FreeTrialComponent() {
 
     useEffect(() => {
         FetchFreeTrials();
-    }, [recordsCount, paginationPage, updateTable, searchActive])
+    }, [recordsCount, paginationPage, updateTable, searchActive, searchStartDate, searchEndDate])
 
     useEffect(() => {
         clearTimeout(timer);
         isMounted.current ? setTimer(setTimeout(() => { FetchFreeTrials() }, 300)) : isMounted.current = true;
-    }, [searchString, searchId, searchFigmaId, searchPluginName, searchStartDate, searchEndDate])
+    }, [searchString, searchId, searchUserId, searchPluginName])
 
     //table render
     return (
         <>
             <Row className="d-flex">
                 <Col xs lg="9">
-                    <GlobalFilterComponent table="Product" />
+                    <GlobalFilterComponent table="FreeTrial" />
                 </Col>
             </Row>
             <Table striped bordered hover responsive>
                 <thead>
                     {detailedSearch ?
                         <tr>
-                            {/* <th><Form.Control type="number" style={{ width: "80px" }} onChange={(e) => setSearchId(e.target.value)} value={searchId} placeholder="ID" /></th>
-                            <th><Form.Control onChange={(e) => setSearchProductName(e.target.value)} value={searchProductName} placeholder={t('dashboard_product')} /></th>
-                            <th><Form.Control onChange={(e) => setSearchVariantName(e.target.value)} value={searchVariantname} placeholder={t('dashboard_product')} /></th>
-                            <th><Form.Control type="number" onChange={(e) => setSearchMaxUses(e.target.value)} value={searchMaxUses} placeholder={t('dashboard_maxuses')} /></th>
-                            <th><Form.Control type="number" onChange={(e) => setSearchLicenses(e.target.value)} value={searchLicenses} placeholder={t('dashboard_licenses')} /></th>
+                            <th><Form.Control type="number" style={{ width: "80px" }} onChange={(e) => setSearchId(e.target.value)} value={searchId} placeholder="ID" /></th>
+                            <th><Form.Control onChange={(e) => setSearchPluginName(e.target.value)} value={searchPluginName} placeholder="Plugin" /></th>
+                            <th><Form.Control onChange={(e) => setSearchProgramName(e.target.value)} value={searchProgramName} placeholder="Program" /></th>
+                            <th><Form.Control onChange={(e) => setSearchUserId(e.target.value)} value={searchUserId} placeholder="User ID" /></th>
+                            <th className="FreeTrialDatePickerTH">
+                                <DatePicker
+                                    selected={searchStartDate}
+                                    onChange={(date) => {
+                                        setSearchStartDate(date);
+                                    }}
+                                    customInput={<DatePickerStartDateForm />}
+                                    dateFormat="dd-MM-yyyy"
+                                    showPopperArrow={false}
+                                    isClearable={true}
+                                    clearIcon={null}
+                                />
+                            </th>
+                            <th className="FreeTrialDatePickerTH">
+                                <DatePicker
+                                    selected={searchEndDate}
+                                    onChange={(date) => {
+                                        setSearchEndDate(date);
+                                    }}
+                                    customInput={<DatePickerEndDateForm />}
+                                    dateFormat="dd-MM-yyyy"
+                                    showPopperArrow={false}
+                                    isClearable={true}
+                                    clearIcon={null}
+                                />
+                            </th>
                             <th>
-                                <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown" value={searchStatus}>
+                                <Form.Select onChange={(e) => setSearchActive(e.target.value)} id="TableActivationDropdown" value={searchActive}>
                                     <option value="">Status</option>
                                     <option value="true">Active</option>
                                     <option value="false">Inactive</option>
                                 </Form.Select>
                             </th>
-                            <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>{t('dashboard_clear_filters')}</Button></th> */}
+                            <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>{t('dashboard_clear_filters')}</Button></th>
                         </tr>
                         :
                         <tr>
-                            {/* <th>ID</th>
-                            <th>{t('dashboard_product')}</th>
-                            <th>{t('dashboard_variant')}</th>
-                            <th>{t('dashboard_maxuses')}</th>
-                            <th>{t('dashboard_license')}</th>
+                            <th>ID</th>
+                            <th>Plugin</th>
+                            <th>Program</th>
+                            <th>User ID</th>
+                            <th>Starts</th>
+                            <th>Ends</th>
                             <th>Status</th>
-                            <th>{t('dashboard_actions')}</th> */}
+                            <th>{t('dashboard_actions')}</th>
                         </tr>
                     }
 
                 </thead>
                 <tbody>
-                    {/* {products ?
-                        products.map(product => {
+                    {freeTrials ?
+                        freeTrials.map(freeTrial => {
                             return (
-                                <tr key={product.id}>
-                                    <td className="align-middle" style={{ width: "80px" }}>{product.id}</td>
-                                    <td className="align-middle">{product.productName}</td>
-                                    <td className="align-middle">{product.variantName}</td>
-                                    <td className="align-middle">
+                                <tr key={freeTrial.id}>
+                                    <td className="align-middle" style={{ width: "80px" }}>{freeTrial.id}</td>
+                                    <td className="align-middle">{freeTrial.pluginName}</td>
+                                    <td className="align-middle">{"[Figma]"}</td>
+                                    <td className="align-middle">{"[1D32F32A45]"}</td>
+                                    <td className="align-middle">{freeTrial.displayStartDate}</td>
+                                    <td className="align-middle ">
                                         <div className="d-inline-block">
-                                            {editingRow == product.id ?
-                                                <Form.Control type="number" style={{ width: "70px" }} onChange={(e) => setNewMaxUses(e.target.value)} value={newMaxUses} placeholder="Max Uses" />
+                                            {editingRow == freeTrial.id ?
+                                                <div className="FreeTrialDatePickerTH2">
+                                                    <DatePicker
+                                                        selected={newEndDate}
+                                                        onChange={(date) => {
+                                                            setNewEndDate(date);
+                                                        }}
+                                                        customInput={<DatePickerSetEndDate />}
+                                                        dateFormat="dd-MM-yyyy"
+                                                        showPopperArrow={false}
+                                                        clearIcon={null}
+                                                    />
+                                                </div>
                                                 :
-                                                <>{product.maxUses}</>
+                                                <>{freeTrial.displayEndDate}</>
                                             }
                                         </div>
-                                        {editingRow == product.id ?
-                                            <IoMdCheckboxOutline size={20} className="ms-2 PointOnHover" onClick={() => SaveMaxUses(product)} />
+                                        {editingRow == freeTrial.id ?
+                                            <IoMdCheckboxOutline size={20} className="ms-2 PointOnHover" onClick={() => SaveEndDate(freeTrial)} />
                                             :
                                             <>
-                                                <FaEdit className="ms-2 PointOnHover" onClick={() => EditMaxUses(product)} />
+                                                <FaEdit className="ms-2 PointOnHover" onClick={() => EditEndDate(freeTrial)} />
                                             </>
                                         }
                                     </td>
-                                    <td className="align-middle">{product.licenseCount}</td>
                                     <td className="align-middle">
-                                        {product.active ? (
+                                        {freeTrial.active ? (
                                             <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="success">{t('dashboard_active')}</Button>
                                         ) : (
                                             <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="danger">{t('dashboard_inactive')}</Button>
                                         )}
                                     </td>
                                     <td className="align-middle" style={{ width: "110px" }}>
-                                        <Button className={"p-1 btn-" + (product.active ? 'danger' : 'primary')} onClick={() => {
-                                            requestWrapper.post(`${baseUrl}Product/toggle-product/${product.id}`)
+                                        <Button className={"p-1 btn-" + (freeTrial.active ? 'danger' : 'primary')} onClick={() => {
+                                            requestWrapper.post(`${baseUrl}FreeTrial/toggle-trial/${freeTrial.id}`)
                                                 .then(() => {
                                                     setUpdateTable(!updateTable);
                                                 }).catch((er) => {
                                                     console.log(er)
                                                 });
                                         }}>
-                                            {product.active ? <>{t('dashboard_disable')}</> : <>{t('dashboard_enable')}</>}
+                                            {freeTrial.active ? <>{t('dashboard_disable')}</> : <>{t('dashboard_enable')}</>}
                                         </Button>
                                     </td>
                                 </tr>
                             )
                         })
-                        : null} */}
+                        : null}
                 </tbody>
             </Table>
-            <PaginationNavigationComponent table="FreeTrial" pages={paginationPages}/>
+            <PaginationNavigationComponent table="FreeTrial" pages={paginationPages} />
         </>
     )
 
-    function EditEndDate(product) {
-        setNewEndDate(product.endDate);
-        setEditingRow(product.id);
+    function EditEndDate(trial) {
+        setNewEndDate(Date.parse(trial.endDate));
+        setEditingRow(trial.id);
     }
 
-    function SaveEndDate(product) {
-        product.endDate = newEndDate;
+    function SaveEndDate(trial) {
         setEditingRow(null);
-        //Add post to change endDate
-        // requestWrapper.post(`${baseUrl}Product/${product.id}/${newMaxUses}`)
-        //     .then(() => {
-        //         setUpdateTable(!updateTable);
-        //     }).catch((er) => {
-        //         console.log(er)
-        //     });
+
+        requestWrapper.post(`${baseUrl}FreeTrial/set-end-date/${trial.id}`, {newEndDate: new Date(newEndDate)})
+            .then(() => {
+                setUpdateTable(!updateTable);
+            }).catch((er) => {
+                console.log(er)
+            });
     }
 
     function ClearFilters() {
         setSearchId("");
-        setSearchFigmaId("");
+        setSearchProgramName("");
         setSearchPluginName("");
-        setSearchStartDate("");
-        setSearchEndDate("");
+        setSearchUserId("");
+        setSearchStartDate(null);
+        setSearchEndDate(null);
         setSearchActive("");
 
-        // document.getElementById("TableActivationDropdown").value = "";
+        document.getElementById("TableActivationDropdown").value = "";
     }
 }
 

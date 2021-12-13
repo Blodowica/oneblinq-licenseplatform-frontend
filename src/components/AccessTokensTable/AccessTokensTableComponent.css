@@ -4,7 +4,7 @@
     min-width: 100px;
 }
 
-/* Default Datepicker clear button is offcenter and not in the correct stule, overriding stylign here */
+/* Default Datepicker clear button is offcenter and not in the correct style, overriding stylign here */
 .react-datepicker__close-icon::after{
     font-size: 30px !important;
     background-color: rgba(0, 0, 0, 0) !important;
