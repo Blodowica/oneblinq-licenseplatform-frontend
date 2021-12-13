@@ -12,10 +12,11 @@ import './LicenseTableComponent.css';
 export function LicenseTableComponent() {
   // setup i18next
   const { t } = useTranslation();
-  
+
   //general setup
   const requestWrapper = useRequestWrapper()
   const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/`;
+  const [isLoadingToggle, setIsLoadingToggle] = useState(false);
 
   const [licenses, setLicenses] = useState();
   const [modalShow, setModalShow] = useState(false);
@@ -45,37 +46,37 @@ export function LicenseTableComponent() {
 
   function FetchLicenses() {
     requestWrapper.post(`${baseUrl}pagination/get-licenses`,
-    {
-      globalFilter: searchString,
-      filterId: searchId,
-      filterLicenseKey: searchLicense,
-      filterEmail: searchEmail,
-      filterActivation: searchActivations,
-      filterActive: searchStatus,
-      filterProductName: searchProduct,
-      pageNumber: paginationPage,
-      pageSize: recordsCount,
-    })
-    .then(response => {
-      setPaginationPages(response.maxPages);
-      if (paginationPage > response.maxPages) {
-        setPaginationPage(1);
-      }
-      setLicenses(response.records);
-    }).catch((er) => {
-      setLicenses(null)
-      console.log(er)
-    });
+      {
+        globalFilter: searchString,
+        filterId: searchId,
+        filterLicenseKey: searchLicense,
+        filterEmail: searchEmail,
+        filterActivation: searchActivations,
+        filterActive: searchStatus,
+        filterProductName: searchProduct,
+        pageNumber: paginationPage,
+        pageSize: recordsCount,
+      })
+      .then(response => {
+        setPaginationPages(response.maxPages);
+        if (paginationPage > response.maxPages) {
+          setPaginationPage(1);
+        }
+        setLicenses(response.records);
+      }).catch((er) => {
+        setLicenses(null)
+        console.log(er)
+      });
   }
 
   useEffect(() => {
     FetchLicenses();
-}, [recordsCount, paginationPage, searchStatus, updateModal])
+  }, [recordsCount, paginationPage, searchStatus, updateModal])
 
-useEffect(() => {
+  useEffect(() => {
     clearTimeout(timer);
     isMounted.current ? setTimer(setTimeout(() => { FetchLicenses() }, 300)) : isMounted.current = true;
-}, [searchString, searchId, searchLicense, searchEmail, searchActivations, searchProduct])
+  }, [searchString, searchId, searchLicense, searchEmail, searchActivations, searchProduct])
 
   //detailed license display
   function LicenseModal({ onHide, license, show }) {
@@ -180,16 +181,21 @@ useEffect(() => {
 
         </Modal.Body>
         <Modal.Footer>
-          <Button className={"btn-" + (detailedData.active ? 'danger' : 'primary')} onClick={() => {
-            requestWrapper.post(`${baseUrl}license/toggle-license/${license.id}`)
+          <Button className={"btn-" + (detailedData.active ? 'danger ' : 'primary ') + (isLoadingToggle ? 'disabled' : '')} onClick={async () => {
+            setIsLoadingToggle(true);
+            await requestWrapper.post(`${baseUrl}license/toggle-license/${license.id}`)
               .then(() => {
                 setUpdateModal(!updateModal);
               }
               ).catch((er) => {
                 console.log(er)
               });
+              setIsLoadingToggle(false);
           }}>
-            {detailedData.active ? <>{t('dashboard_disable')}</> : <>{t('dashboard_enable')}</>}
+            {isLoadingToggle &&
+              <span className="spinner-border spinner-border-sm me-2"></span>
+            }
+              {detailedData.active ? <>{t('dashboard_disable')}</> : <>{t('dashboard_enable')}</>}
           </Button>
         </Modal.Footer>
       </Modal>

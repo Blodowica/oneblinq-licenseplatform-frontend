@@ -17,6 +17,7 @@ export function ProductsTableComponent() {
     //general setup
     const requestWrapper = useRequestWrapper()
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/`;
+    const [isCheckingForUpdates, setIsCheckingForUpdates] = useState(false);
 
     const [updateTable, setUpdateTable] = useState(false);
     const [products, setProducts] = useState("");
@@ -87,14 +88,19 @@ export function ProductsTableComponent() {
                     <GlobalFilterComponent table="Product" />
                 </Col>
                 <Col xs lg="3">
-                    <Button variant="primary" className="p-1 d-flex ms-auto me-3" onClick={() => {
-                        requestWrapper.post(`${baseUrl}product/refresh-products`)
+                    <Button variant="primary" className={"p-1 d-flex ms-auto me-3 " + (isCheckingForUpdates ? "disabled" : "")} onClick={async () => {
+                        setIsCheckingForUpdates(true);
+                        await requestWrapper.post(`${baseUrl}product/refresh-products`)
                             .then(() => {
                                 setUpdateTable(!updateTable);
                             }).catch((er) => {
                                 console.log(er)
                             });
+                        setIsCheckingForUpdates(false);
                     }}>
+                        {isCheckingForUpdates &&
+                            <span className="spinner-border spinner-border-sm me-2 mt-1"></span>
+                        }
                         {t('dashboard_checkforupdates')}
                     </Button>
                 </Col>
@@ -115,7 +121,7 @@ export function ProductsTableComponent() {
                                     <option value="false">Inactive</option>
                                 </Form.Select>
                             </th>
-                            <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>{t('dashboard_clear_filters')}</Button></th>
+                            <th style={{ width: "105px" }}><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>{t('dashboard_clear_filters')}</Button></th>
                         </tr>
                         :
                         <tr>
@@ -125,7 +131,6 @@ export function ProductsTableComponent() {
                             <th>{t('dashboard_maxuses')}</th>
                             <th>{t('dashboard_license')}</th>
                             <th>Status</th>
-                            <th>{t('dashboard_actions')}</th>
                         </tr>
                     }
 
@@ -162,25 +167,16 @@ export function ProductsTableComponent() {
                                             <Button className="ps-1 pe-1 pt-0 pb-0 NotClickable" variant="danger">{t('dashboard_inactive')}</Button>
                                         )}
                                     </td>
-                                    <td className="align-middle" style={{ width: "110px" }}>
-                                        <Button className={"p-1 btn-" + (product.active ? 'danger' : 'primary')} onClick={() => {
-                                            requestWrapper.post(`${baseUrl}Product/toggle-product/${product.id}`)
-                                                .then(() => {
-                                                    setUpdateTable(!updateTable);
-                                                }).catch((er) => {
-                                                    console.log(er)
-                                                });
-                                        }}>
-                                            {product.active ? <>{t('dashboard_disable')}</> : <>{t('dashboard_enable')}</>}
-                                        </Button>
-                                    </td>
+                                    {detailedSearch &&
+                                        <td></td>
+                                    }
                                 </tr>
                             )
                         })
                         : null}
                 </tbody>
             </Table>
-            <PaginationNavigationComponent table="Product" pages={paginationPages}/>
+            <PaginationNavigationComponent table="Product" pages={paginationPages} />
         </>
     )
 
