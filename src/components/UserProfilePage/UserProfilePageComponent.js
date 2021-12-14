@@ -4,13 +4,16 @@ import './UserProfilePageComponent.css';
 // why cant I get Checkbox from React-bootstrap? I saw an example on stackoverflow
 import { Container, Button, Form, Card, Col, Row } from "react-bootstrap";
 import { useRequestWrapper } from "../../middleware";
-import { NavigationBarComponent } from "../"
+import { NavigationBarComponent } from "../";
+import { useTranslation, initReactI18next } from "react-i18next";
 
 export function UserProfilePageComponent() {
 
+
     const requestWrapper = useRequestWrapper();
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/account`;
-    const [ admin, setAdmin] = useState(false);
+    const [admin, setAdmin] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         requestWrapper.get(`${baseUrl}/is-user-admin`)
@@ -18,8 +21,8 @@ export function UserProfilePageComponent() {
                 setAdmin(response);
             })
             .catch(er => {
-            console.log(er.message)
-        })
+                console.log(er.message)
+            })
     })
 
     function ChangePassword() {
@@ -56,10 +59,10 @@ export function UserProfilePageComponent() {
             //, height: '70%'
             <Card style={{ backgroundColor: "#EDEFFC", minHeight: "55vh" }} className="mt-3 mt-lg-4">
                 <Container className="mt-4">
-                    <h1 className="text-center profilePageHeader">Change password</h1>
+                    <h1 className="text-center profilePageHeader">{t('dashboard_changepassword')}</h1>
                     <Card.Body className="align-middle mt-2">
                         <Row className="my-2">
-                            <Form.Label>Current Password</Form.Label>
+                            <Form.Label>{t('dashboard_currentpassword')}</Form.Label>
                             <Form.Control
                                 type="password"
                                 value={currentPassword}
@@ -67,7 +70,7 @@ export function UserProfilePageComponent() {
                                 placeholder="******" />
                         </Row>
                         <Row className="my-2">
-                            <Form.Label>New Password</Form.Label>
+                            <Form.Label>{t('dashboard_newpassword')}</Form.Label>
                             <Form.Control
                                 type="password"
                                 value={newPassword}
@@ -75,13 +78,13 @@ export function UserProfilePageComponent() {
                                 placeholder="******" />
                         </Row>
                         <Row className="my-2">
-                            <Form.Label>Repeat New Password</Form.Label>
+                            <Form.Label>{t('dashboard_repeatcurrentpassword')}</Form.Label>
                             <Form.Control
                                 type="password"
                                 value={repeatNewPassword}
                                 onChange={(e) =>
-                                        setRepeatNewPassword(e.target.value)
-                                    }
+                                    setRepeatNewPassword(e.target.value)
+                                }
 
                                 placeholder="******" />
                         </Row>
@@ -95,7 +98,7 @@ export function UserProfilePageComponent() {
                                         margin: "20px 0px 0px 0px",
                                         fontSize: "22px",
                                         border: "transparent"
-                                    }}>Change password</Button>
+                                    }}>{t('dashboard_changepassword')}</Button>
                             </Col>
                         </Row>
                     </Card.Body>
@@ -144,22 +147,22 @@ export function UserProfilePageComponent() {
                                     onChange={(e) => setAbuseNotifications(e.target.checked)}
                                     id="abuseNotificationsCheck"
                                 />
-                                    <label className="form-check-label" htmlFor="abuseNotificationsCheck">
-                                        Get abuse license notifications
-                                    </label>
+                                <label className="form-check-label" htmlFor="abuseNotificationsCheck">
+                                    Get abuse license notifications
+                                </label>
                             </div>
                         </Row>
                         {/*<Checkbox >Some text</Checkbox>*/}
                         <Row className="text-center justify-content-center my-1 pt-1">
                             <Col xs="11" sm="10" className="text-center">
                                 <Button className="text-center justify-content-center mt-2 mb-1" onClick={() => SaveSetNotifications()}
-                                        style={{
-                                            borderRadius: "30px",
-                                            backgroundColor: "#EFA9AE",
-                                            color: "#02021E",
-                                            fontSize: "22px",
-                                            border: "transparent"
-                                        }}>Save changes</Button>
+                                    style={{
+                                        borderRadius: "30px",
+                                        backgroundColor: "#EFA9AE",
+                                        color: "#02021E",
+                                        fontSize: "22px",
+                                        border: "transparent"
+                                    }}>Save changes</Button>
                             </Col>
                         </Row>
                     </Col>
@@ -212,8 +215,7 @@ export function UserProfilePageComponent() {
             if (email === "") {
                 return alert("Email should be filled in")
             }
-            if (!validateEmail(email))
-            {
+            if (!validateEmail(email)) {
                 return alert("Wrong email format")
             }
 
@@ -237,14 +239,14 @@ export function UserProfilePageComponent() {
 
         return (
             // height: "100%",
-            <Card style={{ backgroundColor: "#EDEFFC",  flex: "1" }} className="my-3 mb-md-0 mt-lg-4 me-2">
+            <Card style={{ backgroundColor: "#EDEFFC", flex: "1" }} className="my-3 mb-md-0 mt-lg-4 me-2">
                 <Container className="p-3 pt-4">
                     <Row className="ms-4">
-                        <h1 className="profilePageHeader">Personal details</h1>
+                        <h1 className="profilePageHeader">{t('dashboard_personaldetails')}</h1>
                     </Row>
                     <Row className="my-2 my-lg-3 ms-2">
                         <Col lg="5" >
-                            <Form.Label className="mb-1">First Name</Form.Label>
+                            <Form.Label className="mb-1">{t('dashboard_firstname')}</Form.Label>
                             {!editFormat ?
                                 <Form.Control
                                     type="text"
@@ -262,7 +264,7 @@ export function UserProfilePageComponent() {
                             }
                         </Col>
                         <Col lg="5" className="offset-xl-1 mt-2 my-lg-0">
-                            <Form.Label className="mb-1">Last Name</Form.Label>
+                            <Form.Label className="mb-1">{t('dashboard_lastname')}</Form.Label>
                             {!editFormat ?
                                 <Form.Control
                                     type="text"
@@ -282,14 +284,14 @@ export function UserProfilePageComponent() {
                     </Row>
                     <Row className="ms-2">
                         <Col lg="5" >
-                            <Form.Label className="mb-1">Email</Form.Label>
+                            <Form.Label className="mb-1">{t('dashboard_email')}</Form.Label>
                             {!editFormat ?
                                 <Form.Control
                                     type="email"
                                     readOnly
                                     value={email}
                                     placeholder="email@gmail.com"
-                                    style={{width: '80%'}}
+                                    style={{ width: '80%' }}
                                 />
                                 :
                                 <Form.Control
@@ -299,18 +301,18 @@ export function UserProfilePageComponent() {
                                         setEmail(e.target.value);
                                     }}
                                     placeholder="email@gmail.com"
-                                    style={{width: '80%'}}
+                                    style={{ width: '80%' }}
                                 />
                             }
                         </Col>
                         <Col lg="5" className="offset-xl-1 mt-2 my-lg-0">
-                            <Form.Label className="mb-1">Date of Birth</Form.Label>
+                            <Form.Label className="mb-1">{t('dashboard_dateofbirth')}</Form.Label>
                             {!editFormat ?
                                 <Form.Control
                                     type="date"
                                     readOnly
                                     value={birthdate}
-                                    style={{width: '80%'}}
+                                    style={{ width: '80%' }}
                                 />
                                 :
                                 <Form.Control
@@ -320,7 +322,7 @@ export function UserProfilePageComponent() {
                                         setBirthdate(e.target.value);
                                         console.log(e.target.value);
                                     }}
-                                    style={{width: '80%'}}
+                                    style={{ width: '80%' }}
                                 />
                             }
                         </Col>
@@ -330,29 +332,29 @@ export function UserProfilePageComponent() {
                 <Container className="pb-3 p-3">
                     <hr />
                     <Row className="ms-4">
-                        <h1 className="profilePageHeader">Location details</h1>
+                        <h1 className="profilePageHeader">{t('dashboard_locationdetails')}</h1>
                     </Row>
                     <Row className="my-2 my-lg-3 ms-2">
                         <Col lg="5">
-                            <Form.Label className="mb-1">Address</Form.Label>
+                            <Form.Label className="mb-1">{t('dashboard_address')}</Form.Label>
                             {!editFormat ?
                                 <Form.Control
                                     type="text"
                                     readOnly
                                     value={address}
-                                    placeholder="Address"
+                                    placeholder={t('dashboard_address')}
                                     style={{ width: "80%" }} />
                                 :
                                 <Form.Control
                                     type="text"
                                     value={address}
                                     onChange={(e) => setAddress(e.target.value)}
-                                    placeholder="Address"
+                                    placeholder={t('dashboard_address')}
                                     style={{ width: "80%" }} />
                             }
                         </Col>
                         <Col lg="5" className="offset-xl-1 mt-2 my-lg-0">
-                            <Form.Label className="mb-1">Postal Code</Form.Label>
+                            <Form.Label className="mb-1">{t('dashboard_postalcode')}</Form.Label>
                             {!editFormat ?
                                 <Form.Control
                                     type="text"
@@ -372,7 +374,7 @@ export function UserProfilePageComponent() {
                     </Row>
                     <Row className="ms-2">
                         <Col lg="5">
-                            <Form.Label className="mb-1">City</Form.Label>
+                            <Form.Label className="mb-1">{t('dashboard_city')}</Form.Label>
                             {!editFormat ?
                                 <Form.Control
                                     type="text"
@@ -385,12 +387,12 @@ export function UserProfilePageComponent() {
                                     type="text"
                                     value={city}
                                     onChange={(e) => setCity(e.target.value)}
-                                    placeholder="City"
+                                    placeholder={t('dashboard_city')}
                                     style={{ width: "80%" }} />
                             }
                         </Col>
                         <Col lg="5" className="offset-xl-1 mt-2 my-lg-0">
-                            <Form.Label className="mb-1">Country</Form.Label>
+                            <Form.Label className="mb-1">{t('dashboard_country')}</Form.Label>
                             {!editFormat ?
                                 <Form.Control
                                     type="text"
@@ -422,7 +424,7 @@ export function UserProfilePageComponent() {
                                             fontSize: "22px",
                                             border: "transparent",
                                         }}>
-                                        Cancel
+                                        {t('dashboard_cancel')}
                                     </Button>
                                 </Col>
                                 :
@@ -439,7 +441,7 @@ export function UserProfilePageComponent() {
                                             margin: "15px 0px 0px 0px",
                                             fontSize: "22px",
                                             border: "transparent"
-                                        }}>Edit information</Button>
+                                        }}>{t('dashboard_editinformation')}</Button>
                                     :
                                     <Button className="d-flex ms-auto" onClick={() => {
                                         ChangeUserInfo();
@@ -451,7 +453,7 @@ export function UserProfilePageComponent() {
                                             margin: "15px 0px 0px 0px",
                                             fontSize: "22px",
                                             border: "transparent"
-                                        }}>Save changes</Button>}
+                                        }}>{t('dashboard_savechanges')}</Button>}
                             </Col>
                         </Col>
                     </Row>
@@ -465,11 +467,11 @@ export function UserProfilePageComponent() {
             <div className="Full">
                 <NavigationBarComponent />
                 <Container fluid className="mt-3">
-                    <Row style={{maxHeight: '75hv'}}>
+                    <Row style={{ maxHeight: '75hv' }}>
                         <Col xs md="4" lg="3">
                             <ChangePassword />
                             {admin ?
-                            <SetNotifications />
+                                <SetNotifications />
                                 :
                                 <div />
                             }

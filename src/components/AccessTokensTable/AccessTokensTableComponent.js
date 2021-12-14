@@ -29,7 +29,7 @@ export function AccessTokensTableComponent() {
     //datePicker Form
     // const DatePickerForm = <Form.Control placeholder="Created" />
     const DatePickerForm = forwardRef(({ value, onClick }, ref) => (
-        <Form.Control value={value} onChange={() => { }} placeholder="Created" onClick={onClick} />
+        <Form.Control value={value} onChange={() => { }} placeholder={t('dashboard_created')} onClick={onClick} />
     ));
     //Filtering
     const detailedSearch = useRecoilValue(filterDetailedSearchState);
@@ -108,7 +108,7 @@ export function AccessTokensTableComponent() {
                     {detailedSearch ?
                         <tr>
                             <th><Form.Control type="number" style={{ width: "80px" }} onChange={(e) => setSearchId(e.target.value)} value={searchId} placeholder="ID" /></th>
-                            <th><Form.Control onChange={(e) => setSearchAccessToken(e.target.value)} value={searchAccesstoken} placeholder="Access Token" /></th>
+                            <th><Form.Control onChange={(e) => setSearchAccessToken(e.target.value)} value={searchAccesstoken} placeholder={t('dashboard_accesstoken')} /></th>
                             <th><Form.Control onChange={(e) => setSearchEmail(e.target.value.toLowerCase())} value={searchEmail} placeholder={t('dashboard_accesstoken_creator')} /></th>
                             <th className="AccessTokenDatePickerTH">
                                 <DatePicker
@@ -126,9 +126,10 @@ export function AccessTokensTableComponent() {
                             </th>
                             <th>
                                 <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown">
-                                    <option value="">Status</option>
-                                    <option value="true">Active</option>
-                                    <option value="false">Inactive</option>
+                                    <option value="">{t('dashboard_status')}</option>
+                                    <option value="true">{t('dashboard_active')}</option>
+                                    <option value="true">{t('dashboard_inactive')}</option>
+                                    <option value="false"></option>
                                 </Form.Select>
                             </th>
                             <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>{t('dashboard_clear_filters')}</Button></th>
@@ -136,10 +137,10 @@ export function AccessTokensTableComponent() {
                         :
                         <tr>
                             <th>ID</th>
-                            <th>Access Token</th>
+                            <th>{t('dashboard_accesstoken')}</th>
                             <th>{t('dashboard_accesstoken_creator')}</th>
                             <th>{t('dashboard_accesstoken_created')}</th>
-                            <th>Status</th>
+                            <th>{t('dashboard_status')}</th>
                             <th>{t('dashboard_actions')}</th>
                         </tr>
                     }

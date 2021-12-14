@@ -332,7 +332,7 @@ export function UsersTableComponent() {
 
                     <Row className="mt-2">
                         <Col xs>
-                            <Form.Label>Email*</Form.Label>
+                            <Form.Label>{t('dashboard_email')}*</Form.Label>
                             <Form.Control value={email} placeholder="email@mail.com" onChange={(e) => setEmail(e.target.value)} />
                         </Col>
                     </Row>
@@ -384,7 +384,7 @@ export function UsersTableComponent() {
                             <th><Form.Control type="number" onChange={(e) => setSearchLicenses(e.target.value)} value={searchLicenses} placeholder={t('dashboard_licenses')} /></th>
                             <th>
                                 <Form.Select id="TableRoleDropdown" onChange={(e) => setSearchRole(e.target.value)} value={searchRole}>
-                                    <option value="">Role</option>
+                                    <option value="">{t('dashboard_role')}</option>
                                     <option value="User">User</option>
                                     <option value="Admin">Admin</option>
                                 </Form.Select>
@@ -396,7 +396,7 @@ export function UsersTableComponent() {
                             <th>ID</th>
                             <th>{t('dashboard_firstname')}</th>
                             <th>{t('dashboard_lastname')}</th>
-                            <th>Email</th>
+                            <th>{t('dashboard_email')}</th>
                             <th>{t('dashboard_licenses')}</th>
                             <th>{t('dashboard_role')}</th>
                             <th>{t('dashboard_actions')}</th>
@@ -415,7 +415,7 @@ export function UsersTableComponent() {
                                 <td className="align-middle">{user.licenseCount}</td>
                                 <td className="align-middle">{user.role}</td>
                                 <td className="align-middle" style={{ width: "110px" }}>
-                                    <Button className="p-1" onClick={() => { setModalShow(true); setDetailedUser(user) }}>Details</Button>
+                                    <Button className="p-1" onClick={() => { setModalShow(true); setDetailedUser(user) }}>{t('dashboard_details')}</Button>
                                 </td>
                             </tr>
                         )
