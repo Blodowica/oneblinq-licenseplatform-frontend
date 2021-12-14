@@ -61,5 +61,8 @@
     "dashboard_country": "Land",
     "dashboard_editinformation": "Bewerk Informatie",
     "dashboard_personaldetails": "Pesoonlijke Gegevens ",
-    "dashboard_locationdetails": "Locatie Gegevens"
+    "dashboard_locationdetails": "Locatie Gegevens",
+    "dashboard_notification": "Meldingen",
+    "personalpage_notificationmessage": "Krijg licentie meldingen",
+    "personalpage_savechanges": "Bewerkingen Opslaan"
 }

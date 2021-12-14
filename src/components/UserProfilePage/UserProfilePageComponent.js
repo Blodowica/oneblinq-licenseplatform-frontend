@@ -135,7 +135,7 @@ export function UserProfilePageComponent() {
             <Card style={{ backgroundColor: "#EDEFFC", minHeight: "15vh", flex: "1" }} className="mt-3 mt-lg-1">
                 <Card.Body className="align-middle p-3 pt-3">
                     <Row className="text-center">
-                        <h1 className="profilePageHeader">Notifications</h1>
+                        <h1 className="profilePageHeader">{t('dashboard_notification')}</h1>
                     </Row>
                     <Col className="mt-2">
                         <Row className="ms-3">
@@ -148,7 +148,7 @@ export function UserProfilePageComponent() {
                                     id="abuseNotificationsCheck"
                                 />
                                 <label className="form-check-label" htmlFor="abuseNotificationsCheck">
-                                    Get abuse license notifications
+                                    {t('personalpage_notificationmessage')}
                                 </label>
                             </div>
                         </Row>
@@ -162,7 +162,7 @@ export function UserProfilePageComponent() {
                                         color: "#02021E",
                                         fontSize: "22px",
                                         border: "transparent"
-                                    }}>Save changes</Button>
+                                    }}>{t('personalpage_savechanges')}</Button>
                             </Col>
                         </Row>
                     </Col>

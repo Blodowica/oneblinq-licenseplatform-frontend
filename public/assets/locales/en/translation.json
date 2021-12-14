@@ -61,5 +61,8 @@
     "dashboard_country": "Country",
     "dashboard_editinformation": "Edit Information",
     "dashboard_personaldetails": "Pesonal Details ",
-    "dashboard_locationdetails": "Location Details"
+    "dashboard_locationdetails": "Location Details",
+    "dashboard_notification": "Notification",
+    "personalpage_notificationmessage": "Get abuse license notifications",
+    "personalpage_savechanges": "Save Changes"
 }
