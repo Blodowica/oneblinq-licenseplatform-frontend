@@ -20,7 +20,7 @@
     float: right;
     margin-right: 65%;
      margin-top: 1%;
-
+     
   }
   .LicenseLink
   {
@@ -31,4 +31,22 @@
   
   .UserDashboardCardHeader {
     border-radius: 12px 12px 0 0 !important;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+  .userDashboardLicenseName
+  {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: xx-large
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+  .Userdashboardlicensekey
+  {
+    font-family: 'Abel', sans-serif;
+    color: #558BF5;
+  }
+  .Userdashboardsmalltext
+  {
+    font-family: 'Abel', sans-serif;
+    font-size: large;
   }

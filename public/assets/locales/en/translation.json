@@ -39,5 +39,6 @@
     "dashboard_checkforupdates": "Check for Updates",
     "dashboard_active": "Active",
     "dashboard_inactive": "Inactive",
-    "dashboard_searchbar": "Search Bar"
+    "dashboard_searchbar": "Search Bar",
+    "dashboard_more": "More"
 }
