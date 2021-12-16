@@ -49,7 +49,7 @@ export function FreeTrialComponent() {
     const [searchId, setSearchId] = useRecoilState(TableFiltersAtom("FreeTrialId"));
     const [searchUserId, setSearchUserId] = useRecoilState(TableFiltersAtom("FreeTrialUserId"));
     const [searchPluginName, setSearchPluginName] = useRecoilState(TableFiltersAtom("FreeTrialPluginName"));
-    const [searchProgramName, setSearchProgramName] = useRecoilState(TableFiltersAtom("FreeTrialProgramName"));
+    const [searchPlatform, setSearchPlatform] = useRecoilState(TableFiltersAtom("FreeTrialPlatform"));
     const [searchStartDate, setSearchStartDate] = useRecoilState(TableFiltersAtom("FreeTrialStartDate"));
     const [searchEndDate, setSearchEndDate] = useRecoilState(TableFiltersAtom("FreeTrialEndDate"));
     const [searchActive, setSearchActive] = useRecoilState(TableFiltersAtom("FreeTrialActive"));
@@ -63,7 +63,8 @@ export function FreeTrialComponent() {
             {
                 globalFilter: searchString,
                 filterId: searchId,
-                FilterFigmaId: 1,
+                FilterUniqueUserId: searchUserId,
+                FilterPlatform: searchPlatform,
                 FilterPluginName: searchPluginName,
                 FilterStartDate: searchStartDate,
                 FilterEndDate: searchEndDate,
@@ -98,7 +99,7 @@ export function FreeTrialComponent() {
     useEffect(() => {
         clearTimeout(timer);
         isMounted.current ? setTimer(setTimeout(() => { FetchFreeTrials() }, 300)) : isMounted.current = true;
-    }, [searchString, searchId, searchUserId, searchPluginName])
+    }, [searchString, searchId, searchUserId, searchPluginName, searchPlatform])
 
     //table render
     return (
@@ -114,7 +115,7 @@ export function FreeTrialComponent() {
                         <tr>
                             <th><Form.Control type="number" style={{ width: "80px" }} onChange={(e) => setSearchId(e.target.value)} value={searchId} placeholder="ID" /></th>
                             <th><Form.Control onChange={(e) => setSearchPluginName(e.target.value)} value={searchPluginName} placeholder="Plugin" /></th>
-                            <th><Form.Control onChange={(e) => setSearchProgramName(e.target.value)} value={searchProgramName} placeholder="Program" /></th>
+                            <th><Form.Control onChange={(e) => setSearchPlatform(e.target.value)} value={searchPlatform} placeholder="Platform" /></th>
                             <th><Form.Control onChange={(e) => setSearchUserId(e.target.value)} value={searchUserId} placeholder="User ID" /></th>
                             <th className="FreeTrialDatePickerTH">
                                 <DatePicker
@@ -155,7 +156,7 @@ export function FreeTrialComponent() {
                         <tr>
                             <th>ID</th>
                             <th>Plugin</th>
-                            <th>Program</th>
+                            <th>Platform</th>
                             <th>User ID</th>
                             <th>Starts</th>
                             <th>Ends</th>
@@ -172,8 +173,8 @@ export function FreeTrialComponent() {
                                 <tr key={freeTrial.id}>
                                     <td className="align-middle" style={{ width: "80px" }}>{freeTrial.id}</td>
                                     <td className="align-middle">{freeTrial.pluginName}</td>
-                                    <td className="align-middle">{"[Figma]"}</td>
-                                    <td className="align-middle">{"[1D32F32A45]"}</td>
+                                    <td className="align-middle">{freeTrial.platform}</td>
+                                    <td className="align-middle">{freeTrial.uniqueUserId}</td>
                                     <td className="align-middle">{freeTrial.displayStartDate}</td>
                                     <td className="align-middle ">
                                         <div className="d-inline-block">
@@ -249,7 +250,7 @@ export function FreeTrialComponent() {
 
     function ClearFilters() {
         setSearchId("");
-        setSearchProgramName("");
+        setSearchPlatform("");
         setSearchPluginName("");
         setSearchUserId("");
         setSearchStartDate(null);
