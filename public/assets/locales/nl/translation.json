@@ -40,5 +40,8 @@
     "dashboard_active": "Actief",
     "dashboard_inactive": "Inactief",
     "dashboard_searchbar": "zoekbalk",
-    "dashboard_more": "Meer"
+    "dashboard_more": "Meer",
+    "dashboard_uniqueusers": "Unieke Gebruikers",
+    "dashboard_servicename": "Service Naam",
+    "dashboard_externaluserid": "Unieke Gebruikers "
 }

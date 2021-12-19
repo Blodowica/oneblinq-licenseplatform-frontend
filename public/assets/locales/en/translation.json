@@ -40,5 +40,8 @@
     "dashboard_active": "Active",
     "dashboard_inactive": "Inactive",
     "dashboard_searchbar": "Search Bar",
-    "dashboard_more": "More"
+    "dashboard_more": "More",
+    "dashboard_uniqueusers": "Unique Users",
+    "dashboard_servicename": "Service Name",
+    "dashboard_externaluserid": "Unique User "
 }

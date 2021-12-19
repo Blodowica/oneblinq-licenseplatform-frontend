@@ -5,11 +5,10 @@ import { useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
 import { useRequestWrapper } from '../../middleware';
 import { MdOutlineError, MdContentCopy, MdLibraryAddCheck } from "react-icons/md";
+import { GrLicense, GiRank3, FcExpired, GrValidate, BsHourglass, IoCalendarOutline, TiArrowRepeat } from 'react-icons/all'
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
-import languageDetector from 'i18next-browser-languagedetector';
-import HttpApi from 'i18next-http-backend';
-import i18next from 'i18next';
+
 
 import { authAtom } from '../../state';
 import { NavigationBarComponent } from '../';
@@ -36,15 +35,20 @@ export function UserDashboard() {
     useEffect(() => {
         if (licenses == null) {
 
-            requestWrapper.get(`${baseUrl}license/user-license/${userState.id}`)
+            requestWrapper.get(`${baseUrl}License/user-license/${userState.id}`)
                 .then(response => {
-                    // var d = new Date(response.expirationDate);
-                    // var dd = d.getDate();
-                    // var mm = d.getMonth() + 1;
-                    // var yy = d.getFullYear();
-                    // response.expirationDate = dd + "/" + mm + "/" + yy;
-                    setLicenses(response)
+                    response.forEach(element => {
 
+                        if (element.expirationDate) {
+                            var displayDate = new Date(Date.parse(element.expirationDate))
+                            element.expirationDate = `${displayDate.getDate() + 1}-${displayDate.getMonth() + 1}-${displayDate.getFullYear() + 1}`
+                        }
+
+
+                    });
+
+                    console.log(response);
+                    setLicenses(response);
                 })
                 .catch((er) => {
                     setLicenses([])
@@ -55,6 +59,21 @@ export function UserDashboard() {
 
     })
 
+    async function handleDeactivation(id) {
+        try {
+
+            console.log(`deactivated ${id}`);
+            if (id != undefined) await requestWrapper.delete(`${baseUrl}License/remove-unique-user/${id}`)
+            window.location.reload();
+        } catch (error) {
+            window.location.reload();
+        }
+
+
+
+
+    }
+
 
     function LicenseModal({ onHide, license, show }) {
         const [detailedData, setDetailedData] = useState();
@@ -63,11 +82,14 @@ export function UserDashboard() {
         useEffect(() => {
             requestWrapper.get(`${baseUrl}license/${license.id}`)
                 .then(response => {
+                    console.log(response);
                     if (response.expiresAt) {
                         var displayDate = new Date(Date.parse(response.expiresAt))
                         response.expiresAt = `${displayDate.getDate() + 1}-${displayDate.getMonth() + 1}-${displayDate.getFullYear() + 1}`
                     }
                     setDetailedData(response);
+                    console.log(response);
+
                 }).catch((er) => {
                     setLicenses(null)
                     console.log(er)
@@ -150,9 +172,44 @@ export function UserDashboard() {
                     </Row>
 
 
+                    <Row>
+                        <Col xs lg="12">
+
+                            {license.uniqUsers ?
+                                <Table hover responsive>
+                                    <thead>
+                                        <tr>
+
+
+                                            <th scope='col' style={{ marginLeft: 10 }}>{t('dashboard_servicename')}</th>
+                                            <th scope='col'>Date Activated</th>
+                                            <th scope='col'></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {license.uniqUsers ? license.uniqUsers.map(uniqUsers => {
+                                            return (
+                                                <tr key={uniqUsers.id}>
+
+                                                    <td scope='col'>{uniqUsers.service}</td>
+                                                    <td scope='col'>{uniqUsers.createdAt.split('T')[0]}</td>
+                                                    <td scope='col' ><Button className='btn-danger btn-sm py-0' onClick={() => handleDeactivation(uniqUsers.id)}>Deactivate </Button></td>
+
+                                                </tr>
+                                            )
+                                        }) : null}
+
+                                    </tbody>
+                                </Table>
+                                : <Table></Table>}
+
+                        </Col>
+                    </Row>
 
                 </Modal.Body>
                 <Modal.Footer>
+
                     <Button className={"btn-" + (detailedData.active ? 'danger' : 'primary')} onClick={() => {
                         console.log('redirected');
                         window.location.href = 'https://techtycoons.gumroad.com/?recommended_by=library'
@@ -203,23 +260,23 @@ export function UserDashboard() {
 
                                                 <tr key={license.id}>
 
-                                                    <td className="align-middle userDashboardLicenseName" style={{ width: "150px" }}>{license.productName}</td>
-                                                    <td className="align-middle Userdashboardlicensekey" style={{ width: "350px" }}>
-
+                                                    <td className="align-middle userDashboardLicenseName" style={{ width: "13vw" }}> {myCurrentTime >= license.expirationDate ? <GrValidate style={{ background: '#add8e6', borderRadius: '80%', height: '5vh', width: '5vh', marginRight: "1.5vh" }} /> : <FcExpired style={{ height: '5vh', width: '5vh', marginRight: '1.5vh' }} />} {license.productName}</td>
+                                                    <td className="align-middle Userdashboardlicensekey" style={{ width: "25%" }}>
+                                                        <GrLicense style={{ height: "2.5vh", width: '2.5vh', marginRight: "1.5vw", }} />
                                                         {license.licenseKey}
                                                         <CopyToClipboard text={license.licenseKey}
                                                             onCopy={() => setCopiedText(license.licenseKey)}>
                                                             {copiedText == license.licenseKey ?
-                                                                <MdLibraryAddCheck style={{ color: "#4c4e50" }} className="ms-2 PointOnHover" />
+                                                                <MdLibraryAddCheck style={{ color: "#4c4e50", height: "2vh", width: '2vh', marginBottom: "0.5vh" }} className="ms-2 PointOnHover" />
                                                                 :
-                                                                <MdContentCopy style={{ color: "#7d93af" }} className="ms-2 PointOnHover" />
+                                                                <MdContentCopy style={{ color: "#7d93af", height: "2vh", width: '2vh', marginBottom: '0.5vh' }} className="ms-2 PointOnHover" />
                                                             }
                                                         </CopyToClipboard>
                                                     </td >
-                                                    <td className="align-middle Userdashboardsmalltext"> {license.activation} / {license.maxUses}</td>
-                                                    <td className="align-middle Userdashboardsmalltext">{license.tier}</td>
-                                                    <td className="align-middle Userdashboardsmalltext">{license.reaccurence}</td>
-                                                    <td className="align-middle Userdashboardsmalltext">{license.expirationDate != null ? license.expirationDate.split('T')[0] : <p className="align-middle">-</p>}</td>
+                                                    <td className="align-middle Userdashboardsmalltext"> <TiArrowRepeat style={{ height: "2.5vh", width: '2.5vh', marginRight: "3%" }} /> {license.activation} / {license.maxUses}</td>
+                                                    <td className="align-middle Userdashboardsmalltext"><GiRank3 style={{ height: "2.5vh", width: '2.5vh', marginRight: "3%" }} /> {license.tier}</td>
+                                                    <td className="align-middle Userdashboardsmalltext"><IoCalendarOutline style={{ height: "2.5vh", width: '2.5vh', marginRight: "3%" }} />{license.reaccurence}</td>
+                                                    <td className="align-middle Userdashboardsmalltext"><div>{license.expirationDate != null ? <div> <BsHourglass style={{ height: "2.5vh", width: '2.5vh', marginRight: "3%" }} /> {license.expirationDate.split('T')[0]} </div> : <p>-</p>}</div> </td>
                                                     <td className="align-middle ">{myCurrentTime >= license.expirationDate ? <Badge bg="success">{t('dashboard_active')}</Badge> : <Badge bg="danger">{t('dashboard_inactive')}</Badge>}</td>
                                                     <td className="align-middle" style={{ width: "110px" }}>
                                                         <Button className="p-1" onClick={() => { setModalShow(true); setDetailedLicense(license) }}>{t('dashboard_more')}</Button>
