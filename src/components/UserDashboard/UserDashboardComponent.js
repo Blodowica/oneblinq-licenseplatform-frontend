@@ -16,7 +16,7 @@ import i18next from 'i18next';
 import { authAtom } from '../../state';
 import {NavigationBarComponent} from '../';
 
-import { Localization } from '../Localization/LocalizationComponent'
+import { Localization } from '../Localization/LocalizationComponent';
 <Localization />
 i18n
     .use(initReactI18next)
