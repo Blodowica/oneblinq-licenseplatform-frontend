@@ -3,18 +3,22 @@ import { useSetRecoilState } from 'recoil';
 import { authAtom } from '../state';
 import { useRequestWrapper } from '../middleware';
 import jwt_decode from 'jwt-decode';
+import { useQuery } from '.';
 
 export function useAuth() {
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/account`;
     const requestWrapper = useRequestWrapper()
     const setAuth = useSetRecoilState(authAtom)
     const history = useHistory()
+    const query = useQuery()
 
     return {
         login,
         register,
         logout,
-        refreshToken
+        refreshToken,
+        forgottenPasswordRequest,
+        forgottenPasswordVerify
     }
 
     var timeout
@@ -41,6 +45,22 @@ export function useAuth() {
                 setAuth(null)
                 alert(er)
             });
+    }
+
+    function forgottenPasswordRequest(email) {
+        return requestWrapper.post(`${baseUrl}/forgotten-password/request`, email)
+    }
+
+    function forgottenPasswordVerify(token, password) {
+        return requestWrapper.post(`${baseUrl}/forgotten-password/verify`, {
+            token, newPassword: password
+        }).then(user => {
+            setAuth(user);
+            startRefreshTokenTimer(user.token)
+            let token = query.get("token")
+            query.delete(token)
+            console.log("Successful authentication")
+        })
     }
 
     function register(email, password, firstName, lastName) {
