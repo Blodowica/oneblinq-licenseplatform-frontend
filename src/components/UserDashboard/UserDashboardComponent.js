@@ -14,7 +14,7 @@ import HttpApi from 'i18next-http-backend';
 import i18next from 'i18next';
 
 import { authAtom } from '../../state';
-import {NavigationBarComponent} from '../';
+import { NavigationBarComponent } from '../';
 
 import { Localization } from '../Localization/LocalizationComponent';
 <Localization />
@@ -83,14 +83,14 @@ export function UserDashboard() {
 
     return (
         <div className="Full" >
-            <NavigationBarComponent/>
+            <NavigationBarComponent />
             <Container fluid className="pt-3">
                 <Row>
                     <Col>
                         <Card style={{ backgroundColor: "#ff000000", borderWidth: "0px" }}>
                             <Card.Header style={{ backgroundColor: "#6240d7" }} className="UserDashboardCardHeader text-white">
                                 <div>
-                                    <Card.Title style={{ color: 'white', float: 'left', marginTop: '0.2%' }}><h2>Welcome {userState.firstName}</h2></Card.Title>
+                                    <Card.Title style={{ color: 'white', float: 'left', marginTop: '0.2%' }}><h2>{t('dashboard_welocme')} {userState.firstName}</h2></Card.Title>
 
                                 </div>
                             </Card.Header>
