@@ -5,22 +5,16 @@ import './UserProfilePageComponent.css';
 import { Container, Button, Form, Card, Col, Row } from "react-bootstrap";
 import { useRequestWrapper } from "../../middleware";
 import { NavigationBarComponent } from "../"
+import {useRecoilValue} from "recoil";
+import {authAtom} from "../../state";
+import jwt_decode from "jwt-decode";
 
 export function UserProfilePageComponent() {
 
     const requestWrapper = useRequestWrapper();
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/account`;
-    const [ admin, setAdmin] = useState(false);
-
-    useEffect(() => {
-        requestWrapper.get(`${baseUrl}/is-user-admin`)
-            .then(response => {
-                setAdmin(response);
-            })
-            .catch(er => {
-            console.log(er.message)
-        })
-    })
+    const authState = useRecoilValue(authAtom);
+    let role = jwt_decode(authState.token).role;
 
     function ChangePassword() {
         const [currentPassword, setCurrentPassword] = useState("");
@@ -468,7 +462,7 @@ export function UserProfilePageComponent() {
                     <Row style={{maxHeight: '75hv'}}>
                         <Col xs md="4" lg="3">
                             <ChangePassword />
-                            {admin ?
+                            {(role === 'Admin') ?
                             <SetNotifications />
                                 :
                                 <div />

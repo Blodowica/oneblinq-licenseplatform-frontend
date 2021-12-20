@@ -1,7 +1,12 @@
 /* Datepicker has bold text by default overriding this here */
-.AccessTokenDatePickerTH{
+.FreeTrialDatePickerTH{
     font-weight: normal;
     min-width: 100px;
+}
+
+.FreeTrialDatePickerTH2{
+    font-weight: normal;
+    max-width: 130px;
 }
 
 /* Default Datepicker clear button is offcenter and not in the correct style, overriding stylign here */

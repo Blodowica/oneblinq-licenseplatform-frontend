@@ -8,12 +8,11 @@ import { MdOutlineError, MdContentCopy, MdLibraryAddCheck } from "react-icons/md
 import { GrLicense, GiRank3, FcExpired, GrValidate, BsHourglass, IoCalendarOutline, TiArrowRepeat } from 'react-icons/all'
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
-
-
 import { authAtom } from '../../state';
 import { NavigationBarComponent } from '../';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Localization } from '../Localization/LocalizationComponent';
+
 <Localization />
 
 
