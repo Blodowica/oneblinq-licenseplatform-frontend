@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./RegistrationComponent.css";
-import { Form, Card, Button, InputGroup, FormControl, Row, Col, Container } from 'react-bootstrap'
-import { MdEmail, MdLock, MdPerson, MdPeople } from "react-icons/md";
+import { Button, Card, Col, Form, InputGroup, Row } from 'react-bootstrap';
+import { MdEmail, MdLock, MdPeople, MdPerson } from "react-icons/md";
 import { useAuth } from "../../actions";
+import "./RegistrationComponent.css";
 
 function RegistrationComponent({ toLogin, emailParam }) {
   const [firstName, setFirstName] = useState("");

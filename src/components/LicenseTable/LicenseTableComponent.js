@@ -1,51 +1,50 @@
-import './LicenseTableComponent.css'
-import { PaginationNavigationComponent, GlobalFilterComponent } from '../index'
-import { Table, Button, Badge, Modal, Row, Col, Card, Form, Container } from 'react-bootstrap';
-import { atom, useRecoilState, useRecoilValue } from 'recoil';
-import { useEffect, useState } from 'react';
-import { useRequestWrapper } from '../../middleware';
-import { MdOutlineError, MdOutlineManageSearch, MdContentCopy, MdLibraryAddCheck } from "react-icons/md";
+import { useEffect, useRef, useState } from 'react';
+import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import i18next from 'i18next';
-import { useTranslation, initReactI18next } from "react-i18next";
-import { Localization } from '../Localization/LocalizationComponent'
-
+import { useTranslation } from "react-i18next";
+import { MdContentCopy, MdLibraryAddCheck, MdOutlineError } from "react-icons/md";
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRequestWrapper } from '../../middleware';
+import { TableAmountAtom, TableFiltersAtom, TablePageAtom, TableSearchToggleAtom } from '../../state';
+import { GlobalFilterComponent, PaginationNavigationComponent } from '../index';
+import './LicenseTableComponent.css';
 
 export function LicenseTableComponent() {
   // setup i18next
   const { t } = useTranslation();
-  //Recoil setup
-  const paginationPageState = atom({ key: 'licensePaginationPageState', default: 1, });
-  const recordsCountState = atom({ key: 'licenseRecordsCountState', default: 10, });
-  const filterSearchStringState = atom({ key: 'licenseFilterSearchStringState', default: "", });
-  const filterDetailedSearchState = atom({ key: 'licenseFilterDetailedSearchState', default: false, });
 
   //general setup
+  const requestWrapper = useRequestWrapper()
+  const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/`;
+  const [isLoadingToggle, setIsLoadingToggle] = useState(false);
+
   const [licenses, setLicenses] = useState();
   const [modalShow, setModalShow] = useState(false);
   const [detailedLicense, setDetailedLicense] = useState();
-  const requestWrapper = useRequestWrapper()
   const [copiedText, setCopiedText] = useState("");
-  const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/`;
   const [updateModal, setUpdateModal] = useState(false);
 
-  //Filtering
-  const detailedSearch = useRecoilValue(filterDetailedSearchState);
-  const recordsCount = useRecoilValue(recordsCountState);
-  const searchString = useRecoilValue(filterSearchStringState);
+  //filtering delay
+  const [timer, setTimer] = useState(null);
+  const isMounted = useRef(false);
 
-  const [searchId, setSearchId] = useRecoilState(atom({ key: 'licenseFilterId', default: "", }));
-  const [searchLicense, setSearchLicense] = useRecoilState(atom({ key: 'licenseFilterLicensekey', default: "", }));
-  const [searchEmail, setSearchEmail] = useRecoilState(atom({ key: 'licenseFilterEmail', default: "", }));
-  const [searchActivations, setSearchActivations] = useRecoilState(atom({ key: 'licenseFilterActivations', default: "", }));
-  const [searchStatus, setSearchStatus] = useRecoilState(atom({ key: 'licenseFilterStatus', default: "", }));
-  const [searchProduct, setSearchProduct] = useRecoilState(atom({ key: 'licenseFilterProduct', default: "", }));
+  //Filtering
+  const detailedSearch = useRecoilValue(TableSearchToggleAtom("License"));
+  const recordsCount = useRecoilValue(TableAmountAtom("License"));
+  const searchString = useRecoilValue(TableFiltersAtom("License"));
+
+  const [searchId, setSearchId] = useRecoilState(TableFiltersAtom("LicenseId"));
+  const [searchLicense, setSearchLicense] = useRecoilState(TableFiltersAtom("LicenseKey"));
+  const [searchEmail, setSearchEmail] = useRecoilState(TableFiltersAtom("LicenseEmail"));
+  const [searchActivations, setSearchActivations] = useRecoilState(TableFiltersAtom("LicenseActivations"));
+  const [searchStatus, setSearchStatus] = useRecoilState(TableFiltersAtom("LicenseStatus"));
+  const [searchProduct, setSearchProduct] = useRecoilState(TableFiltersAtom("LicenseProduct"));
 
   //pagination
   const [paginationPages, setPaginationPages] = useState(1);
-  const [paginationPage, setPaginationPage] = useRecoilState(paginationPageState);
+  const [paginationPage, setPaginationPage] = useRecoilState(TablePageAtom("License"));
 
-  useEffect(() => {
+  function FetchLicenses() {
     requestWrapper.post(`${baseUrl}pagination/get-licenses`,
       {
         globalFilter: searchString,
@@ -63,12 +62,21 @@ export function LicenseTableComponent() {
         if (paginationPage > response.maxPages) {
           setPaginationPage(1);
         }
-        setLicenses(response.licenses);
+        setLicenses(response.records);
       }).catch((er) => {
         setLicenses(null)
         console.log(er)
       });
-  }, [searchString, searchId, searchLicense, searchEmail, searchActivations, searchStatus, searchProduct, recordsCount, paginationPage, recordsCount, updateModal])
+  }
+
+  useEffect(() => {
+    FetchLicenses();
+  }, [recordsCount, paginationPage, searchStatus, updateModal])
+
+  useEffect(() => {
+    clearTimeout(timer);
+    isMounted.current ? setTimer(setTimeout(() => { FetchLicenses() }, 300)) : isMounted.current = true;
+  }, [searchString, searchId, searchLicense, searchEmail, searchActivations, searchProduct])
 
   //detailed license display
   function LicenseModal({ onHide, license, show }) {
@@ -173,16 +181,21 @@ export function LicenseTableComponent() {
 
         </Modal.Body>
         <Modal.Footer>
-          <Button className={"btn-" + (detailedData.active ? 'danger' : 'primary')} onClick={() => {
-            requestWrapper.post(`${baseUrl}license/toggle-license/${license.id}`)
+          <Button className={"btn-" + (detailedData.active ? 'danger ' : 'primary ') + (isLoadingToggle ? 'disabled' : '')} onClick={async () => {
+            setIsLoadingToggle(true);
+            await requestWrapper.post(`${baseUrl}license/toggle-license/${license.id}`)
               .then(() => {
                 setUpdateModal(!updateModal);
               }
               ).catch((er) => {
                 console.log(er)
               });
+              setIsLoadingToggle(false);
           }}>
-            {detailedData.active ? <>{t('dashboard_disable')}</> : <>{t('dashboard_enable')}</>}
+            {isLoadingToggle &&
+              <span className="spinner-border spinner-border-sm me-2"></span>
+            }
+              {detailedData.active ? <>{t('dashboard_disable')}</> : <>{t('dashboard_enable')}</>}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -192,7 +205,7 @@ export function LicenseTableComponent() {
   //table render
   return (
     <>
-      <GlobalFilterComponent recordsCountState={recordsCountState} filterSearchStringState={filterSearchStringState} filterDetailedSearchState={filterDetailedSearchState} />
+      <GlobalFilterComponent table="License" />
       <Table striped bordered hover responsive>
         <thead>
           {detailedSearch ?
@@ -203,7 +216,7 @@ export function LicenseTableComponent() {
               <th><Form.Control onChange={(e) => setSearchEmail(e.target.value.toLowerCase())} value={searchEmail} placeholder="Email" /></th>
               <th><Form.Control type="number" onChange={(e) => setSearchActivations(e.target.value)} value={searchActivations} placeholder={t('dashboard_activations')} /></th>
               <th>
-                <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown">
+                <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown" value={searchStatus}>
                   <option value="">Status</option>
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
@@ -273,7 +286,7 @@ export function LicenseTableComponent() {
           />}
         </tbody>
       </Table>
-      <PaginationNavigationComponent paginationPages={paginationPages} paginationPageState={paginationPageState} />
+      <PaginationNavigationComponent table="License" pages={paginationPages} />
     </>
   )
 
