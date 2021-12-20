@@ -59,11 +59,11 @@ export function UserDashboard() {
 
     })
 
-    async function handleDeactivation(id) {
+    async function handleDeactivation(id, licenseId) {
         try {
 
-            console.log(`deactivated ${id}`);
-            if (id != undefined) await requestWrapper.delete(`${baseUrl}License/remove-unique-user/${id}`)
+            console.log(`deactivated ${id} licenseId: ${licenseId}`);
+            if (id != undefined) await requestWrapper.delete(`${baseUrl}License/remove-unique-user/${id}/${licenseId}`)
             window.location.reload();
         } catch (error) {
             window.location.reload();
@@ -176,7 +176,7 @@ export function UserDashboard() {
                         <Col xs lg="12">
 
                             {license.uniqUsers ?
-                                <Table hover responsive>
+                                <Table hover responsive className='overflow-auto'>
                                     <thead>
                                         <tr>
 
@@ -194,7 +194,7 @@ export function UserDashboard() {
 
                                                     <td scope='col'>{uniqUsers.service}</td>
                                                     <td scope='col'>{uniqUsers.createdAt.split('T')[0]}</td>
-                                                    <td scope='col' ><Button className='btn-danger btn-sm py-0' onClick={() => handleDeactivation(uniqUsers.id)}>Deactivate </Button></td>
+                                                    <td scope='col' ><Button className='btn-danger btn-sm py-0' onClick={() => handleDeactivation(uniqUsers.id, license.id)}>Deactivate </Button></td>
 
                                                 </tr>
                                             )
