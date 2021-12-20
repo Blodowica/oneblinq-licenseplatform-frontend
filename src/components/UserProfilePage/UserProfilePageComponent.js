@@ -17,7 +17,7 @@ export function UserProfilePageComponent() {
     const baseUrl = `${process.env.REACT_APP_BACKEND_API_URL}/api/account`;
     const authState = useRecoilValue(authAtom);
     let role = jwt_decode(authState.token).role;
-
+    const { t } = useTranslation();
     function ChangePassword() {
         const [currentPassword, setCurrentPassword] = useState("");
         const [newPassword, setNewPassword] = useState("");
