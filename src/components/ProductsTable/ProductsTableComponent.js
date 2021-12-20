@@ -116,9 +116,9 @@ export function ProductsTableComponent() {
                             <th><Form.Control type="number" onChange={(e) => setSearchLicenses(e.target.value)} value={searchLicenses} placeholder={t('dashboard_licenses')} /></th>
                             <th>
                                 <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown" value={searchStatus}>
-                                    <option value="">Status</option>
-                                    <option value="true">Active</option>
-                                    <option value="false">Inactive</option>
+                                    <option value="">{t('dashboard_status')}</option>
+                                    <option value="true">{t('dashboard_active')}</option>
+                                    <option value="false">{t('dashboard_inactive')}</option>
                                 </Form.Select>
                             </th>
                             <th style={{ width: "105px" }}><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>{t('dashboard_clear_filters')}</Button></th>
@@ -130,11 +130,11 @@ export function ProductsTableComponent() {
                             <th>{t('dashboard_variant')}</th>
                             <th>{t('dashboard_maxuses')}</th>
                             <th>{t('dashboard_license')}</th>
-                            <th>Status</th>
-                        </tr>
+                            <th>{t('dashboard_status')}</th>
+                        </tr >
                     }
 
-                </thead>
+                </thead >
                 <tbody>
                     {products ?
                         products.map(product => {
@@ -175,7 +175,7 @@ export function ProductsTableComponent() {
                         })
                         : null}
                 </tbody>
-            </Table>
+            </Table >
             <PaginationNavigationComponent table="Product" pages={paginationPages} />
         </>
     )

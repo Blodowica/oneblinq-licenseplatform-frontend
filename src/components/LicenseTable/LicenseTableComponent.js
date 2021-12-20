@@ -145,7 +145,7 @@ export function LicenseTableComponent() {
 
           <Row className="mt-2">
             <Col xs lg="7">
-              <Form.Label>Email</Form.Label>
+              <Form.Label>{t('dashboard_email')}</Form.Label>
               <Form.Control readOnly value={detailedData.email} />
             </Col>
             <Col xs lg="5">
@@ -190,12 +190,12 @@ export function LicenseTableComponent() {
               ).catch((er) => {
                 console.log(er)
               });
-              setIsLoadingToggle(false);
+            setIsLoadingToggle(false);
           }}>
             {isLoadingToggle &&
               <span className="spinner-border spinner-border-sm me-2"></span>
             }
-              {detailedData.active ? <>{t('dashboard_disable')}</> : <>{t('dashboard_enable')}</>}
+            {detailedData.active ? <>{t('dashboard_disable')}</> : <>{t('dashboard_enable')}</>}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -217,9 +217,9 @@ export function LicenseTableComponent() {
               <th><Form.Control type="number" onChange={(e) => setSearchActivations(e.target.value)} value={searchActivations} placeholder={t('dashboard_activations')} /></th>
               <th>
                 <Form.Select onChange={(e) => setSearchStatus(e.target.value)} id="TableActivationDropdown" value={searchStatus}>
-                  <option value="">Status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
+                  <option value="">{t('dashboard_status')}</option>
+                  <option value="active">{t('dashboard_active')}</option>
+                  <option value="inactive">{t('dashboard_inactive')}</option>
                 </Form.Select>
               </th>
               <th><Button variant="secondary" className="p-1 text-white" onClick={() => ClearFilters()}>{t('dashboard_clear_filters')}</Button></th>
@@ -229,9 +229,9 @@ export function LicenseTableComponent() {
               <th>ID</th>
               <th>{t('dashboard_licenses')}</th>
               <th>{t('dashboard_products')}</th>
-              <th>Email</th>
+              <th>{t('dashboard_email')}</th>
               <th>{t('dashboard_activations')}</th>
-              <th>Status</th>
+              <th>{t('dashboard_status')}</th>
               <th>{t('dashboard_actions')}</th>
             </tr>
           }
@@ -273,7 +273,7 @@ export function LicenseTableComponent() {
                   )}
                 </td>
                 <td className="align-middle" style={{ width: "110px" }}>
-                  <Button className="p-1" onClick={() => { setModalShow(true); setDetailedLicense(license) }}>Details</Button>
+                  <Button className="p-1" onClick={() => { setModalShow(true); setDetailedLicense(license) }}>{t('dashboard_details')}</Button>
                 </td>
               </tr>
             )
