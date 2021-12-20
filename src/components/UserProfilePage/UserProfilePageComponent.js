@@ -453,7 +453,7 @@ export function UserProfilePageComponent() {
                                             margin: "15px 0px 0px 0px",
                                             fontSize: "22px",
                                             border: "transparent"
-                                        }}>{t('dashboard_savechanges')}</Button>}
+                                        }}>{t('personalpage_savechanges')}</Button>}
                             </Col>
                         </Col>
                     </Row>
