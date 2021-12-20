@@ -18,7 +18,6 @@ export function UserProfilePageComponent() {
     const authState = useRecoilValue(authAtom);
     const { t } = useTranslation();
     let role = jwt_decode(authState.token).role;
-    const { t } = useTranslation();
     function ChangePassword() {
         const [currentPassword, setCurrentPassword] = useState("");
         const [newPassword, setNewPassword] = useState("");
