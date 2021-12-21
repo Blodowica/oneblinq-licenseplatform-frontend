@@ -243,7 +243,6 @@ export function UsersTableComponent() {
                         <Button variant="secondary" onClick={() => setEditUser(false)}>{t('dashboard_cancel')}</Button>
                         <Button variant="success" onClick={() => {
 
-                            console.log(detailedData);
                             requestWrapper.post(`${baseUrl}user/edit-user/${detailedData.id}`,
                                 {
                                     firstName: firstName,

@@ -46,7 +46,6 @@ export function UserDashboard() {
 
                     });
 
-                    console.log(response);
                     setLicenses(response);
                 })
                 .catch((er) => {
@@ -60,8 +59,6 @@ export function UserDashboard() {
 
     async function handleDeactivation(id, licenseId) {
         try {
-
-            console.log(`deactivated ${id} licenseId: ${licenseId}`);
             if (id != undefined) await requestWrapper.delete(`${baseUrl}License/remove-unique-user/${id}/${licenseId}`)
             window.location.reload();
         } catch (error) {
@@ -81,13 +78,11 @@ export function UserDashboard() {
         useEffect(() => {
             requestWrapper.get(`${baseUrl}license/${license.id}`)
                 .then(response => {
-                    console.log(response);
                     if (response.expiresAt) {
                         var displayDate = new Date(Date.parse(response.expiresAt))
                         response.expiresAt = `${displayDate.getDate() + 1}-${displayDate.getMonth() + 1}-${displayDate.getFullYear() + 1}`
                     }
                     setDetailedData(response);
-                    console.log(response);
 
                 }).catch((er) => {
                     setLicenses(null)
@@ -210,7 +205,6 @@ export function UserDashboard() {
                 <Modal.Footer>
 
                     <Button className={"btn-" + (detailedData.active ? 'danger' : 'primary')} onClick={() => {
-                        console.log('redirected');
                         window.location.href = 'https://techtycoons.gumroad.com/?recommended_by=library'
                     }
                     }>

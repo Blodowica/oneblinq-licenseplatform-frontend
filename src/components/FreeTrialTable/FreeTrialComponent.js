@@ -85,7 +85,6 @@ export function FreeTrialComponent() {
                     trial.active = Date.parse(trial.endDate) > new Date().valueOf();
                 });
                 setFreeTrials(response.records);
-                console.log(response.records);
             }).catch((er) => {
                 setFreeTrials(null)
                 console.log(er)
