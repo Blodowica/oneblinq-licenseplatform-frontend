@@ -28,7 +28,7 @@ export function useAuth() {
         const tokenExp = JSON.parse(Buffer.from(jwt.split('.')[1], 'base64'));
         const expires = new Date(tokenExp.exp * 1000);
         const timeoutSec = expires.getTime() - Date.now() - (60 * 1000);
-        console.log(`${timeoutSec / 1000} s before next JWT fetch call`)
+        // console.log(`${timeoutSec / 1000} s before next JWT fetch call`)
         timeout = setTimeout(() => refreshToken(), timeoutSec)
     }
 
@@ -37,7 +37,7 @@ export function useAuth() {
             .then(user => {
                 setAuth(user);
                 startRefreshTokenTimer(user.token)
-                console.log("Successful authentication")
+                // console.log("Successful authentication")
                 // get return url from location state or default to home page
                 //const { from } = history.location.state || { from: { pathname: '/' } };
                 //history.push(from);
@@ -59,7 +59,7 @@ export function useAuth() {
             startRefreshTokenTimer(user.token)
             let token = query.get("token")
             query.delete(token)
-            console.log("Successful authentication")
+            // console.log("Successful authentication")
         })
     }
 
@@ -68,7 +68,7 @@ export function useAuth() {
             .then(user => {
                 setAuth(user);
                 startRefreshTokenTimer(user.token)
-                console.log("Successful register")
+                // console.log("Successful register")
 
                 // get return url from location state or default to home page
                 //const { from } = history.location.state || { from: { pathname: '/' } };
