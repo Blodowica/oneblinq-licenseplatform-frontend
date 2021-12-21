@@ -121,7 +121,6 @@ export function UsersTableComponent() {
         useEffect(() => {
             requestWrapper.get(`${baseUrl}User/${user.id}`)
                 .then(response => {
-                    console.log(response);
                     if (response.expiresAt) {
                         var displayDate = new Date(Date.parse(response.expiresAt))
                         response.expiresAt = `${displayDate.getDate() + 1}-${displayDate.getMonth() + 1}-${displayDate.getFullYear() + 1}`
@@ -229,7 +228,6 @@ export function UsersTableComponent() {
                                     </Col>
                                     <Col xs lg="2">
                                         <Form.Label className="mb-0">{t('dashboard_activations')}</Form.Label>
-                                        {console.log(license)}
                                         <Form.Control readOnly value={`${license.activations}/${license.maxActivations}`} />
                                         {license.activations > license.maxActivations &&
                                             <MdOutlineError color="red" size="1.5em" className="d-flex ms-auto DetailedUserDanger" />
@@ -244,8 +242,6 @@ export function UsersTableComponent() {
                     <Modal.Footer className="pb-1 pt-1 d-flex">
                         <Button variant="secondary" onClick={() => setEditUser(false)}>{t('dashboard_cancel')}</Button>
                         <Button variant="success" onClick={() => {
-
-                            console.log(detailedData);
                             requestWrapper.post(`${baseUrl}user/edit-user/${detailedData.id}`,
                                 {
                                     firstName: firstName,
