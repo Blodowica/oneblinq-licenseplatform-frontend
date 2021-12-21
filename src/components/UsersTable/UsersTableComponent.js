@@ -167,7 +167,7 @@ export function UsersTableComponent() {
                             {editUser ?
                                 <Form.Control onChange={(e) => setLastName(e.target.value)} value={lastName} />
                                 :
-                                <Form.Control readOnly value={detailedData.lastName ? detailedData.firstName : "not found"} />
+                                <Form.Control readOnly value={detailedData.lastName ? detailedData.lastName : "not found"} />
                             }
                         </Col>
                     </Row>
@@ -242,7 +242,6 @@ export function UsersTableComponent() {
                     <Modal.Footer className="pb-1 pt-1 d-flex">
                         <Button variant="secondary" onClick={() => setEditUser(false)}>{t('dashboard_cancel')}</Button>
                         <Button variant="success" onClick={() => {
-
                             requestWrapper.post(`${baseUrl}user/edit-user/${detailedData.id}`,
                                 {
                                     firstName: firstName,
