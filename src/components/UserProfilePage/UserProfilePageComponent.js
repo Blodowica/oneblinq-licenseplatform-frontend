@@ -192,7 +192,6 @@ export function UserProfilePageComponent() {
                     setCity(response.city);
                     setPostalCode(response.postalCode);
                     setCountry(response.country);
-                    console.log(response.birthdate);
                 }).catch((er) => {
                     console.log(er);
                 })
@@ -313,7 +312,6 @@ export function UserProfilePageComponent() {
                                     value={birthdate}
                                     onChange={(e) => {
                                         setBirthdate(e.target.value);
-                                        console.log(e.target.value);
                                     }}
                                     style={{ width: '80%' }}
                                 />
