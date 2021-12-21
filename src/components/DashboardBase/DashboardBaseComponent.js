@@ -1,13 +1,14 @@
 import './DashboardBaseComponent.css'
 import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown} from 'react-bootstrap';
+import { Tabs, Row, Col, Container, Tab, Card, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import logo from '../../assets/Logo.svg';
 import { MdLanguage, MdPerson } from "react-icons/md";
-import { AccessTokensTableComponent, UsersTableComponent, LicenseTableComponent, ProductsTableComponent, NavigationBarComponent } from '../';
+import { AccessTokensTableComponent, UsersTableComponent, LicenseTableComponent, ProductsTableComponent, NavigationBarComponent, FreeTrialComponent } from '../';
+import { useTranslation, initReactI18next } from "react-i18next";
 
 export function DashboardBaseComponent() {
-
+  const { t } = useTranslation();
   function ControlledTabs() {
     let history = useHistory();
     let URI = useLocation();
@@ -37,8 +38,8 @@ export function DashboardBaseComponent() {
         <Tab eventKey="users" title="Users">
           <UsersTableComponent />
         </Tab>
-        <Tab disabled eventKey="freeTrials" title="Free trials">
-          
+        <Tab eventKey="freeTrials" title="Free trials">
+          <FreeTrialComponent />
         </Tab>
         <Tab eventKey="accessTokens" title="Access tokens">
           <AccessTokensTableComponent />
@@ -59,7 +60,7 @@ export function DashboardBaseComponent() {
             <Col>
               <Card style={{ backgroundColor: "#ff000000", borderWidth: "0px" }}>
                 <Card.Header style={{ backgroundColor: "#6240d7" }} className="DataManagementCardHeader text-white">
-                  <Card.Title style={{ fontSize: "30px" }} className="mb-1 ms-3">Data Management</Card.Title>
+                  <Card.Title style={{ fontSize: "30px" }} className="mb-1 ms-3">{t('dashboard_datamanagement')}</Card.Title>
                 </Card.Header>
                 <Card.Body style={{ backgroundColor: "white" }}>
                   <ControlledTabs />

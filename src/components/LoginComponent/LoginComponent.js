@@ -43,11 +43,12 @@ export function LoginComponent({ toRegister, toForgottenPassword }) {
               <Form.Control value={password} type="password" placeholder="******" onChange={(e) => setPassword(e.target.value)} />
 
             </InputGroup>
-            <Row className="justify-content-end me-1 mb-3">
-
-              <span onClick={() => toForgottenPassword()} className="text-end ">
-                Forgot password?
-              </span>
+            <Row className="me-1 mb-3">
+              <Col className="text-end">
+                <span onClick={() => toForgottenPassword()} style={{cursor: "pointer"}}>
+                  Forgot password?
+                </span>
+              </Col>
             </Row>
 
 
