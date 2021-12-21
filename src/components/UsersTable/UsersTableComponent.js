@@ -121,6 +121,7 @@ export function UsersTableComponent() {
         useEffect(() => {
             requestWrapper.get(`${baseUrl}User/${user.id}`)
                 .then(response => {
+                    console.log(response);
                     if (response.expiresAt) {
                         var displayDate = new Date(Date.parse(response.expiresAt))
                         response.expiresAt = `${displayDate.getDate() + 1}-${displayDate.getMonth() + 1}-${displayDate.getFullYear() + 1}`
@@ -167,7 +168,7 @@ export function UsersTableComponent() {
                             {editUser ?
                                 <Form.Control onChange={(e) => setLastName(e.target.value)} value={lastName} />
                                 :
-                                <Form.Control readOnly value={detailedData.lastName ? detailedData.firstName : "not found"} />
+                                <Form.Control readOnly value={detailedData.lastName ? detailedData.lastName : "not found"} />
                             }
                         </Col>
                     </Row>
@@ -228,6 +229,7 @@ export function UsersTableComponent() {
                                     </Col>
                                     <Col xs lg="2">
                                         <Form.Label className="mb-0">{t('dashboard_activations')}</Form.Label>
+                                        {console.log(license)}
                                         <Form.Control readOnly value={`${license.activations}/${license.maxActivations}`} />
                                         {license.activations > license.maxActivations &&
                                             <MdOutlineError color="red" size="1.5em" className="d-flex ms-auto DetailedUserDanger" />
