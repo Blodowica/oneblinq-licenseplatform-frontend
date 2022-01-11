@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+require('dotenv').config()
 // ***********************************************************
 // This example plugins/index.js can be used to load plugins
 //
@@ -19,4 +20,12 @@
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
+  // modify env value
+
+  config.env.url = process.env.REACT_APP_FRONTEND_URL
+  config.env.loginEmail = process.env.REACT_APP_LOGIN_EMAIL
+  config.env.loginPassword = process.env.REACT_APP_LOGIN_PASSWORD
+
+  // return config
+  return config
 }
