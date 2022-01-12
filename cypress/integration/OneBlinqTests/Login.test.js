@@ -24,7 +24,7 @@ describe('Logs user in as an admin', ()=>{
     it('Login as Admin test', ()=>{  
         cy.view();
         cy.adminLogin();
-        cy.contains("Welcome")
+        cy.contains("Data Management")
       
     })
 })
