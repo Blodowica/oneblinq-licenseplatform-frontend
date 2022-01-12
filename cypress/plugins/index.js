@@ -23,8 +23,10 @@ module.exports = (on, config) => {
   // modify env value
 
   config.env.url = process.env.REACT_APP_FRONTEND_URL
-  config.env.loginEmail = process.env.REACT_APP_LOGIN_EMAIL
-  config.env.loginPassword = process.env.REACT_APP_LOGIN_PASSWORD
+  config.env.loginUserEmail = process.env.CYPRESS_TEST_LOGIN_USER_EMAIL
+  config.env.loginUserPassword = process.env.CYPRESS_TEST_LOGIN_USER_PASSWORD
+  config.env.loginAdminEmail = process.env.CYPRESS_TEST_LOGIN_ADMIN_EMAIL
+  config.env.loginAdminPassword = process.env.CYPRESS_TEST_LOGIN_ADMIN_PASSWORD
 
   // return config
   return config
