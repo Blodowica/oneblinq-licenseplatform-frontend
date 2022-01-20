@@ -31,7 +31,7 @@ export function LoginComponent({ toRegister, toForgottenPassword }) {
                 <MdEmail size="2em" />
 
               </InputGroup.Text>
-              <Form.Control value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+              <Form.Control value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" data-testId="LoginEmail" />
 
             </InputGroup>
 
@@ -40,7 +40,7 @@ export function LoginComponent({ toRegister, toForgottenPassword }) {
                 <MdLock size="2em" />
 
               </InputGroup.Text>
-              <Form.Control value={password} type="password" placeholder="******" onChange={(e) => setPassword(e.target.value)} />
+              <Form.Control value={password} type="password" placeholder="******" onChange={(e) => setPassword(e.target.value)} data-testId="LoginPassword"/>
 
             </InputGroup>
             <Row className="me-1 mb-3">
@@ -55,7 +55,7 @@ export function LoginComponent({ toRegister, toForgottenPassword }) {
             <Row>
               <Col className="text-center">
 
-                <Button onClick={() => login()} className="rounded-pill" style={{ paddingLeft: "30px", paddingRight: "30px", backgroundColor: "#6933C8", color: "white" }} size="lg">
+                <Button data-testId="LoginButton" onClick={() => login()} className="rounded-pill" style={{ paddingLeft: "30px", paddingRight: "30px", backgroundColor: "#6933C8", color: "white" }} size="lg">
                   Login
                 </Button>
               </Col>
