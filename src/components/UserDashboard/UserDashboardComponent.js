@@ -80,7 +80,7 @@ export function UserDashboard() {
                 .then(response => {
                     if (response.expiresAt) {
                         var displayDate = new Date(Date.parse(response.expiresAt))
-                        response.expiresAt = `${displayDate.getDate() + 1}-${displayDate.getMonth() + 1}-${displayDate.getFullYear() + 1}`
+                        response.expiresAt = `${displayDate.getDate()}-${displayDate.getMonth() + 1}-${displayDate.getFullYear()}`
                     }
                     setDetailedData(response);
 
@@ -253,7 +253,7 @@ export function UserDashboard() {
 
                                                 <tr key={license.id}>
 
-                                                    <td className="align-middle userDashboardLicenseName" style={{ width: "13vw" }}> {myCurrentTime >= license.expirationDate ? <GrValidate style={{ background: '#add8e6', borderRadius: '80%', height: '5vh', width: '5vh', marginRight: "1.5vh" }} /> : <FcExpired style={{ height: '5vh', width: '5vh', marginRight: '1.5vh' }} />} {license.productName}</td>
+                                                    <td className="align-middle userDashboardLicenseName" style={{ width: "13vw" }}> {myCurrentTime >= license.expirationDate ? <FcExpired style={{ height: '5vh', width: '5vh', marginRight: '1.5vh' }} /> : <GrValidate style={{ background: '#add8e6', borderRadius: '80%', height: '5vh', width: '5vh', marginRight: "1.5vh" }} />} {license.productName}</td>
                                                     <td className="align-middle Userdashboardlicensekey" style={{ width: "25%" }}>
                                                         <GrLicense style={{ height: "2.5vh", width: '2.5vh', marginRight: "1.5vw", }} />
                                                         {license.licenseKey}
@@ -270,7 +270,7 @@ export function UserDashboard() {
                                                     <td className="align-middle Userdashboardsmalltext"><GiRank3 style={{ height: "2.5vh", width: '2.5vh', marginRight: "3%" }} /> {license.tier}</td>
                                                     <td className="align-middle Userdashboardsmalltext"><IoCalendarOutline style={{ height: "2.5vh", width: '2.5vh', marginRight: "3%" }} />{license.reaccurence}</td>
                                                     <td className="align-middle Userdashboardsmalltext"><div>{license.expirationDate != null ? <div> <BsHourglass style={{ height: "2.5vh", width: '2.5vh', marginRight: "3%" }} /> {license.expirationDate.split('T')[0]} </div> : <p>-</p>}</div> </td>
-                                                    <td className="align-middle ">{myCurrentTime >= license.expirationDate ? <Badge bg="success">{t('dashboard_active')}</Badge> : <Badge bg="danger">{t('dashboard_inactive')}</Badge>}</td>
+                                                    <td className="align-middle ">{myCurrentTime >= license.expirationDate ? <Badge bg="danger">{t('dashboard_inactive')}</Badge> : <Badge bg="success">{t('dashboard_active')}</Badge>}</td>
                                                     <td className="align-middle" style={{ width: "110px" }}>
                                                         <Button className="p-1" onClick={() => { setModalShow(true); setDetailedLicense(license) }}>{t('dashboard_more')}</Button>
                                                     </td>
