@@ -69,5 +69,6 @@
     "dashboard_locationdetails": "Location details",
     "dashboard_notification": "Notification",
     "personalpage_notificationmessage": "Get abuse license notifications",
-    "personalpage_savechanges": "Save changes"
+    "personalpage_savechanges": "Save changes",
+    "dashboard_remove": "Remove"
 }
