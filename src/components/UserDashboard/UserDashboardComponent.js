@@ -40,7 +40,7 @@ export function UserDashboard() {
 
                         if (element.expirationDate) {
                             var displayDate = new Date(Date.parse(element.expirationDate))
-                            element.expirationDate = `${displayDate.getDate() + 1}-${displayDate.getMonth() + 1}-${displayDate.getFullYear() + 1}`
+                            element.expirationDate = `${displayDate.getDate()}-${displayDate.getMonth() + 1}-${displayDate.getFullYear()}`
                         }
 
 
