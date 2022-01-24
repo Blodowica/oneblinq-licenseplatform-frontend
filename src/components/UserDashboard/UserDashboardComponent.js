@@ -270,7 +270,7 @@ export function UserDashboard() {
                                                     <td className="align-middle Userdashboardsmalltext"><GiRank3 style={{ height: "2.5vh", width: '2.5vh', marginRight: "3%" }} /> {license.tier}</td>
                                                     <td className="align-middle Userdashboardsmalltext"><IoCalendarOutline style={{ height: "2.5vh", width: '2.5vh', marginRight: "3%" }} />{license.reaccurence}</td>
                                                     <td className="align-middle Userdashboardsmalltext"><div>{license.expirationDate != null ? <div> <BsHourglass style={{ height: "2.5vh", width: '2.5vh', marginRight: "3%" }} /> {license.expirationDate.split('T')[0]} </div> : <p>-</p>}</div> </td>
-                                                    <td className="align-middle ">{myCurrentTime >= license.expirationDate ? <Badge bg="danger">{t('dashboard_inactive')}</Badge> : <Badge bg="success">{t('dashboard_active')}</Badge>}</td>
+                                                    <td className="align-middle ">{myCurrentTime >= license.expirationDate && license.expirationDate != null ? <Badge bg="danger">{t('dashboard_inactive')}</Badge> : <Badge bg="success">{t('dashboard_active')}</Badge>}</td>
                                                     <td className="align-middle" style={{ width: "110px" }}>
                                                         <Button className="p-1" onClick={() => { setModalShow(true); setDetailedLicense(license) }}>{t('dashboard_more')}</Button>
                                                     </td>
