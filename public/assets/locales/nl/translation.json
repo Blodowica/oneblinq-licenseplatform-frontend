@@ -69,5 +69,6 @@
     "dashboard_locationdetails": "Locatie gegevens",
     "dashboard_notification": "Meldingen",
     "personalpage_notificationmessage": "Krijg licentie meldingen",
-    "personalpage_savechanges": "Bewerkingen opslaan"
+    "personalpage_savechanges": "Bewerkingen opslaan",
+    "dashboard_remove": "Verwijderen"
 }

@@ -188,7 +188,7 @@ export function UserDashboard() {
 
                                                     <td scope='col'>{uniqUsers.service}</td>
                                                     <td scope='col'>{uniqUsers.createdAt.split('T')[0]}</td>
-                                                    <td scope='col' ><Button className='btn-danger btn-sm py-0' onClick={() => handleDeactivation(uniqUsers.id, license.id)}>Deactivate </Button></td>
+                                                    <td scope='col' ><Button className='btn-danger btn-sm py-0' onClick={() => handleDeactivation(uniqUsers.id, license.id)}>{t('dashboard_remove')} </Button></td>
 
                                                 </tr>
                                             )
@@ -253,7 +253,7 @@ export function UserDashboard() {
 
                                                 <tr key={license.id}>
 
-                                                    <td className="align-middle userDashboardLicenseName" style={{ width: "13vw" }}> {myCurrentTime >= license.expirationDate ? <FcExpired style={{ height: '5vh', width: '5vh', marginRight: '1.5vh' }} /> : <GrValidate style={{ background: '#add8e6', borderRadius: '80%', height: '5vh', width: '5vh', marginRight: "1.5vh" }} />} {license.productName}</td>
+                                                    <td className="align-middle userDashboardLicenseName" style={{ width: "13vw" }}> {myCurrentTime >= license.expirationDate && license.expirationDate != null ? <FcExpired style={{ height: '5vh', width: '5vh', marginRight: '1.5vh' }} /> : <GrValidate style={{ background: '#add8e6', borderRadius: '80%', height: '5vh', width: '5vh', marginRight: "1.5vh" }} />} {license.productName}</td>
                                                     <td className="align-middle Userdashboardlicensekey" style={{ width: "25%" }}>
                                                         <GrLicense style={{ height: "2.5vh", width: '2.5vh', marginRight: "1.5vw", }} />
                                                         {license.licenseKey}
